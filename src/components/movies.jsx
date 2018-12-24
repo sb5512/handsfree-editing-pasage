@@ -1,9 +1,11 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
+import Pagination from "./common/pagination";
+import paginate from "../utils/paginate";
 
 class Movies extends Component {
-  state = { movies: getMovies() };
+  state = { movies: getMovies(), pageSize: 3, currentPage: 1 };
 
   onDelete = movie_id => {
     const movies = [...this.state.movies].filter(
@@ -20,7 +22,17 @@ class Movies extends Component {
     this.setState({ movies });
   };
 
+  handlePageClick = pageId => {
+    console.log("Pagination Clicked " + pageId);
+    this.setState({ currentPage: pageId });
+  };
+
   render() {
+    const movies = paginate(
+      this.state.movies,
+      this.state.currentPage,
+      this.state.pageSize
+    );
     return (
       <React.Fragment>
         <table className="table">
@@ -33,7 +45,7 @@ class Movies extends Component {
               <th />
             </tr>
           </thead>
-          {this.state.movies.map(movie => (
+          {movies.map(movie => (
             <tbody key={movie._id}>
               <tr>
                 <td>{movie.title}</td>
@@ -58,6 +70,14 @@ class Movies extends Component {
             </tbody>
           ))}
         </table>
+        <Pagination
+          pageInfo={{
+            itemSize: this.state.movies.length,
+            pageSize: this.state.pageSize,
+            onPageClick: this.handlePageClick,
+            currentPage: this.state.currentPage
+          }}
+        />
       </React.Fragment>
     );
   }

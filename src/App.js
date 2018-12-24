@@ -7,7 +7,7 @@ class App extends Component {
   render() {
     return (
       <main className="container">
-        <Navbar />
+        {/* <Navbar /> */}
         <Movies />
       </main>
     );

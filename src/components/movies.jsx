@@ -8,12 +8,17 @@ import { getGenres } from "../services/fakeGenreService";
 
 class Movies extends Component {
   state = {
-    movies: getMovies(),
-    pageSize: 2,
+    movies: [],
+    pageSize: 3,
     currentPage: 1,
-    genres: getGenres(),
+    genres: [],
     selectedGenre: null
   };
+
+  componentDidMount() {
+    const genres = [{ name: "All Genres" }, ...getGenres()];
+    this.setState({ movies: getMovies(), genres });
+  }
 
   onDelete = movie_id => {
     const movies = [...this.state.movies].filter(
@@ -35,7 +40,7 @@ class Movies extends Component {
   };
 
   onHandleGenreClick = genre => {
-    this.setState({ selectedGenre: genre });
+    this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
   render() {
@@ -46,11 +51,13 @@ class Movies extends Component {
       genres,
       selectedGenre
     } = this.state;
-    const filteredMovies = selectedGenre
-      ? allMovies.filter(m => {
-          return m.genre._id === selectedGenre._id;
-        })
-      : allMovies;
+    const filteredMovies =
+      selectedGenre && selectedGenre._id
+        ? allMovies.filter(m => {
+            return m.genre._id === selectedGenre._id;
+          })
+        : allMovies;
+
     const movies = paginate(filteredMovies, currentPage, pageSize);
     return (
       <div className="row">
@@ -63,7 +70,7 @@ class Movies extends Component {
         </div>
         <div className="col">
           <table className="table">
-            <thead className="thead-dark">
+            <thead>
               <tr>
                 <th>Title</th>
                 <th>Genre</th>

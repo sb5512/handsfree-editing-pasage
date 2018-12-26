@@ -24,12 +24,28 @@ class Dictaphone extends Component {
     }
 
     return (
-      <div>
-        <button onClick={startListening}>Start</button>
-        <button onClick={resetTranscript}>Reset</button>
-        <button onClick={stopListening}>Stop</button>
-        <span>{transcript}</span>
-      </div>
+      <React.Fragment>
+        <div className="card">
+          <div className="card-body">
+            <textarea
+              className="form-control green-border-focus"
+              style={{ fontSize: 54 }}
+              rows="3"
+              value={transcript}
+            />
+          </div>
+        </div>
+
+        <button className="btn btn-primary" onClick={startListening}>
+          Start
+        </button>
+        <button className="btn btn-warning m-2" onClick={resetTranscript}>
+          Reset
+        </button>
+        <button className="btn btn-danger " onClick={stopListening}>
+          Stop
+        </button>
+      </React.Fragment>
     );
   }
 }

@@ -8,10 +8,11 @@ import Scriptor from "./components/common/scriptor";
 class App extends Component {
   render() {
     return (
-      <main className="container">
+      <main className="container ">
         {/* <Navbar /> */}
         {/* <Movies /> */}
-        <h1>Welcome to dictation</h1>
+        <h1>Handsfree editing- Gaze and Voice</h1>
+
         <Scriptor />
         <Dictaphone />
       </main>

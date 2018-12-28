@@ -3,7 +3,6 @@ import "./App.css";
 import Movies from "./components/movies";
 import Navbar from "./components/navbar";
 import Dictaphone from "./components/common/try";
-import Scriptor from "./components/common/scriptor";
 
 class App extends Component {
   render() {
@@ -13,7 +12,6 @@ class App extends Component {
         {/* <Movies /> */}
         <h1>Handsfree editing- Gaze and Voice</h1>
 
-        <Scriptor />
         <Dictaphone />
       </main>
     );

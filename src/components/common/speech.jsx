@@ -34,10 +34,10 @@ export default function SpeechRecognition(options) {
         this.state = {
           interimTranscript,
           finalTranscript,
-          listening: false
+          listening: false,
+          commands: null
         };
       }
-
       componentWillMount() {
         if (recognition) {
           recognition.continuous = false;
@@ -92,7 +92,11 @@ export default function SpeechRecognition(options) {
             );
           }
         }
-        this.setState({ finalTranscript, interimTranscript });
+        this.setState({
+          finalTranscript,
+          interimTranscript,
+          commands: [finalTranscript]
+        });
       }
 
       concatTranscripts(...transcriptParts) {
@@ -106,7 +110,11 @@ export default function SpeechRecognition(options) {
         interimTranscript = "";
         finalTranscript = "";
         this.disconnect("RESET");
-        this.setState({ interimTranscript, finalTranscript });
+        this.setState({ interimTranscript, finalTranscript, commands: [""] });
+      };
+
+      resetCommands = () => {
+        this.setState({ commands: null });
       };
 
       startListening = () => {
@@ -138,6 +146,7 @@ export default function SpeechRecognition(options) {
           finalTranscript,
           interimTranscript
         );
+        //console.log(this.state.commands);
 
         return (
           <WrappedComponent
@@ -147,6 +156,8 @@ export default function SpeechRecognition(options) {
             stopListening={this.stopListening}
             transcript={transcript}
             recognition={recognition}
+            commands={this.state.commands}
+            resetCommands={this.resetCommands}
             browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
             {...this.state}
             {...this.props}

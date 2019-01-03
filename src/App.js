@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
-import Movies from "./components/movies";
-import Navbar from "./components/navbar";
-import Dictaphone from "./components/common/try";
+import Dictaphone from "./components/common/dictaphone";
 
 class App extends Component {
   render() {

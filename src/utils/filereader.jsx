@@ -15,11 +15,11 @@ class ImportFromFileBodyComponent extends Component {
     });
   };
 
-  handleNext = () => {
+  handleNext = e => {
     if (this.state.contents.length !== 0) {
-      this.state.nextPhrase = this.state.nextPhrase + 1;
+      const val = this.state.nextPhrase + 1;
+      this.setState({ content: this.state.contents[val], nextPhrase: val });
       this.props.resetTranscript();
-      this.setState({ content: this.state.contents[this.state.nextPhrase] });
     }
   };
 
@@ -27,6 +27,17 @@ class ImportFromFileBodyComponent extends Component {
     this.state.fileReader.onloadend = this.handleFileRead;
     this.state.fileReader.readAsText(file);
   };
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.commands &&
+      this.props.commands[0].split(" ")[
+        this.props.commands[0].split(" ").length - 1
+      ] === "next"
+    ) {
+      this.handleNext();
+      this.props.resetTranscript();
+    }
+  }
   render() {
     return (
       <React.Fragment>
@@ -35,10 +46,11 @@ class ImportFromFileBodyComponent extends Component {
             type="file"
             id="file"
             className="input-file"
-            accept=".csv"
+            accept=".*"
             onChange={e => this.handleFileChosen(e.target.files[0])}
           />
         </div>
+
         <div className="row justify-content-md-center">
           {this.state.content}
         </div>

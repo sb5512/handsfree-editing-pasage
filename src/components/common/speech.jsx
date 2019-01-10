@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import getDateandTime from "../../utils/dateAndTime";
 
 export default function SpeechRecognition(options) {
   const SpeechRecognitionInner = function(WrappedComponent) {
@@ -34,6 +35,7 @@ export default function SpeechRecognition(options) {
         this.state = {
           interimTranscript,
           finalTranscript,
+          previousTranscript: [],
           listening: false,
           commands: null
         };
@@ -109,8 +111,19 @@ export default function SpeechRecognition(options) {
       resetTranscript = () => {
         interimTranscript = "";
         finalTranscript = "";
+        let previousTranscript = [...this.state.previousTranscript];
+        if (this.state.finalTranscript !== "") {
+          previousTranscript.push(
+            this.state.finalTranscript + " at " + getDateandTime()
+          );
+        }
         this.disconnect("RESET");
-        this.setState({ interimTranscript, finalTranscript, commands: [""] });
+        this.setState({
+          interimTranscript,
+          finalTranscript,
+          commands: [""],
+          previousTranscript: previousTranscript
+        });
       };
 
       resetCommands = () => {
@@ -155,6 +168,7 @@ export default function SpeechRecognition(options) {
             abortListening={this.abortListening}
             stopListening={this.stopListening}
             transcript={transcript}
+            previousTranscript={this.state.previousTranscript}
             recognition={recognition}
             commands={this.state.commands}
             resetCommands={this.resetCommands}

@@ -12,7 +12,7 @@ class Scriptor extends Component {
             commands={this.props.commands}
             resetCommands={this.props.resetCommands}
           />
-          <i className="fa fa-microphone pull-right" aria-hidden="true" />
+          {/* <i className="fa fa-microphone pull-right" aria-hidden="true" /> */}
         </h3>
       </div>
     );

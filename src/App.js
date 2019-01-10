@@ -8,7 +8,7 @@ class App extends Component {
       <main className="container ">
         {/* <Navbar /> */}
         {/* <Movies /> */}
-        <h1>Handsfree editing- Gaze and Voice</h1>
+        <h2>Handsfree editing- Gaze and Voice</h2>
 
         <Dictaphone />
       </main>

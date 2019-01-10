@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Scriptor from "./scriptor";
 import SpeechRecognition from "./speech";
+import Logdata from "./logdata";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -11,20 +12,31 @@ const propTypes = {
 };
 
 class Dictaphone extends Component {
-  state = { clickedWord: "" };
+  state = { clickedWord: "", hover: false, editMode: false, oldTranscript: "" };
 
-  handleWordClick = (word, index) => {
-    console.log("Word clicked ", word, "at index ", index);
+  handleWordClick = (e, word, index) => {
+    e.target.style.backgroundColor = "#F44FFF";
     this.setState({ clickedWord: `${word} at index ${index}` });
   };
 
-  handleClickedWord = () => {
-    console.log("ok");
+  toggleHoverOn = event => {
+    event.target.style.backgroundColor = "#FFFF4F";
+    this.setState({ hover: true });
+  };
+
+  toggleHoverOff = event => {
+    event.target.style.backgroundColor = "#FFFFFF";
+    this.setState({ hover: false });
+  };
+
+  editModeFn = e => {
+    this.setState({ editMode: true });
   };
 
   render() {
     const {
       transcript,
+      previousTranscript,
       resetTranscript,
       stopListening,
       startListening,
@@ -36,50 +48,75 @@ class Dictaphone extends Component {
     if (!browserSupportsSpeechRecognition) {
       return null;
     }
-    // Have to check if it is commands
+
+    let editClass = "";
+    let styleEdit = { fontSize: 34, cursor: "pointer" };
+    if (
+      this.props.commands &&
+      this.props.commands[0].split(" ")[
+        this.props.commands[0].split(" ").length - 1
+      ] === "edit"
+    ) {
+      editClass = "border border-primary m-4 ";
+      styleEdit = { fontSize: 44, cursor: "pointer" };
+    }
+
     const transcriptArr = transcript.split(/(\s+)/);
     return (
       <React.Fragment>
-        <div className="card">
-          <Scriptor
-            resetTranscript={resetTranscript}
-            commands={commands}
-            resetCommands={resetCommands}
-          />
-          <div className="card-body">
-            {transcript &&
-              transcriptArr.map((word, index) => {
-                return (
-                  <React.Fragment key={index}>
-                    <span
-                      className="border border-primary m-4"
-                      onClick={() => this.handleWordClick(word, index)}
-                      style={{ fontSize: 54, cursor: "pointer" }}
-                    >
-                      {word}
-                    </span>
-                  </React.Fragment>
-                );
-              })}
+        <div class="row">
+          <div class="col">
+            <button className="btn btn-primary" onClick={startListening}>
+              Start
+            </button>
+            <button className="btn btn-warning m-2" onClick={resetTranscript}>
+              Reset
+            </button>
+            <button className="btn btn-danger " onClick={stopListening}>
+              Stop
+            </button>
+          </div>
+          <div class="col-11">
+            <div className="card">
+              <Scriptor
+                resetTranscript={resetTranscript}
+                commands={commands}
+                resetCommands={resetCommands}
+              />
+              <div className="card-body">
+                {transcript &&
+                  transcriptArr.map((word, index) => {
+                    if (word !== "edit")
+                      return (
+                        <React.Fragment key={index}>
+                          <span
+                            className={editClass}
+                            onClick={e => this.handleWordClick(e, word, index)}
+                            onMouseOver={this.toggleHoverOn}
+                            onMouseLeave={this.toggleHoverOff}
+                            style={styleEdit}
+                          >
+                            {word}
+                          </span>
+                        </React.Fragment>
+                      );
+                    return null;
+                  })}
+              </div>
+            </div>
+
+            <div className="border border-white d-block p-2 bg-dark text-white">
+              You clicked on the word:{" "}
+              <span className="border border-primary">
+                {"  "} {this.state.clickedWord}
+              </span>
+            </div>
+
+            {/* // Log data info */}
+            <br />
+            <Logdata logdata={previousTranscript} transcript={transcript} />
           </div>
         </div>
-
-        <div className="border border-white d-block p-2 bg-dark text-white">
-          You clicked on the word:{" "}
-          <span className="border border-primary">
-            {"  "} {this.state.clickedWord}
-          </span>
-        </div>
-
-        <button className="btn btn-primary" onClick={startListening}>
-          Start
-        </button>
-        <button className="btn btn-warning m-2" onClick={resetTranscript}>
-          Reset
-        </button>
-        <button className="btn btn-danger " onClick={stopListening}>
-          Stop
-        </button>
       </React.Fragment>
     );
   }

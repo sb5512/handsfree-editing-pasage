@@ -9,6 +9,8 @@ class ImportFromFileBodyComponent extends Component {
   };
   handleFileRead = e => {
     const contents = this.state.fileReader.result.split("\n");
+    //console.log(contents);
+
     this.setState({
       content: contents[this.state.nextPhrase],
       contents: contents
@@ -49,14 +51,17 @@ class ImportFromFileBodyComponent extends Component {
             accept=".*"
             onChange={e => this.handleFileChosen(e.target.files[0])}
           />
+          <button
+            className="pull-right btn btn-primary"
+            onClick={this.handleNext}
+          >
+            Next
+          </button>
         </div>
 
         <div className="row justify-content-md-center">
           {this.state.content}
         </div>
-        <button className="btn btn-primary" onClick={this.handleNext}>
-          Next
-        </button>
       </React.Fragment>
     );
   }

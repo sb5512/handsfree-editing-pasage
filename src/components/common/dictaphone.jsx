@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 import Scriptor from "./scriptor";
 import SpeechRecognition from "./speech";
 import Logdata from "./logdata";
+import Suggestion from "./suggestion";
+import Autocomplete from "./autocomplete";
+import getPhrases from "../../utils/phrases";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -12,7 +15,14 @@ const propTypes = {
 };
 
 class Dictaphone extends Component {
-  state = { clickedWord: "", hover: false, editMode: false, oldTranscript: "" };
+  state = {
+    clickedWord: "",
+    hover: false,
+    editMode: false,
+    selectMode: false,
+    oldTranscript: "",
+    phraseCount: 0
+  };
 
   handleWordClick = (e, word, index) => {
     e.target.style.backgroundColor = "#F44FFF";
@@ -32,6 +42,33 @@ class Dictaphone extends Component {
   editModeFn = e => {
     this.setState({ editMode: true });
   };
+
+  handleNext() {
+    this.setState({
+      phraseCount: this.state.phraseCount + 1,
+      selectMode: false
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.commands &&
+      this.props.commands[0].split(" ")[
+        this.props.commands[0].split(" ").length - 1
+      ] === "next"
+    ) {
+      this.handleNext();
+      this.props.resetTranscript();
+    }
+    if (
+      this.props.commands &&
+      this.props.commands[0].split(" ")[
+        this.props.commands[0].split(" ").length - 1
+      ] === "select"
+    ) {
+      this.setState({ selectMode: true });
+    }
+  }
 
   render() {
     const {
@@ -58,14 +95,14 @@ class Dictaphone extends Component {
       ] === "edit"
     ) {
       editClass = "border border-primary m-4 ";
-      styleEdit = { fontSize: 44, cursor: "pointer" };
+      styleEdit = { fontSize: 34, cursor: "pointer" };
     }
 
     const transcriptArr = transcript.split(/(\s+)/);
     return (
       <React.Fragment>
-        <div class="row">
-          <div class="col">
+        <div className="row">
+          <div className="col">
             <button className="btn btn-primary" onClick={startListening}>
               Start
             </button>
@@ -76,20 +113,28 @@ class Dictaphone extends Component {
               Stop
             </button>
           </div>
-          <div class="col-11">
+          <div className="col-11">
             <div className="card">
-              <Scriptor
+              {/* // Here begins the code for phrases */}
+              {/* <Scriptor
                 resetTranscript={resetTranscript}
                 commands={commands}
                 resetCommands={resetCommands}
-              />
+              /> */}
+              {/* // Here Ends the code for phrases */}
+              <div className="card-header text-center">
+                <h3 className="card-title">
+                  {getPhrases()[this.state.phraseCount]}
+                </h3>
+              </div>
+
               <div className="card-body">
                 {transcript &&
                   transcriptArr.map((word, index) => {
                     if (word !== "edit")
                       return (
                         <React.Fragment key={index}>
-                          <span
+                          {/* <span
                             className={editClass}
                             onClick={e => this.handleWordClick(e, word, index)}
                             onMouseOver={this.toggleHoverOn}
@@ -97,7 +142,12 @@ class Dictaphone extends Component {
                             style={styleEdit}
                           >
                             {word}
-                          </span>
+                          </span> */}
+                          <Autocomplete
+                            suggestions={["Hillo", "Halo", "Hi"]}
+                            text={word}
+                            selectMode={this.state.selectMode}
+                          />
                         </React.Fragment>
                       );
                     return null;

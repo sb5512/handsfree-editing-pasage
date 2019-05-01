@@ -1,13 +1,9 @@
 import React, { Component } from "react";
-import Dictaphone from "../common/dictaphone";
+// import Dictaphone from "../common/dictaphone";
 
 class FreeTextFormationTask extends Component {
   render() {
-    return (
-      <div className="container-fluid">
-        <Dictaphone />
-      </div>
-    );
+    return <div className="container-fluid">{/* <Dictaphone /> */}</div>;
   }
 }
 

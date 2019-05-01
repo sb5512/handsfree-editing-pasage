@@ -1,22 +1,9 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-import keydown from "react-keydown";
+// import keydown from "react-keydown";
 
 class Voiceonly extends Component {
-  componentWillReceiveProps({ keydown }) {
-    if (keydown.event) {
-      if (keydown.event.which === 49) {
-        this.props.history.push("/copytask");
-      } else if (keydown.event.which === 50) {
-        this.props.history.push("/replytask");
-      } else if (keydown.event.which === 51) {
-        this.props.history.push("/freetextformationtask");
-      } else {
-        this.props.history.push("/");
-      }
-    }
-  }
   render() {
     return (
       <div className="container">
@@ -61,6 +48,10 @@ class Voiceonly extends Component {
             </Link>
           </div>
         </div>
+        <div>
+          <button onClick={this.props.startListening}>START</button>
+          <span>{this.props.transcript}</span>
+        </div>
       </div>
     );
   }
@@ -68,4 +59,5 @@ class Voiceonly extends Component {
 
 // export default Voiceonly;
 
-export default keydown("b", "B", "1", "2", "3")(Voiceonly);
+// export default keydown("b", "B", "1", "2", "3")(Voiceonly);
+export default Voiceonly;

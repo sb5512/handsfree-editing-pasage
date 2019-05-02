@@ -1,0 +1,181 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import SpeechRecognition from "../../common/speech";
+import Logdata from "../../common/logdata";
+import getPhrases from "../../../utils/phrases";
+import backgroundimg from "../../../logo.svg"; // with import
+
+const propTypes = {
+  // Props injected by SpeechRecognition
+  transcript: PropTypes.string,
+  resetTranscript: PropTypes.func,
+  browserSupportsSpeechRecognition: PropTypes.bool
+};
+
+class FreeTextFormationDictate extends Component {
+  state = {
+    clickedWord: "",
+    hover: false,
+    editMode: false,
+    selectMode: false,
+    oldTranscript: "",
+    phraseCount: 0
+  };
+
+  handleWordClick = (e, word, index) => {
+    e.target.style.backgroundColor = "#F44FFF";
+    this.setState({ clickedWord: `${word} at index ${index}` });
+  };
+
+  toggleHoverOn = event => {
+    event.target.style.backgroundColor = "#FFFF4F";
+    this.setState({ hover: true });
+  };
+
+  toggleHoverOff = event => {
+    event.target.style.backgroundColor = "#FFFFFF";
+    this.setState({ hover: false });
+  };
+
+  editModeFn = e => {
+    this.setState({ editMode: true });
+  };
+
+  handleNext() {
+    this.setState({
+      phraseCount: this.state.phraseCount + 1,
+      selectMode: false
+    });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.commands &&
+      this.props.commands[0].split(" ")[
+        this.props.commands[0].split(" ").length - 1
+      ] === "next"
+    ) {
+      this.handleNext();
+      this.props.resetTranscript();
+    }
+    if (
+      this.props.commands &&
+      this.props.commands[0].split(" ")[
+        this.props.commands[0].split(" ").length - 1
+      ] === "select"
+    ) {
+      this.setState({ selectMode: true });
+    }
+  }
+
+  render() {
+    const {
+      transcript,
+      previousTranscript,
+      resetTranscript,
+      stopListening,
+      startListening,
+      commands,
+      resetCommands,
+      browserSupportsSpeechRecognition
+    } = this.props;
+
+    if (!browserSupportsSpeechRecognition) {
+      return null;
+    }
+
+    let editClass = "";
+    let styleEdit = { fontSize: 34, cursor: "pointer" };
+    if (
+      this.props.commands &&
+      this.props.commands[0].split(" ")[
+        this.props.commands[0].split(" ").length - 1
+      ] === "edit"
+    ) {
+      editClass = "border border-primary m-4 ";
+      styleEdit = { fontSize: 34, cursor: "pointer" };
+    }
+
+    const transcriptArr = transcript.split(/(\s+)/);
+    return (
+      <React.Fragment>
+        <div className="row">
+          <div className="col">
+            <button className="btn btn-primary" onClick={startListening}>
+              Start
+            </button>
+            <button className="btn btn-warning m-2" onClick={resetTranscript}>
+              Reset
+            </button>
+            <button className="btn btn-danger " onClick={stopListening}>
+              Stop
+            </button>
+          </div>
+        </div>
+
+        {/* For Image */}
+        <div class="container">
+          <div class="row justify-content-md-center">
+            <div class="col col-lg-4">
+              <img
+                src={backgroundimg}
+                class="img-fluid img-thumbnail"
+                alt="freetext"
+              />
+            </div>
+          </div>
+        </div>
+        <br />
+        {/* For Image Ends*/}
+
+        <div className="row">
+          <div className="col-12">
+            <div className="card">
+              <div className="card-body">
+                {transcript &&
+                  transcriptArr.map((word, index) => {
+                    if (word !== "edit")
+                      return (
+                        <React.Fragment key={index}>
+                          {/* <span
+                            className={editClass}
+                            onClick={e => this.handleWordClick(e, word, index)}
+                            onMouseOver={this.toggleHoverOn}
+                            onMouseLeave={this.toggleHoverOff}
+                            style={styleEdit}
+                          >
+                            {word}
+                          </span> */}
+
+                          {/* <Autocomplete
+                            suggestions={["Hillo", "Halo", "Hi"]}
+                            text={word}
+                            selectMode={this.state.selectMode}
+                          /> */}
+                        </React.Fragment>
+                      );
+                    return null;
+                  })}
+              </div>
+            </div>
+
+            <div className="border border-white d-block p-2 bg-dark text-white">
+              You clicked on the word:{" "}
+              <span className="border border-primary">
+                {"  "} {this.state.clickedWord}
+              </span>
+            </div>
+
+            {/* // Log data info */}
+            <br />
+            <Logdata logdata={previousTranscript} transcript={transcript} />
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
+}
+
+FreeTextFormationDictate.propTypes = propTypes;
+
+export default SpeechRecognition(FreeTextFormationDictate);

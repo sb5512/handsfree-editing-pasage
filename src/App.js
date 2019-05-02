@@ -25,11 +25,6 @@ class App extends Component {
   render() {
     return (
       <div tabIndex="1">
-        <div>
-          {" "}
-          Note:
-          https://stackoverflow.com/questions/52061476/cancel-all-subscriptions-and-asyncs-in-the-componentwillunmount-method-how
-        </div>
         <Link to="/">
           <button
             id="backButton"
@@ -41,14 +36,17 @@ class App extends Component {
         <br />
         <div tabIndex="0" className="content">
           <Switch>
-            <Route path="/copytask" render={props => <CopyTask {...props} />} />
+            <Route
+              path="/copytask"
+              render={props => <CopyTask {...this.props} />}
+            />
             <Route
               path="/replytask"
-              render={props => <ReplyTask {...props} />}
+              render={props => <ReplyTask {...this.props} />}
             />
             <Route
               path="/freetextformationtask"
-              render={props => <FreeTextFormationTask {...props} />}
+              render={props => <FreeTextFormationTask {...this.props} />}
             />
             <Route
               path="/voiceonly"
@@ -56,7 +54,7 @@ class App extends Component {
             />
             <Route
               path="/multimodal"
-              render={props => <Multimodal {...props} />}
+              render={props => <Multimodal {...this.props} />}
             />
             <Route path="/" exact render={props => <NavBar {...props} />} />
             <Redirect to="/not-found" />

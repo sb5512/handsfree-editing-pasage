@@ -22,11 +22,16 @@ const propTypes = {
 };
 
 class App extends Component {
+  onBackButtonClick = () => {
+    this.props.stopListening();
+  };
+
   render() {
     return (
       <div tabIndex="1">
         <Link to="/">
           <button
+            onClick={this.onBackButtonClick}
             id="backButton"
             className="btn btn-light btn-lg btn-block-height text-center"
           >

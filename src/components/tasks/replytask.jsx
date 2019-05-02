@@ -15,7 +15,6 @@ class ReplyTask extends Component {
     } = this.props;
     return (
       <div className="container-fluid">
-        <button onClick={startListening}>Start</button>
         <span>{transcript}</span>
         {/* <Dictaphone /> */}
       </div>

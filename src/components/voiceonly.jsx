@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-// import keydown from "react-keydown";
+import keydown from "react-keydown";
 
 class Voiceonly extends Component {
   render() {
@@ -14,6 +14,7 @@ class Voiceonly extends Component {
           <div className="col-4">
             <Link to="/copytask">
               <button
+                onClick={this.props.startListening}
                 type="button"
                 className="btn btn-primary btn-lg btn-block"
               >
@@ -26,6 +27,7 @@ class Voiceonly extends Component {
           <div className="col-4">
             <Link to="/replytask">
               <button
+                onClick={this.props.startListening}
                 type="button"
                 className="btn btn-primary btn-lg btn-block"
               >
@@ -38,6 +40,7 @@ class Voiceonly extends Component {
           <div className="col-4">
             <Link to="/freetextformationtask">
               <button
+                onClick={this.props.startListening}
                 type="button"
                 className="btn btn-primary btn-lg btn-block"
               >
@@ -48,16 +51,10 @@ class Voiceonly extends Component {
             </Link>
           </div>
         </div>
-        <div>
-          <button onClick={this.props.startListening}>START</button>
-          <span>{this.props.transcript}</span>
-        </div>
       </div>
     );
   }
 }
 
+export default keydown("b", "B", "1", "2", "3")(Voiceonly);
 // export default Voiceonly;
-
-// export default keydown("b", "B", "1", "2", "3")(Voiceonly);
-export default Voiceonly;

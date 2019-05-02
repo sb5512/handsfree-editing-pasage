@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import SpeechRecognition from "../../common/speech";
 import Logdata from "../../common/logdata";
-import getPhrases from "../../../utils/phrases";
 import backgroundimg from "../../../logo.svg"; // with import
 
 const propTypes = {
@@ -49,6 +47,7 @@ class FreeTextFormationDictate extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("component recieved props after speaking");
     if (
       this.props.commands &&
       this.props.commands[0].split(" ")[
@@ -99,7 +98,8 @@ class FreeTextFormationDictate extends Component {
     const transcriptArr = transcript.split(/(\s+)/);
     return (
       <React.Fragment>
-        <div className="row">
+        {/* Buttons for start reset and stop STARTS */}
+        {/* <div className="row">
           <div className="col">
             <button className="btn btn-primary" onClick={startListening}>
               Start
@@ -111,7 +111,8 @@ class FreeTextFormationDictate extends Component {
               Stop
             </button>
           </div>
-        </div>
+        </div> */}
+        {/* Buttons for start reset and stop ENDS */}
 
         {/* For Image */}
         <div class="container">
@@ -127,6 +128,7 @@ class FreeTextFormationDictate extends Component {
         </div>
         <br />
         {/* For Image Ends*/}
+        {transcript}
 
         <div className="row">
           <div className="col-12">
@@ -168,7 +170,7 @@ class FreeTextFormationDictate extends Component {
 
             {/* // Log data info */}
             <br />
-            <Logdata logdata={previousTranscript} transcript={transcript} />
+            {/* <Logdata logdata={previousTranscript} transcript={transcript} /> */}
           </div>
         </div>
       </React.Fragment>
@@ -178,4 +180,4 @@ class FreeTextFormationDictate extends Component {
 
 FreeTextFormationDictate.propTypes = propTypes;
 
-export default SpeechRecognition(FreeTextFormationDictate);
+export default FreeTextFormationDictate;

@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Route, Switch, Redirect } from "react-router-dom";
+import SpeechRecognition from "react-speech-recognition";
 
 import "./App.css";
-
-import NavBar from "./components/navbar";
-import Voiceonly from "./components/voiceonly";
-import Multimodal from "./components/multimodal";
-import CopyTask from "./components/tasks/copytask";
-import ReplyTask from "./components/tasks/replytask";
-import FreeTextFormationTask from "./components/tasks/freetextformationtask";
-
-import SpeechRecognition from "react-speech-recognition";
 import PropTypes from "prop-types";
+
+import NavBar from "./components/homePage/navbar";
+import Voiceonly from "./components/homePage/voiceonly";
+import Multimodal from "./components/homePage/multimodal";
+
+import CopyTask from "./components/tasks/copy/copytask";
+import ReplyTask from "./components/tasks/reply/replytask";
+import FreeTextFormationTask from "./components/tasks/freetextformation/freetextformationtask";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -23,6 +23,7 @@ const propTypes = {
 
 class App extends Component {
   onBackButtonClick = () => {
+    this.props.resetTranscript();
     this.props.stopListening();
   };
 

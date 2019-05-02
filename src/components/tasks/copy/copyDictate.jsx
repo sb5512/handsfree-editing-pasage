@@ -101,7 +101,8 @@ class CopyDictate extends Component {
     const transcriptArr = transcript.split(/(\s+)/);
     return (
       <React.Fragment>
-        <div className="row">
+        {/* Buttons for start reset and stop STARTS */}
+        {/* <div className="row">
           <div className="col">
             <button className="btn btn-primary" onClick={startListening}>
               Start
@@ -113,7 +114,8 @@ class CopyDictate extends Component {
               Stop
             </button>
           </div>
-        </div>
+        </div> */}
+        {/* Buttons for start reset and stop ENDS */}
 
         <div className="row">
           <div className="col-12">

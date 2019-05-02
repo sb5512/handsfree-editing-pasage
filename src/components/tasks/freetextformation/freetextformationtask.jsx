@@ -7,7 +7,7 @@ class FreeTextFormationTask extends Component {
     return (
       <React.Fragment>
         <div className="container-fluid">
-          <FreeTextFormationDictate />
+          <FreeTextFormationDictate {...this.props} />
         </div>
       </React.Fragment>
     );

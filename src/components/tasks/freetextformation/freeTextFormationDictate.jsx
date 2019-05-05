@@ -115,12 +115,12 @@ class FreeTextFormationDictate extends Component {
         {/* Buttons for start reset and stop ENDS */}
 
         {/* For Image */}
-        <div class="container">
-          <div class="row justify-content-md-center">
-            <div class="col col-lg-4">
+        <div className="container">
+          <div className="row justify-content-md-center">
+            <div className="col col-lg-4">
               <img
                 src={backgroundimg}
-                class="img-fluid img-thumbnail"
+                className="img-fluid img-thumbnail"
                 alt="freetext"
               />
             </div>
@@ -128,12 +128,12 @@ class FreeTextFormationDictate extends Component {
         </div>
         <br />
         {/* For Image Ends*/}
-        {transcript}
 
         <div className="row">
           <div className="col-12">
             <div className="card">
               <div className="card-body">
+                {transcript}
                 {transcript &&
                   transcriptArr.map((word, index) => {
                     if (word !== "edit")

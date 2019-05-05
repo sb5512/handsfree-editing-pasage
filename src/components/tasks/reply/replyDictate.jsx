@@ -73,6 +73,7 @@ class ReplyDictate extends Component {
   render() {
     const {
       transcript,
+      finalTranscript,
       previousTranscript,
       resetTranscript,
       stopListening,
@@ -134,6 +135,7 @@ class ReplyDictate extends Component {
               </div>
 
               <div className="card-body">
+                {transcript}
                 {transcript &&
                   transcriptArr.map((word, index) => {
                     if (word !== "edit")

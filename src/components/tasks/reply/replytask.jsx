@@ -1,8 +1,17 @@
 import React, { Component } from "react";
-import Dictaphone from "../../common/dictaphone";
 import ReplyDictate from "./replyDictate";
+import keydown from "react-keydown";
 
 class ReplyTask extends Component {
+  componentWillReceiveProps({ keydown }) {
+    if (keydown.event) {
+      if (keydown.event.which === 66) {
+        this.props.onBackButtonClick();
+        this.props.state.history.push("/");
+      }
+    }
+  }
+
   render() {
     const {
       transcript,
@@ -17,10 +26,10 @@ class ReplyTask extends Component {
 
     return (
       <div className="container-fluid">
-        <ReplyDictate />
+        <ReplyDictate {...this.props} />
       </div>
     );
   }
 }
 
-export default ReplyTask;
+export default keydown("b", "B", "1", "2", "3")(ReplyTask);

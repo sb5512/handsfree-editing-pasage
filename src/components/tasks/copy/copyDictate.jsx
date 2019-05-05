@@ -74,6 +74,7 @@ class CopyDictate extends Component {
     const {
       transcript,
       previousTranscript,
+      finalTranscript,
       resetTranscript,
       stopListening,
       startListening,
@@ -134,6 +135,7 @@ class CopyDictate extends Component {
               </div>
 
               <div className="card-body">
+                {transcript}
                 {transcript &&
                   transcriptArr.map((word, index) => {
                     if (word !== "edit")

@@ -24,7 +24,7 @@ const propTypes = {
 class App extends Component {
   onBackButtonClick = () => {
     this.props.resetTranscript();
-    this.props.stopListening();
+    this.props.abortListening();
   };
 
   render() {
@@ -44,25 +44,47 @@ class App extends Component {
           <Switch>
             <Route
               path="/copytask"
-              render={props => <CopyTask {...this.props} />}
+              render={props => (
+                <CopyTask
+                  onBackButtonClick={this.onBackButtonClick}
+                  state={props}
+                  {...this.props}
+                />
+              )}
             />
             <Route
               path="/replytask"
-              render={props => <ReplyTask {...this.props} />}
+              render={props => (
+                <ReplyTask
+                  onBackButtonClick={this.onBackButtonClick}
+                  state={props}
+                  {...this.props}
+                />
+              )}
             />
             <Route
               path="/freetextformationtask"
-              render={props => <FreeTextFormationTask {...this.props} />}
+              render={props => (
+                <FreeTextFormationTask
+                  onBackButtonClick={this.onBackButtonClick}
+                  state={props}
+                  {...this.props}
+                />
+              )}
             />
             <Route
               path="/voiceonly"
-              render={props => <Voiceonly {...this.props} />}
+              render={props => <Voiceonly state={props} {...this.props} />}
             />
             <Route
               path="/multimodal"
-              render={props => <Multimodal {...this.props} />}
+              render={props => <Multimodal state={props} {...this.props} />}
             />
-            <Route path="/" exact render={props => <NavBar {...props} />} />
+            <Route
+              path="/"
+              exact
+              render={props => <NavBar state={props} {...this.props} />}
+            />
             <Redirect to="/not-found" />
           </Switch>
         </div>
@@ -78,5 +100,3 @@ const options = {
 App.propTypes = propTypes;
 
 export default SpeechRecognition(options)(App);
-// export default App;
-// export default keydown("m", "v", "b")(App);

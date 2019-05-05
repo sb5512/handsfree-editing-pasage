@@ -4,6 +4,24 @@ import { Link } from "react-router-dom";
 import keydown from "react-keydown";
 
 class Voiceonly extends Component {
+  componentWillReceiveProps({ keydown }) {
+    if (keydown.event) {
+      if (keydown.event.which === 49) {
+        this.props.startListening();
+        this.props.state.history.push("/copytask");
+      } else if (keydown.event.which === 50) {
+        this.props.startListening();
+        this.props.state.history.push("/replytask");
+      } else if (keydown.event.which === 51) {
+        this.props.startListening();
+        this.props.state.history.push("/freetextformationtask");
+      } else {
+        this.props.stopListening();
+        this.props.state.history.push("/");
+      }
+    }
+  }
+
   render() {
     return (
       <div className="container">

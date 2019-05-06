@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Logdata from "../../common/logdata";
 import backgroundimg from "../../../logo.svg"; // with import
+import Autocomplete from "../../common/autocomplete";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -79,6 +80,9 @@ class FreeTextFormationDictate extends Component {
       browserSupportsSpeechRecognition
     } = this.props;
 
+    const helperTextCanDelete = "Hello this is the text to show";
+    const helperTextArr = helperTextCanDelete.split(" ");
+
     if (!browserSupportsSpeechRecognition) {
       return null;
     }
@@ -133,7 +137,18 @@ class FreeTextFormationDictate extends Component {
           <div className="col-12">
             <div className="card">
               <div className="card-body">
-                {transcript}
+                {/* {transcript} */}
+                {helperTextCanDelete}
+                {helperTextArr.map((word, index) => {
+                  return (
+                    <Autocomplete
+                      suggestions={["Hillo", "Halo", "Hi"]}
+                      text={word}
+                      selectMode={this.state.selectMode}
+                    />
+                  );
+                })}
+
                 {transcript &&
                   transcriptArr.map((word, index) => {
                     if (word !== "edit")

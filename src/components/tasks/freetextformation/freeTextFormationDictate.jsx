@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Logdata from "../../common/logdata";
-import backgroundimg from "../../../logo.svg"; // with import
 import Autocomplete from "../../common/autocomplete";
+
+import Utils from "../../../utils/Utils";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -83,6 +84,11 @@ class FreeTextFormationDictate extends Component {
     const helperTextCanDelete = "Hello this is the text to show";
     const helperTextArr = helperTextCanDelete.split(" ");
 
+    // To get random images - Begins
+    let imageNumber = Utils.getRandomInt(4);
+    let toLoadImage = require(`../../../fixtures/image${imageNumber}.jpg`);
+    // To get random images - Ends
+
     if (!browserSupportsSpeechRecognition) {
       return null;
     }
@@ -123,7 +129,7 @@ class FreeTextFormationDictate extends Component {
           <div className="row justify-content-md-center">
             <div className="col col-lg-4">
               <img
-                src={backgroundimg}
+                src={toLoadImage}
                 className="img-fluid img-thumbnail"
                 alt="freetext"
               />
@@ -138,7 +144,7 @@ class FreeTextFormationDictate extends Component {
             <div className="card">
               <div className="card-body">
                 {/* {transcript} */}
-                {helperTextCanDelete}
+                {/* {helperTextCanDelete} */}
                 {helperTextArr.map((word, index) => {
                   return (
                     <Autocomplete

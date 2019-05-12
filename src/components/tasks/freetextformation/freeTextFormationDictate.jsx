@@ -21,13 +21,13 @@ class FreeTextFormationDictate extends Component {
       setOldTranscript
     } = this.props;
 
-    const transcriptArr = transcript.split(/(\s+)/);
-    let ifContainsMap = transcriptArr.pop() === "map";
-    const command = ifContainsMap;
-
     if (!browserSupportsSpeechRecognition) {
       return null;
     }
+
+    const transcriptArr = transcript.split(/(\s+)/);
+    let { command, isCommand } = Utils.containsCommand(transcriptArr);
+    console.log("WHATTTTTTTTTTTTTTTTT IS THECOMMMAND    ", isCommand);
 
     return (
       <React.Fragment>
@@ -39,7 +39,7 @@ class FreeTextFormationDictate extends Component {
               transcript={transcript}
               resetTranscript={resetTranscript}
               transcriptArr={transcriptArr}
-              command={command}
+              isCommand={isCommand}
               setOldTranscript={setOldTranscript}
             />
 

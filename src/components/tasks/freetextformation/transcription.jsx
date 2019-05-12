@@ -32,12 +32,12 @@ class Transcription extends Component {
   };
 
   render() {
-    const { transcript, transcriptArr, command } = this.props;
+    const { transcript, transcriptArr, isCommand } = this.props;
 
     return (
       <div className="card">
         <div className="card-body">
-          {command
+          {isCommand
             ? transcript &&
               transcriptArr.map((word, index) => {
                 return (

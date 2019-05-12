@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import ImageLoader from "./imageLoader";
 import Transcription from "./transcription";
+import Utils from "../../../utils/Utils";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -13,10 +14,17 @@ const propTypes = {
 
 class FreeTextFormationDictate extends Component {
   render() {
-    const { transcript, browserSupportsSpeechRecognition } = this.props;
+    const {
+      transcript,
+      resetTranscript,
+      browserSupportsSpeechRecognition,
+      setOldTranscript
+    } = this.props;
+
     const transcriptArr = transcript.split(/(\s+)/);
-    let ifContainsMap = transcript.includes("map");
+    let ifContainsMap = transcriptArr.pop() === "map";
     const command = ifContainsMap;
+
     if (!browserSupportsSpeechRecognition) {
       return null;
     }
@@ -29,8 +37,10 @@ class FreeTextFormationDictate extends Component {
           <div className="col-12">
             <Transcription
               transcript={transcript}
+              resetTranscript={resetTranscript}
               transcriptArr={transcriptArr}
               command={command}
+              setOldTranscript={setOldTranscript}
             />
 
             {/* Begins: Have to refactor as component */}

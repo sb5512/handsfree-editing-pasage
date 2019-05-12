@@ -7,7 +7,6 @@ class Transcription extends Component {
     hover: false,
     editMode: false,
     selectMode: false,
-    oldTranscript: "",
     phraseCount: 0
   };
 
@@ -18,7 +17,9 @@ class Transcription extends Component {
 
   toggleHoverOn = event => {
     event.target.style.backgroundColor = "#FFFF4F";
-    this.setState({ hover: true });
+    this.props.resetTranscript();
+    this.props.setOldTranscript(this.props.transcript);
+    // this.setState({ hover: true });
   };
 
   toggleHoverOff = event => {
@@ -42,13 +43,13 @@ class Transcription extends Component {
                 return (
                   <React.Fragment key={index}>
                     {/* <span
-                    onClick={e => this.handleWordClick(e, word, index)}
-                    onMouseOver={this.toggleHoverOn}
-                    onMouseLeave={this.toggleHoverOff}
-                  >
-                    {word} {index}
-                  </span>
-                  <br /> */}
+                      onClick={e => this.handleWordClick(e, word, index)}
+                      onMouseOver={this.toggleHoverOn}
+                      onMouseLeave={this.toggleHoverOff}
+                    >
+                      {word} {index}
+                    </span>
+                    <br /> */}
 
                     <Autocomplete
                       suggestions={["Hillo", "Halo", "Hi"]}
@@ -72,12 +73,12 @@ class Transcription extends Component {
                       {word}
                     </span>
 
-                    <Autocomplete
+                    {/* <Autocomplete
                       suggestions={["Hillo", "Halo", "Hi"]}
                       text={word}
                       mappingNumber={index}
                       selectMode={this.state.selectMode}
-                    />
+                    /> */}
                   </React.Fragment>
                 );
               })}

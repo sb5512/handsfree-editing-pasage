@@ -72,12 +72,12 @@ class Transcription extends Component {
                       {word}
                     </span>
 
-                    {/* <Autocomplete
-                    suggestions={["Hillo", "Halo", "Hi"]}
-                    text={word}
-                    mappingNumber={index}
-                    selectMode={this.state.selectMode}
-                  /> */}
+                    <Autocomplete
+                      suggestions={["Hillo", "Halo", "Hi"]}
+                      text={word}
+                      mappingNumber={index}
+                      selectMode={this.state.selectMode}
+                    />
                   </React.Fragment>
                 );
               })}

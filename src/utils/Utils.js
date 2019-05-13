@@ -10,7 +10,12 @@ class Utils {
 
     switch (lastText) {
       case commandsENUM.MAP:
-        return { command: "map", isCommand: true };
+        transcriptArr.pop();
+        return {
+          command: "map",
+          isCommand: true,
+          updatedTranscript: transcriptArr
+        };
 
       default:
         return { command: "null", isCommand: false };

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Autocomplete from "../../common/autocomplete";
+import commandsENUM from "./commandENUM";
 
 class Transcription extends Component {
   state = {
@@ -18,8 +19,8 @@ class Transcription extends Component {
   toggleHoverOn = event => {
     event.target.style.backgroundColor = "#FFFF4F";
     this.props.resetTranscript();
-    this.props.setOldTranscript(this.props.transcript);
-    // this.setState({ hover: true });
+    // this.props.setOldTranscript(this.props.transcript);
+    this.setState({ hover: true });
   };
 
   toggleHoverOff = event => {
@@ -32,12 +33,12 @@ class Transcription extends Component {
   };
 
   render() {
-    const { transcript, transcriptArr, isCommand } = this.props;
+    const { transcript, transcriptArr, isCommand, command } = this.props;
 
     return (
       <div className="card">
         <div className="card-body">
-          {isCommand
+          {isCommand && command === commandsENUM.MAP
             ? transcript &&
               transcriptArr.map((word, index) => {
                 return (
@@ -60,7 +61,24 @@ class Transcription extends Component {
                   </React.Fragment>
                 );
               })
-            : transcript &&
+            : isCommand && command === "some other command"
+            ? transcript &&
+              transcriptArr.map((word, index) => {
+                return (
+                  <React.Fragment key={index}>
+                    <span
+                      style={{ fontSize: 34, cursor: "pointer" }}
+                      onClick={e => this.handleWordClick(e, word, index)}
+                      onMouseOver={this.toggleHoverOn}
+                      onMouseLeave={this.toggleHoverOff}
+                    >
+                      {word}
+                    </span>
+                  </React.Fragment>
+                );
+              })
+            : // If not a command
+              transcript &&
               transcriptArr.map((word, index) => {
                 return (
                   <React.Fragment key={index}>

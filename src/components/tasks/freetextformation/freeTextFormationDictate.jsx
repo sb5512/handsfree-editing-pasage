@@ -13,13 +13,20 @@ const propTypes = {
 };
 
 class FreeTextFormationDictate extends Component {
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.transcript);
+    // this.props.resetTranscript();
+  }
+
+  componentDidMount() {
+    console.log("Called");
+    const oldTranscript = this.props.transcript;
+
+    this.props.setOldTranscript(oldTranscript);
+  }
+
   render() {
-    const {
-      transcript,
-      resetTranscript,
-      browserSupportsSpeechRecognition,
-      setOldTranscript
-    } = this.props;
+    const { transcript, browserSupportsSpeechRecognition } = this.props;
 
     if (!browserSupportsSpeechRecognition) {
       return null;
@@ -27,7 +34,7 @@ class FreeTextFormationDictate extends Component {
 
     const transcriptArr = transcript.split(/(\s+)/);
     let { command, isCommand } = Utils.containsCommand(transcriptArr);
-    console.log("WHATTTTTTTTTTTTTTTTT IS THECOMMMAND    ", isCommand);
+    console.log("WHATTTTTTTTTTTTTTTTT IS THECOMMMAND    ", isCommand, command);
 
     return (
       <React.Fragment>
@@ -36,11 +43,10 @@ class FreeTextFormationDictate extends Component {
         <div className="row">
           <div className="col-12">
             <Transcription
-              transcript={transcript}
-              resetTranscript={resetTranscript}
+              {...this.props}
               transcriptArr={transcriptArr}
               isCommand={isCommand}
-              setOldTranscript={setOldTranscript}
+              command={command}
             />
 
             {/* Begins: Have to refactor as component */}

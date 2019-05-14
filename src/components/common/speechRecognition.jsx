@@ -78,6 +78,10 @@ export default function SpeechRecognition(options) {
         pauseAfterDisconnect = false;
       }
 
+      updateSplitFinalTranscriptCommands(toChangeScript) {
+        console.log(toChangeScript);
+      }
+
       updateTranscript(event) {
         interimTranscript = "";
         for (let i = event.resultIndex; i < event.results.length; ++i) {
@@ -93,6 +97,9 @@ export default function SpeechRecognition(options) {
             );
           }
         }
+        // updateTranscriptIfCommand
+        this.updateSplitFinalTranscriptCommands(finalTranscript);
+
         this.setState({ finalTranscript, interimTranscript });
       }
 
@@ -142,6 +149,8 @@ export default function SpeechRecognition(options) {
           finalTranscript,
           interimTranscript
         );
+
+        // check for commands
 
         return (
           <WrappedComponent

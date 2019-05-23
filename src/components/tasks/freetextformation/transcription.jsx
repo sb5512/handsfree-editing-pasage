@@ -44,15 +44,6 @@ class Transcription extends Component {
               transcriptArr.map((word, index) => {
                 return (
                   <React.Fragment key={index}>
-                    {/* <span
-                      onClick={e => this.handleWordClick(e, word, index)}
-                      onMouseOver={this.toggleHoverOn}
-                      onMouseLeave={this.toggleHoverOff}
-                    >
-                      {word} {index}
-                    </span>
-                    <br /> */}
-
                     <Autocomplete
                       suggestions={["Hillo", "Halo", "Hi"]}
                       text={word}
@@ -62,8 +53,7 @@ class Transcription extends Component {
                   </React.Fragment>
                 );
               })
-            : isCommand
-            ? transcript &&
+            : transcript &&
               transcriptArr.map((word, index) => {
                 return (
                   <React.Fragment key={index}>
@@ -75,29 +65,6 @@ class Transcription extends Component {
                     >
                       {word}
                     </span>
-                  </React.Fragment>
-                );
-              })
-            : // If not a command
-              transcript &&
-              transcriptArr.map((word, index) => {
-                return (
-                  <React.Fragment key={index}>
-                    <span
-                      style={{ fontSize: 34, cursor: "pointer" }}
-                      onClick={e => this.handleWordClick(e, word, index)}
-                      onMouseOver={this.toggleHoverOn}
-                      onMouseLeave={this.toggleHoverOff}
-                    >
-                      {word}
-                    </span>
-
-                    {/* <Autocomplete
-                      suggestions={["Hillo", "Halo", "Hi"]}
-                      text={word}
-                      mappingNumber={index}
-                      selectMode={this.state.selectMode}
-                    /> */}
                   </React.Fragment>
                 );
               })}

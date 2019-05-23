@@ -42,6 +42,9 @@ class Autocomplete extends Component {
     this.setState({
       activeSuggestion: 0,
       filteredSuggestions,
+      showSuggestions: false
+    });
+    this.setState({
       showSuggestions: true
     });
   };
@@ -65,9 +68,12 @@ class Autocomplete extends Component {
   };
 
   onHoverSelectable = event => {
+    console.log("Mouse entered");
     console.log(event.currentTarget.textContent);
     //this.setState({ currentHoverText: event.currentTarget.textContent });
-    this.setState({ userInput: event.currentTarget.textContent });
+    this.setState({
+      userInput: event.currentTarget.textContent
+    });
   };
 
   render() {
@@ -130,9 +136,15 @@ class Autocomplete extends Component {
           onKeyDown={onKeyDown}
         >
           {this.state.userInput}
+
+          {/* 
+            1. calculatedWidth = calculate the width of {this.state.userInput}
+            2. set the of  margin-left of the  to -calculatedWidth + 'px';
+          */}
+
+          {suggestionsListComponent}
         </span>
         {this.state.mappingNumber}
-        {suggestionsListComponent}
       </Fragment>
     );
   }

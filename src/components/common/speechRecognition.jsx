@@ -45,7 +45,8 @@ export default function SpeechRecognition(options) {
           finalTranscript,
           listening,
           commands: [],
-          hasCommand: false
+          hasCommand: false,
+          suggestionListNumber: null
         };
       }
 
@@ -88,27 +89,65 @@ export default function SpeechRecognition(options) {
         return toChangeScript;
       }
 
+      containsCommands(interimWord) {
+        return interimWord.endsWith("map");
+      }
+
       updateTranscript(event) {
         interimTranscript = "";
-        hasCommand = false;
-        for (let i = event.resultIndex; i < event.results.length; ++i) {
-          if (event.results[i].isFinal) {
-            let ifContainsMap = event.results[i][0].transcript.trim() === "map";
-            if (ifContainsMap) {
-              commands.push("map");
+        let suggestionListNumber = null;
+        let hasCommand = false;
+        if (this.state.hasCommand) {
+          console.log("I have command");
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              if (event.results[i][0].transcript.trim().endsWith("done")) {
+                console.log(
+                  "It should now listen to stuff Let us set the word"
+                );
+                hasCommand = false;
+              } else if (
+                event.results[i][0].transcript.trim().endsWith("1") ||
+                event.results[i][0].transcript.trim().endsWith("one")
+              ) {
+                console.log("NOW I AM HERRRRRRRRRRRRRRRR with command 1");
+                suggestionListNumber = 1;
+                hasCommand = true;
+              } else {
+                hasCommand = true;
+              }
+            } else {
+              // Even interim results has some command then execute it.
               hasCommand = true;
             }
-            finalTranscript = this.concatTranscripts(
-              finalTranscript,
-              ifContainsMap ? "" : event.results[i][0].transcript
-            );
-          } else {
-            interimTranscript = this.concatTranscripts(
-              interimTranscript,
-              event.results[i][0].transcript.trim() === "map"
-                ? ""
-                : event.results[i][0].transcript
-            );
+          }
+        } else {
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            if (event.results[i].isFinal) {
+              let ifContainsMap = event.results[i][0].transcript
+                .trim()
+                .endsWith("map");
+              if (ifContainsMap) {
+                commands.push("map");
+                hasCommand = true;
+              }
+              finalTranscript = this.concatTranscripts(
+                finalTranscript,
+                ifContainsMap
+                  ? event.results[i][0].transcript.substring(
+                      0,
+                      event.results[i][0].transcript.lastIndexOf(" ")
+                    )
+                  : event.results[i][0].transcript
+              );
+            } else {
+              interimTranscript = this.concatTranscripts(
+                interimTranscript,
+                this.containsCommands(event.results[i][0].transcript.trim())
+                  ? ""
+                  : event.results[i][0].transcript
+              );
+            }
           }
         }
         // updateFinalTranscriptIfCommand
@@ -123,7 +162,8 @@ export default function SpeechRecognition(options) {
           finalTranscript,
           interimTranscript,
           commands,
-          hasCommand
+          hasCommand,
+          suggestionListNumber
         });
       }
 
@@ -174,6 +214,25 @@ export default function SpeechRecognition(options) {
           interimTranscript
         );
 
+        let transcriptObject = [];
+        for (const [index, word] of transcript.split(" ").entries()) {
+          let showSuggestionBool =
+            this.state.suggestionListNumber &&
+            index === this.state.suggestionListNumber
+              ? true
+              : false;
+          // if (this.state.suggestionListNumber === 1) {
+          //   console.log("U+ AMMMMMMMMMMMMSAAAAAAAAAAAAAAAAa");
+          //   showSuggestionBool = true;
+          // } else {
+          //   showSuggestionBool = false;
+          // }
+          transcriptObject.push({
+            text: word,
+            showSuggestion: showSuggestionBool
+          });
+        }
+
         return (
           <WrappedComponent
             resetTranscript={this.resetTranscript}
@@ -181,6 +240,7 @@ export default function SpeechRecognition(options) {
             abortListening={this.abortListening}
             stopListening={this.stopListening}
             transcript={transcript}
+            transcriptObject={transcriptObject}
             recognition={recognition}
             browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
             {...this.state}

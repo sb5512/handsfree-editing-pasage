@@ -33,7 +33,13 @@ class Transcription extends Component {
   };
 
   render() {
-    const { transcript, transcriptArr, hasCommand, command } = this.props;
+    const {
+      transcript,
+      transcriptArr,
+      hasCommand,
+      command,
+      transcriptObject
+    } = this.props;
     let isCommand = hasCommand;
 
     return (
@@ -41,14 +47,16 @@ class Transcription extends Component {
         <div className="card-body">
           {isCommand
             ? transcript &&
-              transcriptArr.map((word, index) => {
+              transcriptObject.map((wordObject, index) => {
                 return (
                   <React.Fragment key={index}>
                     <Autocomplete
                       suggestions={["Hillo", "Halo", "Hi"]}
-                      text={word}
+                      text={wordObject.text}
+                      showSuggestion={wordObject.showSuggestion}
                       mappingNumber={index}
                       selectMode={this.state.selectMode}
+                      {...this.props}
                     />
                   </React.Fragment>
                 );

@@ -126,23 +126,13 @@ class Autocomplete extends Component {
         </ul>
       );
     } else {
-      suggestionsListComponent = (
-        <div className="no-suggestions">
-          {/* <em>No suggestions, you're on your own!</em> */}
-        </div>
-      );
+      suggestionsListComponent = <span />;
     }
 
     return (
       <Fragment>
-        <span style={{ fontSize: 34, cursor: "pointer" }}>
+        <span style={{ fontSize: 34, cursor: "pointer", paddingLeft: 20 }}>
           {this.state.userInput}
-
-          {/* 
-            1. calculatedWidth = calculate the width of {this.state.userInput}
-            2. set the of  margin-left of the  to -calculatedWidth + 'px';
-          */}
-
           {suggestionsListComponent}
         </span>
         {this.state.mappingNumber}

@@ -42,6 +42,8 @@ class Transcription extends Component {
     } = this.props;
     let isCommand = hasCommand;
 
+    let toReturn;
+
     return (
       <div className="card">
         <div className="card-body">

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TextToNumbers from "../../utils/textToNumbers";
+import Utils from "../../utils/Utils";
 
 export default function SpeechRecognition(options) {
   const SpeechRecognitionInner = function(WrappedComponent) {
@@ -107,21 +108,30 @@ export default function SpeechRecognition(options) {
         if (this.state.hasCommand) {
           for (let i = event.resultIndex; i < event.results.length; ++i) {
             let currentTranscription = event.results[i][0].transcript.trim();
-            console.log(
-              "WHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATTTTTTTTTTTTTT is my transcript ",
+            let objIsNumberAndVal = Utils.checkStringIsNumberWordOrNumber(
               currentTranscription
+            );
+            console.log(
+              "WHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAATTTTTTTTTTTTTT is my booolenaaa ",
+              Utils.checkStringIsNumberWordOrNumber(currentTranscription)
             );
 
             // get final transcript here
             if (event.results[i].isFinal) {
               if (currentTranscription.endsWith("done")) {
                 hasCommand = false;
-                spellMode = this.state.spellMode;
+                spellMode = false;
+              } else if (currentTranscription.endsWith("spell")) {
+                // This is where we will check if selection mode is on and "spell word is in the transcript"
+                console.log(
+                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM IN SPell MODEEEEEEEEE"
+                );
+                hasCommand = true; // Still command mode
+                spellMode = true;
               } else if (
                 // Here we check if the transcript is a number TODOOOOOOOO for now only one
                 !this.state.spellMode &&
-                (currentTranscription.endsWith("1") ||
-                  currentTranscription.endsWith("one"))
+                objIsNumberAndVal.check
               ) {
                 /**
                  * trying to convert speech into number. But we might have no space before end i.e only one word
@@ -140,17 +150,7 @@ export default function SpeechRecognition(options) {
                  */
 
                 hasCommand = true; // Still command mode
-                spellMode = true;
-              } else if (
-                this.state.spellMode &&
-                currentTranscription.endsWith("spell")
-              ) {
-                // This is where we will check if selection mode is on and "spell word is in the transcript"
-                console.log(
-                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM IN SELECTION MODEEEEEEEEE"
-                );
-                hasCommand = true; // Still command mode
-                spellMode = true;
+                spellMode = false;
               } else {
                 hasCommand = true;
                 spellMode = this.state.spellMode;

@@ -13,13 +13,11 @@ const propTypes = {
 
 class FreeTextFormationDictate extends Component {
   render() {
-    const { transcript, browserSupportsSpeechRecognition } = this.props;
+    const { browserSupportsSpeechRecognition } = this.props;
 
     if (!browserSupportsSpeechRecognition) {
       return null;
     }
-
-    const transcriptArr = transcript.split(/(\s+)/);
 
     return (
       <React.Fragment>
@@ -27,12 +25,7 @@ class FreeTextFormationDictate extends Component {
 
         <div className="row">
           <div className="col-12">
-            <Transcription
-              {...this.props}
-              transcriptArr={transcriptArr}
-              isCommand={this.props.state.hasCommand}
-              command={this.props.state.command}
-            />
+            <Transcription {...this.props} />
 
             {/* Begins: Have to refactor as component */}
             <div className="border border-white d-block p-2 bg-dark text-white">

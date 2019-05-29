@@ -89,29 +89,11 @@ class Autocomplete extends Component {
     } = this;
 
     let suggestionsListComponent;
-    // let userVal = this.state.userInput;
-    // if (this.props.selectMode) {
-    //   userVal = this.state.currentHoverText;
-    // }
-    console.log(
-      "WHAT IS MY STATEEEEEEE FOR SHOWSUGGESTION",
-      this.state.showSuggestion
-    );
-    console.log(
-      "WHAT IS MY prosps sent FOR SHOWSUGGESTION",
-      this.props.showSuggestion
-    );
     if (this.state.showSuggestion) {
-      // if (filteredSuggestions.length) {
       suggestionsListComponent = (
         <ul className="suggestions">
           {this.props.suggestions.map((suggestion, index) => {
-            let className;
-            // Flag the active suggestion with a class
-            //   if (index === activeSuggestion) {
-            //     className = "suggestion-active";
-            //   }
-
+            let className; // ??? maybe some css setup
             return (
               <li
                 className={className}

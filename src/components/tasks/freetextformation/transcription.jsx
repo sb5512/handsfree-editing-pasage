@@ -18,8 +18,6 @@ class Transcription extends Component {
 
   toggleHoverOn = event => {
     event.target.style.backgroundColor = "#FFFF4F";
-    this.props.resetTranscript();
-    // this.props.setOldTranscript(this.props.transcript);
     this.setState({ hover: true });
   };
 
@@ -33,23 +31,75 @@ class Transcription extends Component {
   };
 
   render() {
-    const {
-      transcript,
-      transcriptArr,
-      hasCommand,
-      command,
-      transcriptObject
-    } = this.props;
-    let isCommand = hasCommand;
+    const { transcript, hasCommand, transcriptObject, spellMode } = this.props;
 
-    let toReturn;
-
-    return (
-      <div className="card">
-        <div className="card-body">
-          {isCommand
-            ? transcript &&
-              transcriptObject.map((wordObject, index) => {
+    let toRenderDiv;
+    if (spellMode) {
+      if (hasCommand && transcript) {
+        toRenderDiv = (
+          <React.Fragment>
+            <div>Spell mode - on</div>
+            <div className="card">
+              <div className="card-body">
+                {transcriptObject
+                  .filter((wordObj, index, array) => {
+                    return wordObj.spellMode;
+                  })
+                  .map((wordObject, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        <Autocomplete
+                          suggestions={["Hillo", "Halo", "Hi"]}
+                          text={wordObject.text}
+                          showSuggestion={wordObject.showSuggestion}
+                          mappingNumber={index}
+                          selectMode={this.state.selectMode}
+                          {...this.props}
+                        />
+                      </React.Fragment>
+                    );
+                  })}
+              </div>
+            </div>
+          </React.Fragment>
+        );
+      } else {
+        toRenderDiv = (
+          <React.Fragment>
+            <div>Spell mode - on</div>
+            <div className="card">
+              <div className="card-body">
+                {transcriptObject
+                  .filter((wordObj, index, array) => {
+                    return wordObj.spellMode;
+                  })
+                  .map((wordObject, index) => {
+                    return (
+                      <React.Fragment key={index}>
+                        <span
+                          style={{ fontSize: 34, cursor: "pointer" }}
+                          onClick={e =>
+                            this.handleWordClick(e, wordObject.text, index)
+                          }
+                          onMouseOver={this.toggleHoverOn}
+                          onMouseLeave={this.toggleHoverOff}
+                        >
+                          {wordObject.text}
+                        </span>
+                      </React.Fragment>
+                    );
+                  })}
+              </div>
+            </div>
+          </React.Fragment>
+        );
+      }
+    } else {
+      if (hasCommand && transcript) {
+        toRenderDiv = (
+          <div className="card">
+            <div className="card-body">
+              {transcriptObject.map((wordObject, index) => {
                 return (
                   <React.Fragment key={index}>
                     <Autocomplete
@@ -62,25 +112,37 @@ class Transcription extends Component {
                     />
                   </React.Fragment>
                 );
-              })
-            : transcript &&
-              transcriptArr.map((word, index) => {
+              })}
+            </div>
+          </div>
+        );
+      } else {
+        toRenderDiv = (
+          <div className="card">
+            <div className="card-body">
+              {transcriptObject.map((wordObject, index) => {
                 return (
                   <React.Fragment key={index}>
                     <span
                       style={{ fontSize: 34, cursor: "pointer" }}
-                      onClick={e => this.handleWordClick(e, word, index)}
+                      onClick={e =>
+                        this.handleWordClick(e, wordObject.text, index)
+                      }
                       onMouseOver={this.toggleHoverOn}
                       onMouseLeave={this.toggleHoverOff}
                     >
-                      {word}
+                      {wordObject.text}
                     </span>
                   </React.Fragment>
                 );
               })}
-        </div>
-      </div>
-    );
+            </div>
+          </div>
+        );
+      }
+    }
+
+    return toRenderDiv;
   }
 }
 

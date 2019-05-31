@@ -96,6 +96,15 @@ export default function SpeechRecognition(options) {
         return interimWord.endsWith("map") || interimWord.endsWith("done");
       }
 
+      replaceWordWithSpellWord(oldTranscript, toReplaceWord, allTranscript) {
+        //first remove allTranscript of oldTranscript
+        const oldTranscriptLength = oldTranscript.length;
+        let replacingWord = allTranscript
+          .substring(oldTranscriptLength)
+          .replace(/ /g, "");
+        return oldTranscript.replace(toReplaceWord, replacingWord);
+      }
+
       updateTranscript(event) {
         interimTranscript = "";
         let suggestionListNumber = null;
@@ -123,7 +132,12 @@ export default function SpeechRecognition(options) {
                 suggestionListNumber = null;
                 if (this.state.spellMode) {
                   // only if spell mode on we revert transcript back to old transcript
-                  finalTranscript = this.state.oldTranscript;
+                  // TODO replace the transcript
+                  finalTranscript = this.replaceWordWithSpellWord(
+                    this.state.oldTranscript,
+                    this.state.toCorrectInSpellModeWord,
+                    finalTranscript
+                  );
                 }
               } else if (
                 currentTranscription.endsWith("spell") &&
@@ -183,7 +197,11 @@ export default function SpeechRecognition(options) {
               ) {
                 spellMode = false;
                 // This is where we will have to replace the spell mode text
-                finalTranscript = this.state.oldTranscript;
+                finalTranscript = this.replaceWordWithSpellWord(
+                  this.state.oldTranscript,
+                  this.state.toCorrectInSpellModeWord,
+                  finalTranscript
+                );
               }
               // finalscript k bhayo ta
               else {

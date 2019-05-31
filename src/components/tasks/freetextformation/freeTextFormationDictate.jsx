@@ -19,28 +19,29 @@ class FreeTextFormationDictate extends Component {
       return null;
     }
 
-    return (
-      <React.Fragment>
-        <ImageLoader loadedImage={this.props.loadedImage} />
+    let renderDiv;
 
-        <div className="row">
-          <div className="col-12">
-            <Transcription {...this.props} />
-
-            {/* Begins: Have to refactor as component */}
-            <div className="border border-white d-block p-2 bg-dark text-white">
-              You clicked on the word:{" "}
-              <span className="border border-primary">
-                {/* {"  "} {this.state.clickedWord} */}
-              </span>
-            </div>
-            {/* Ends: Have to refactor as component */}
-
-            {/* <Logdata logdata={previousTranscript} transcript={transcript} /> */}
+    if (this.props.spellMode) {
+      renderDiv = <Transcription {...this.props} />;
+    } else {
+      renderDiv = (
+        <React.Fragment>
+          <ImageLoader loadedImage={this.props.loadedImage} />{" "}
+          <Transcription {...this.props} />
+          {/* Begins: Have to refactor as component */}
+          <div className="border border-white d-block p-2 bg-dark text-white">
+            You clicked on the word:{" "}
+            <span className="border border-primary">
+              {/* {"  "} {this.state.clickedWord} */}
+            </span>
           </div>
-        </div>
-      </React.Fragment>
-    );
+          {/* Ends: Have to refactor as component */}
+          {/* <Logdata logdata={previousTranscript} transcript={transcript} /> */}
+        </React.Fragment>
+      );
+    }
+
+    return renderDiv;
   }
 }
 

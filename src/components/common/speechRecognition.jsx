@@ -50,8 +50,9 @@ export default function SpeechRecognition(options) {
           oldTranscript: "",
           mappingNumber: null,
 
+          lowercaseMode: false,
           // Part of suggestion - Begins
-          suggestionMode: null,
+          suggestionMode: false,
           suggestionListNumber: null,
           suggestionList: [],
           // Part of suggestion - Ends
@@ -112,18 +113,28 @@ export default function SpeechRecognition(options) {
         return oldTranscript.replace(toReplaceWord, replacingWord);
       }
 
+      replaceWordWithSuggestionWord(
+        toReplaceWord,
+        replacingWord,
+        allTranscript
+      ) {
+        return allTranscript.replace(toReplaceWord, replacingWord);
+      }
+
       obtainSuggestionForWord(word) {
         // call api and set the suggestion list using the word
         // TODO
-        return ["suggestion 1", "suggestion 2", "suggestion 3"];
+        return ["suggestion1", "suggestion2", "suggestion3", "spellmode"];
       }
 
       updateTranscript(event) {
         interimTranscript = "";
         let mappingNumber = null;
+        let suggestionListNumber = null;
         let hasCommand = false;
         let spellMode = this.state.spellMode;
         let suggestionMode = this.state.suggestionMode;
+        let lowercaseMode = false;
         let oldTranscript = this.state.oldTranscript;
         let toCorrectInSpellModeWord = this.state.toCorrectInSpellModeWord;
 
@@ -141,9 +152,11 @@ export default function SpeechRecognition(options) {
             // get final transcript here
             if (event.results[i].isFinal) {
               if (currentTranscription.endsWith("done")) {
-                spellMode = false;
                 hasCommand = false;
+                spellMode = false;
                 mappingNumber = null;
+                suggestionMode = false;
+                lowercaseMode = false;
                 if (this.state.spellMode) {
                   // only if spell mode on we revert transcript back to old transcript
                   // TODO replace the transcript
@@ -163,6 +176,8 @@ export default function SpeechRecognition(options) {
                 );
                 hasCommand = false; // Still command mode
                 spellMode = true;
+                suggestionMode = false;
+                lowercaseMode = false;
                 oldTranscript = this.state.finalTranscript; // we set oldtranscript for future use
                 toCorrectInSpellModeWord = this.state.finalTranscript.split(
                   " "
@@ -173,11 +188,13 @@ export default function SpeechRecognition(options) {
                 //
                 objIsNumberAndVal.check
               ) {
-                mappingNumber = objIsNumberAndVal.value;
                 hasCommand = true;
                 spellMode = this.state.spellMode;
+                suggestionMode = false;
+                lowercaseMode = false;
+                mappingNumber = objIsNumberAndVal.value;
               } else if (
-                currentTranscription.endsWith("alpha") &&
+                currentTranscription.endsWith("a") &&
                 this.state.mappingNumber
               ) {
                 console.log(
@@ -185,6 +202,45 @@ export default function SpeechRecognition(options) {
                 );
                 suggestionMode = true;
                 suggestionListNumber = 0;
+                mappingNumber = this.state.mappingNumber;
+                // No spell mode but we have suggestion list number set, which means we want to select from suggestion list
+                // get suggestion list array
+                // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
+              } else if (
+                currentTranscription.endsWith("b") &&
+                this.state.mappingNumber
+              ) {
+                console.log(
+                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM IN Suggestion List MODEEEEEEEEE"
+                );
+                suggestionMode = true;
+                suggestionListNumber = 1;
+                mappingNumber = this.state.mappingNumber;
+                // No spell mode but we have suggestion list number set, which means we want to select from suggestion list
+                // get suggestion list array
+                // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
+              } else if (
+                currentTranscription.endsWith("c") &&
+                this.state.mappingNumber
+              ) {
+                console.log(
+                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM IN Suggestion List MODEEEEEEEEE"
+                );
+                suggestionMode = true;
+                suggestionListNumber = 2;
+                mappingNumber = this.state.mappingNumber;
+                // No spell mode but we have suggestion list number set, which means we want to select from suggestion list
+                // get suggestion list array
+                // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
+              } else if (
+                currentTranscription.endsWith("lowercase") &&
+                this.state.mappingNumber
+              ) {
+                console.log(
+                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM GOING TO MAKE LOWERCASE"
+                );
+                suggestionMode = false;
+                lowercaseMode = true;
                 // No spell mode but we have suggestion list number set, which means we want to select from suggestion list
                 // get suggestion list array
                 // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
@@ -194,12 +250,16 @@ export default function SpeechRecognition(options) {
                 mappingNumber = this.state.mappingNumber;
                 hasCommand = true;
                 spellMode = this.state.spellMode;
+                suggestionMode = this.state.suggestionMode;
+                lowercaseMode = this.state.lowercaseMode;
               }
             } else {
               // Even interim results has some command then execute it.
               mappingNumber = this.state.mappingNumber;
               hasCommand = true;
               spellMode = this.state.spellMode;
+              suggestionMode = this.state.suggestionMode;
+              lowercaseMode = this.state.lowercaseMode;
             }
           }
         } else {
@@ -260,7 +320,10 @@ export default function SpeechRecognition(options) {
           mappingNumber,
           spellMode,
           oldTranscript,
-          toCorrectInSpellModeWord
+          toCorrectInSpellModeWord,
+          suggestionMode,
+          suggestionListNumber,
+          lowercaseMode
         });
       }
 
@@ -340,14 +403,17 @@ export default function SpeechRecognition(options) {
           // Get suggestion list number
           // Get suggestionList
           // replace transcript at mapping number position with suggestionlist[suggestionlistnumber]
-
+          let toReplaceWord = "";
+          let replacingWord = "";
           for (const [index, word] of transcript.split(" ").entries()) {
             // if we have index matching mapping number we replace that with suggestionlist[suggestionlistnumber]
             let updatedWord = word;
             if (index === this.state.mappingNumber) {
-              updatedWord = obtainSuggestionForWord(word)[
+              updatedWord = this.obtainSuggestionForWord(word)[
                 this.state.suggestionListNumber
               ];
+              toReplaceWord = word;
+              replacingWord = updatedWord;
             }
 
             transcriptObject.push({
@@ -357,6 +423,11 @@ export default function SpeechRecognition(options) {
               spellMode: this.state.spellMode
             });
           }
+          finalTranscript = this.replaceWordWithSuggestionWord(
+            toReplaceWord,
+            replacingWord,
+            finalTranscript
+          );
         } else {
           // This is normal tanscript
           for (const [index, word] of transcript.split(" ").entries()) {
@@ -365,7 +436,7 @@ export default function SpeechRecognition(options) {
                 ? true
                 : false;
             transcriptObject.push({
-              text: word,
+              text: this.state.lowercaseMode ? word.toLocaleLowerCase() : word,
               showSuggestion: showSuggestionBool,
               suggestions: this.obtainSuggestionForWord(word),
               spellMode: this.state.spellMode

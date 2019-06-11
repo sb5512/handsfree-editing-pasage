@@ -85,7 +85,7 @@ class Autocomplete extends Component {
             );
           })}
           <li onMouseEnter={onHoverSelectable} onClick={onClick}>
-            <div className="text-white">spell , lowercase</div>
+            <div className="text-white">spell , lowercase, delete</div>
           </li>
         </ul>
       );
@@ -105,7 +105,7 @@ class Autocomplete extends Component {
           {this.state.userInput}
           {suggestionsListComponent}
         </span>
-        {this.state.indexing}
+        {this.state.indexing + 1}
       </Fragment>
     );
   }

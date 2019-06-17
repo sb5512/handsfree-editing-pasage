@@ -115,7 +115,14 @@ export default function SpeechRecognition(options) {
 
       lowercaseWordByIndex(sentence, index) {
         let newSentenceArr = sentence.split(" ");
-        newSentenceArr[index] = newSentenceArr[index].toLocaleLowerCase();
+        console.log("WHATIS MT SENFSAKFA", newSentenceArr);
+        console.log(
+          "OKKKKKKKKKKKKKKKKKKK ONDEXXXXXXXXXXX",
+          newSentenceArr[index]
+        );
+        newSentenceArr[index - 1] = newSentenceArr[
+          index - 1
+        ].toLocaleLowerCase();
         return newSentenceArr.join(" ");
       }
       removeLastWord(sentence) {

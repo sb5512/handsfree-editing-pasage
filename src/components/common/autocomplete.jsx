@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { relative } from "path";
+import { Button, Modal } from "react-bootstrap";
 
 class Autocomplete extends Component {
   static propTypes = {
@@ -61,52 +61,81 @@ class Autocomplete extends Component {
     });
   };
 
+  // After this is for trying the modal bootstrap
+
+  handleClose = () => {
+    this.setState({ show: false });
+  };
+
+  handleShow = () => {
+    this.setState({ show: true });
+  };
+
   render() {
     const { onClick, onHoverSelectable } = this;
 
     let suggestionsListComponent;
     if (this.state.showSuggestion) {
       suggestionsListComponent = (
-        <ul className="suggestions">
-          {this.props.suggestions.map((suggestion, index) => {
-            let className; // ??? maybe some css setup
-            return (
-              <li
-                className={className}
-                key={suggestion}
-                onMouseEnter={onHoverSelectable}
-                onClick={onClick}
-              >
-                {suggestion}{" "}
-                <div className="text-white float-right">
-                  {String.fromCharCode(97 + index)}
-                </div>
-              </li>
-            );
-          })}
-          <li onMouseEnter={onHoverSelectable} onClick={onClick}>
-            <div className="text-white">spell , lowercase, delete</div>
-          </li>
-        </ul>
+        <Modal
+          show={this.props.showSuggestion}
+          dialogClassName="modal-90w"
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Suggestion list for : TODO</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {this.props.suggestions.map((suggestion, index) => {
+              let className; // ??? maybe some css setup
+              return (
+                <Modal.Title
+                  className={className}
+                  key={suggestion}
+                  onMouseEnter={onHoverSelectable}
+                  onClick={onClick}
+                >
+                  <div className="p-3 mb-2 bg-secondary text-white">
+                    {suggestion}
+                    <div className="float-right text-warning">
+                      {String.fromCharCode(97 + index)}
+                    </div>
+                  </div>
+                  <hr />
+                </Modal.Title>
+              );
+            })}
+            <Modal.Title>
+              <div className="p-3 mb-2 bg-secondary text-warning">
+                spell , lowercase, delete
+              </div>
+            </Modal.Title>
+          </Modal.Body>
+        </Modal>
       );
     } else {
       suggestionsListComponent = <span />;
     }
 
     return (
-      <Fragment>
-        <span
-          style={{
-            fontSize: 34,
-            cursor: "pointer",
-            paddingLeft: 20
-          }}
-        >
-          {this.state.userInput}
-          {suggestionsListComponent}
-        </span>
-        {this.state.indexing + 1}
-      </Fragment>
+      <>
+        {" "}
+        <Fragment>
+          <span
+            style={{
+              fontSize: 34,
+              cursor: "pointer",
+              paddingLeft: 20
+            }}
+          >
+            {this.state.userInput}
+            {suggestionsListComponent}
+          </span>
+          {this.state.indexing + 1}
+        </Fragment>
+      </>
     );
   }
 }

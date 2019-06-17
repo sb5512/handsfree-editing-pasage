@@ -17,6 +17,7 @@ class CopyTask extends Component {
     return (
       <div className="container-fluid">
         <CopyDictate {...this.props} />
+        hi
       </div>
     );
   }

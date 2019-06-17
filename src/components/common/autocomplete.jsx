@@ -109,7 +109,7 @@ class Autocomplete extends Component {
             })}
             <Modal.Title>
               <div className="p-3 mb-2 bg-secondary text-warning">
-                spell , lowercase, delete
+                spell , lowercase, deletes
               </div>
             </Modal.Title>
           </Modal.Body>

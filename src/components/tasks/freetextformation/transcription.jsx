@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import Autocomplete from "../../common/autocomplete";
 import commandsENUM from "./commandENUM";
+import SpellMode from "./spellMode";
 
 class Transcription extends Component {
   state = {
     clickedWord: "",
     hover: false,
-    editMode: false,
     selectMode: false,
     phraseCount: 0
   };
@@ -18,8 +18,6 @@ class Transcription extends Component {
 
   toggleHoverOn = event => {
     event.target.style.backgroundColor = "#FFFF4F";
-    this.props.resetTranscript();
-    // this.props.setOldTranscript(this.props.transcript);
     this.setState({ hover: true });
   };
 
@@ -28,59 +26,74 @@ class Transcription extends Component {
     this.setState({ hover: false });
   };
 
-  editModeFn = e => {
-    this.setState({ editMode: true });
-  };
-
   render() {
-    const {
-      transcript,
-      transcriptArr,
-      hasCommand,
-      command,
-      transcriptObject
-    } = this.props;
-    let isCommand = hasCommand;
+    const { transcript, hasCommand, transcriptObject, spellMode } = this.props;
 
-    let toReturn;
-
-    return (
-      <div className="card">
-        <div className="card-body">
-          {isCommand
-            ? transcript &&
-              transcriptObject.map((wordObject, index) => {
+    let toRenderDiv;
+    // If in spell mode
+    if (spellMode) {
+      toRenderDiv = (
+        <SpellMode
+          handleWordClick={this.handleWordClick}
+          toggleHoverOn={this.toggleHoverOn}
+          toggleHoverOff={this.toggleHoverOff}
+          {...this.props}
+        />
+      );
+    } else {
+      // Normal mode. This is where we show regular text and also autocomplete text
+      if (hasCommand && transcript) {
+        toRenderDiv = (
+          <div className="card">
+            <div className="card-body">
+              {transcriptObject.map((wordObject, index) => {
                 return (
                   <React.Fragment key={index}>
                     <Autocomplete
-                      suggestions={["Hillo", "Halo", "Hi"]}
+                      suggestions={wordObject.suggestions}
                       text={wordObject.text}
                       showSuggestion={wordObject.showSuggestion}
-                      mappingNumber={index}
+                      indexing={index}
                       selectMode={this.state.selectMode}
                       {...this.props}
                     />
                   </React.Fragment>
                 );
-              })
-            : transcript &&
-              transcriptArr.map((word, index) => {
+              })}
+            </div>
+          </div>
+        );
+      } else {
+        toRenderDiv = (
+          <div className="card">
+            <div className="card-body">
+              {transcriptObject.map((wordObject, index) => {
                 return (
                   <React.Fragment key={index}>
                     <span
-                      style={{ fontSize: 34, cursor: "pointer" }}
-                      onClick={e => this.handleWordClick(e, word, index)}
+                      style={{
+                        fontSize: 34,
+                        cursor: "pointer",
+                        paddingLeft: 20
+                      }}
+                      onClick={e =>
+                        this.handleWordClick(e, wordObject.text, index)
+                      }
                       onMouseOver={this.toggleHoverOn}
                       onMouseLeave={this.toggleHoverOff}
                     >
-                      {word}
+                      {wordObject.text}
                     </span>
                   </React.Fragment>
                 );
               })}
-        </div>
-      </div>
-    );
+            </div>
+          </div>
+        );
+      }
+    }
+
+    return toRenderDiv;
   }
 }
 

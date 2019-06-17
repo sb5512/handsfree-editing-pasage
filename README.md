@@ -1,4 +1,4 @@
-# Notes
+## Notes
 
 1. commands sent as props
    a)Final transcript check if it has one of the commmands "next" "select"

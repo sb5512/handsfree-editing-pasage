@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
+import { Button, Modal } from "react-bootstrap";
 
 class Autocomplete extends Component {
   static propTypes = {
@@ -22,7 +23,7 @@ class Autocomplete extends Component {
       showSuggestion: this.props.showSuggestion,
       // What the user has entered
       userInput: this.props.text,
-      mappingNumber: this.props.mappingNumber,
+      indexing: this.props.indexing,
       currentHoverText: ""
     };
   }
@@ -34,28 +35,13 @@ class Autocomplete extends Component {
   onChange = e => {
     const { suggestions } = this.props;
     const userInput = e.currentTarget.value;
-
-    // Filter our suggestions that don't contain the user's input
     const filteredSuggestions = suggestions;
-    // const filteredSuggestions = suggestions.filter(
-    //   suggestion =>
-    //     suggestion.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-    // );
-
-    // Update the user input and filtered suggestions, reset the active
-    // suggestion and make sure the suggestions are shown
     this.setState({
       activeSuggestion: 0,
       filteredSuggestions,
       showSuggestion: true
     });
   };
-
-  // onLeave = e => {
-  //   this.setState({
-  //     showSuggestion: false
-  //   });
-  // };
 
   onClick = e => {
     // Update the user input and reset the rest of the state
@@ -70,73 +56,86 @@ class Autocomplete extends Component {
   };
 
   onHoverSelectable = event => {
-    console.log("Mouse entered");
-    console.log(event.currentTarget.textContent);
-    //this.setState({ currentHoverText: event.currentTarget.textContent });
     this.setState({
       userInput: event.currentTarget.textContent
     });
   };
 
+  // After this is for trying the modal bootstrap
+
+  handleClose = () => {
+    this.setState({ show: false });
+  };
+
+  handleShow = () => {
+    this.setState({ show: true });
+  };
+
   render() {
-    const {
-      onChange,
-      onClick,
-      onKeyDown,
-      onHoverSelectable,
-      onLeave,
-      state: { activeSuggestion, filteredSuggestions, showSuggestions }
-    } = this;
+    const { onClick, onHoverSelectable } = this;
 
     let suggestionsListComponent;
-    // let userVal = this.state.userInput;
-    // if (this.props.selectMode) {
-    //   userVal = this.state.currentHoverText;
-    // }
-    console.log(
-      "WHAT IS MY STATEEEEEEE FOR SHOWSUGGESTION",
-      this.state.showSuggestion
-    );
-    console.log(
-      "WHAT IS MY prosps sent FOR SHOWSUGGESTION",
-      this.props.showSuggestion
-    );
     if (this.state.showSuggestion) {
-      // if (filteredSuggestions.length) {
       suggestionsListComponent = (
-        <ul className="suggestions">
-          {this.props.suggestions.map((suggestion, index) => {
-            let className;
-            // Flag the active suggestion with a class
-            //   if (index === activeSuggestion) {
-            //     className = "suggestion-active";
-            //   }
-
-            return (
-              <li
-                className={className}
-                key={suggestion}
-                onMouseEnter={onHoverSelectable}
-                onClick={onClick}
-              >
-                {suggestion}
-              </li>
-            );
-          })}
-        </ul>
+        <Modal
+          show={this.props.showSuggestion}
+          dialogClassName="modal-90w"
+          size="lg"
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Suggestion list for : TODO</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            {this.props.suggestions.map((suggestion, index) => {
+              let className; // ??? maybe some css setup
+              return (
+                <Modal.Title
+                  className={className}
+                  key={suggestion}
+                  onMouseEnter={onHoverSelectable}
+                  onClick={onClick}
+                >
+                  <div className="p-3 mb-2 bg-secondary text-white">
+                    {suggestion}
+                    <div className="float-right text-warning">
+                      {String.fromCharCode(97 + index)}
+                    </div>
+                  </div>
+                  <hr />
+                </Modal.Title>
+              );
+            })}
+            <Modal.Title>
+              <div className="p-3 mb-2 bg-secondary text-warning">
+                spell , lowercase, delete
+              </div>
+            </Modal.Title>
+          </Modal.Body>
+        </Modal>
       );
     } else {
       suggestionsListComponent = <span />;
     }
 
     return (
-      <Fragment>
-        <span style={{ fontSize: 34, cursor: "pointer", paddingLeft: 20 }}>
-          {this.state.userInput}
-          {suggestionsListComponent}
-        </span>
-        {this.state.mappingNumber}
-      </Fragment>
+      <>
+        {" "}
+        <Fragment>
+          <span
+            style={{
+              fontSize: 34,
+              cursor: "pointer",
+              paddingLeft: 20
+            }}
+          >
+            {this.state.userInput}
+            {suggestionsListComponent}
+          </span>
+          {this.state.indexing + 1}
+        </Fragment>
+      </>
     );
   }
 }

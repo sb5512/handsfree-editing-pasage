@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { Button, Modal } from "react-bootstrap";
+import { Accordion, Card, ButtonGroup, Button } from "react-bootstrap";
 
 class Autocomplete extends Component {
   static propTypes = {
@@ -77,21 +77,12 @@ class Autocomplete extends Component {
     let suggestionsListComponent;
     if (this.state.showSuggestion) {
       suggestionsListComponent = (
-        <Modal
-          show={this.props.showSuggestion}
-          dialogClassName="modal-90w"
-          size="lg"
-          aria-labelledby="contained-modal-title-vcenter"
-          centered
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>Suggestion list for : TODO</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        <div className="d-flex flex-column">
+          <ButtonGroup size="lg">
             {this.props.suggestions.map((suggestion, index) => {
               let className; // ??? maybe some css setup
               return (
-                <Modal.Title
+                <Button
                   className={className}
                   key={suggestion}
                   onMouseEnter={onHoverSelectable}
@@ -103,17 +94,16 @@ class Autocomplete extends Component {
                       {String.fromCharCode(97 + index)}
                     </div>
                   </div>
-                  <hr />
-                </Modal.Title>
+                </Button>
               );
             })}
-            <Modal.Title>
+            <Button>
               <div className="p-3 mb-2 bg-secondary text-warning">
-                spell , lowercase, deletes
+                spell , lowercase, delete
               </div>
-            </Modal.Title>
-          </Modal.Body>
-        </Modal>
+            </Button>
+          </ButtonGroup>
+        </div>
       );
     } else {
       suggestionsListComponent = <span />;
@@ -130,10 +120,27 @@ class Autocomplete extends Component {
               paddingLeft: 20
             }}
           >
-            {this.state.userInput}
+            {this.state.showSuggestion ? (
+              <span style={{ color: "blue" }}>{this.state.userInput}</span>
+            ) : (
+              this.state.userInput
+            )}
+          </span>
+          {this.state.showSuggestion ? (
+            <span style={{ color: "blue" }}>{this.state.indexing + 1}</span>
+          ) : (
+            this.state.indexing + 1
+          )}
+
+          <span
+            style={{
+              fontSize: 34,
+              cursor: "pointer",
+              paddingLeft: 20
+            }}
+          >
             {suggestionsListComponent}
           </span>
-          {this.state.indexing + 1}
         </Fragment>
       </>
     );

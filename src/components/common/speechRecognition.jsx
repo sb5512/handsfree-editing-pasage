@@ -171,15 +171,26 @@ export default function SpeechRecognition(options) {
         return ["m", "a", "n"];
       }
 
+      setSuggestionList = (word, suggestionList) => {
+        console.log("ACTUALLLLY YHR SUGGESTION word IS", word);
+        console.log("ACTUALLLLY YHR SUGGESTION LIST IS HERE", suggestionList);
+        let newArr = this.state.suggestionList;
+        newArr.push(suggestionList);
+        this.setState({
+          suggestionList: newArr
+        });
+      };
+
       updateTranscript(event) {
         interimTranscript = "";
         let mappingNumber = null;
         let suggestionListNumber = null;
         let hasCommand = false;
         let spellMode = this.state.spellMode;
-        let suggestionMode = this.state.suggestionMode;
+        let suggestionMode = false;
         let oldTranscript = this.state.oldTranscript;
         let toCorrectInSpellModeWord = this.state.toCorrectInSpellModeWord;
+        let suggestionList = this.state.suggestionList;
 
         /**
          * state hascommand true bhayo bhane hami command mode ma cham
@@ -323,14 +334,14 @@ export default function SpeechRecognition(options) {
                 mappingNumber = this.state.mappingNumber;
                 hasCommand = true;
                 spellMode = this.state.spellMode;
-                suggestionMode = this.state.suggestionMode;
+                suggestionMode = false;
               }
             } else {
               // Even interim results has some command then execute it.
               mappingNumber = this.state.mappingNumber;
               hasCommand = true;
               spellMode = this.state.spellMode;
-              suggestionMode = this.state.suggestionMode;
+              suggestionMode = false;
             }
           }
         } else {
@@ -348,6 +359,10 @@ export default function SpeechRecognition(options) {
                 trimmedTranscript.endsWith("Clear") ||
                 trimmedTranscript.endsWith("clear");
 
+              // HERE WE RESET OUR SUGGESTIONS
+              suggestionList = [];
+              suggestionMode = false;
+              suggestionListNumber = null;
               if (ifContainsMap) {
                 commands.push("map");
                 hasCommand = true;
@@ -494,7 +509,9 @@ export default function SpeechRecognition(options) {
             // if we have index matching mapping number we replace that with suggestionlist[suggestionlistnumber]
             let updatedWord = word;
             if (index + 1 === this.state.mappingNumber) {
-              updatedWord = "randomForNow"; // TO DOOOOOOOOOOOOOOOOOOOO
+              updatedWord = this.state.suggestionList[index][
+                this.state.suggestionListNumber
+              ]; // TO DOOOOOOOOOOOOOOOOOOOO
               console.log(
                 "TO DO : Get the updated word from suggestion list number. Maybe set suggestions list"
               );
@@ -538,6 +555,7 @@ export default function SpeechRecognition(options) {
             startListening={this.startListening}
             abortListening={this.abortListening}
             stopListening={this.stopListening}
+            setSuggestionList={this.setSuggestionList}
             transcript={transcript}
             transcriptObject={transcriptObject}
             recognition={recognition}

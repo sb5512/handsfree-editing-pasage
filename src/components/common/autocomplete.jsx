@@ -35,6 +35,7 @@ class Autocomplete extends Component {
       .then(data => {
         let answer = data.map(el => el.word);
         console.log("Fetched information are: ", data);
+        this.props.setSuggestionList(this.state.userInput, answer);
         this.setState({ suggestions: answer });
       })
       .catch(this.setState({ suggestions: ["Loading..."] }));

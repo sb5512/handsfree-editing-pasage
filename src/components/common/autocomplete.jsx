@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { Accordion, Card, ButtonGroup, Button } from "react-bootstrap";
+import { ButtonGroup, Button } from "react-bootstrap";
 
 class Autocomplete extends Component {
   static propTypes = {
@@ -24,8 +24,21 @@ class Autocomplete extends Component {
       // What the user has entered
       userInput: this.props.text,
       indexing: this.props.indexing,
-      currentHoverText: ""
+      currentHoverText: "",
+      suggestions: []
     };
+  }
+
+  componentDidMount() {
+    fetch(`https://api.datamuse.com//words?sl=${this.state.userInput}&max=5`)
+      .then(res => res.json())
+      .then(data => {
+        let answer = data.map(el => el.word);
+        console.log("Fetched information are: ", data);
+        this.props.setSuggestionList(this.state.userInput, answer);
+        this.setState({ suggestions: answer });
+      })
+      .catch(this.setState({ suggestions: ["Loading..."] }));
   }
 
   componentWillReceiveProps(nextProps) {
@@ -79,7 +92,7 @@ class Autocomplete extends Component {
       suggestionsListComponent = (
         <div className="d-flex flex-column">
           <ButtonGroup size="lg">
-            {this.props.suggestions.map((suggestion, index) => {
+            {this.state.suggestions.map((suggestion, index) => {
               let className; // ??? maybe some css setup
               return (
                 <Button

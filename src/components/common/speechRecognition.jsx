@@ -422,6 +422,7 @@ export default function SpeechRecognition(options) {
           oldTranscript,
           toCorrectInSpellModeWord,
           suggestionMode,
+          suggestionList,
           suggestionListNumber
         });
       }

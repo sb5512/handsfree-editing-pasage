@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import ImageLoader from "./imageLoader";
 import Transcription from "./transcription";
+import Logdata from "../../common/logdata";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -22,7 +23,20 @@ class FreeTextFormationDictate extends Component {
     let renderDiv;
 
     if (this.props.spellMode) {
-      renderDiv = <Transcription {...this.props} />;
+      renderDiv = (
+        <React.Fragment>
+          <Transcription {...this.props} />;
+          {/* Begins: Have to refactor as component */}
+          <div className="border border-white d-block p-2 bg-dark text-white">
+            You clicked on the word:{" "}
+            <span className="border border-primary">
+              {/* {"  "} {this.state.clickedWord} */}
+            </span>
+          </div>
+          {/* Ends: Have to refactor as component */}
+          <Logdata logdata={this.props.logData} />
+        </React.Fragment>
+      );
     } else {
       renderDiv = (
         <React.Fragment>
@@ -36,7 +50,7 @@ class FreeTextFormationDictate extends Component {
             </span>
           </div>
           {/* Ends: Have to refactor as component */}
-          {/* <Logdata logdata={previousTranscript} transcript={transcript} /> */}
+          <Logdata logdata={this.props.logData} />
         </React.Fragment>
       );
     }

@@ -55,6 +55,10 @@ export default function SpeechRecognition(options) {
           suggestionList: [],
           // Part of suggestion - Ends
 
+          // Logging information Begins
+          logData: [],
+          // Logging information Ends
+
           toCorrectInSpellModeWord: ""
         };
       }
@@ -191,6 +195,7 @@ export default function SpeechRecognition(options) {
         let oldTranscript = this.state.oldTranscript;
         let toCorrectInSpellModeWord = this.state.toCorrectInSpellModeWord;
         let suggestionList = this.state.suggestionList;
+        let logData = this.state.logData;
 
         /**
          * state hascommand true bhayo bhane hami command mode ma cham
@@ -222,6 +227,14 @@ export default function SpeechRecognition(options) {
                     this.state.toCorrectInSpellModeWord,
                     finalTranscript
                   );
+                  logData.push(
+                    '"Finish" command within spell mode given at : ' +
+                      Utils.getCurrentTime()
+                  );
+                } else {
+                  logData.push(
+                    '"Finish" command given at : ' + Utils.getCurrentTime()
+                  );
                 }
               } else if (
                 currentTranscription.endsWith("spell") &&
@@ -240,6 +253,10 @@ export default function SpeechRecognition(options) {
                   " "
                 )[this.state.mappingNumber - 1];
                 mappingNumber = null;
+                logData.push(
+                  '"spell" command activated spell mode at : ' +
+                    Utils.getCurrentTime()
+                );
               } else if (
                 currentTranscription.endsWith("delete") &&
                 this.state.mappingNumber
@@ -255,12 +272,21 @@ export default function SpeechRecognition(options) {
                         this.state.oldTranscript.split(" ").length
                     : this.state.mappingNumber
                 );
+                logData.push(
+                  '"delete" command for mapped number' +
+                    this.state.mappingNumber +
+                    "given at : " +
+                    Utils.getCurrentTime()
+                );
               } else if (currentTranscription.endsWith("delete")) {
                 console.log(
                   "NOWWWWWWWWWWWW I AMMMMMMMMMMM GOING TO delete only"
                 );
                 suggestionMode = false;
                 finalTranscript = this.removeLastWord(finalTranscript);
+                logData.push(
+                  '"delete" command given at : ' + Utils.getCurrentTime()
+                );
               } else if (
                 // Here we check if the transcript is a number
                 //
@@ -270,6 +296,12 @@ export default function SpeechRecognition(options) {
                 spellMode = this.state.spellMode;
                 suggestionMode = false;
                 mappingNumber = objIsNumberAndVal.value;
+                logData.push(
+                  "Mapped Number " +
+                    mappingNumber +
+                    " given at : " +
+                    Utils.getCurrentTime()
+                );
               } else if (
                 currentTranscription.endsWith("lowercase") &&
                 this.state.mappingNumber //
@@ -279,6 +311,9 @@ export default function SpeechRecognition(options) {
                 finalTranscript = this.lowercaseWordByIndex(
                   finalTranscript,
                   this.state.mappingNumber
+                );
+                logData.push(
+                  '"lowercase" command given at : ' + Utils.getCurrentTime()
                 );
               } else if (
                 (currentTranscription.endsWith("a") ||
@@ -292,6 +327,11 @@ export default function SpeechRecognition(options) {
                 // No spell mode but we have suggestion list number set, which means we want to select from suggestion list
                 // get suggestion list array
                 // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
+
+                logData.push(
+                  'Chosen "a" command from suggestion list at : ' +
+                    Utils.getCurrentTime()
+                );
               } else if (
                 (currentTranscription.endsWith("B") ||
                   currentTranscription.endsWith("b")) &&
@@ -301,6 +341,10 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 1;
                 mappingNumber = this.state.mappingNumber;
+                logData.push(
+                  'Chosen "b" command from suggestion list at : ' +
+                    Utils.getCurrentTime()
+                );
               } else if (
                 (currentTranscription.endsWith("c") ||
                   currentTranscription.endsWith("C")) &&
@@ -310,6 +354,10 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 2;
                 mappingNumber = this.state.mappingNumber;
+                logData.push(
+                  'Chosen "c" command from suggestion list at : ' +
+                    Utils.getCurrentTime()
+                );
               } else if (
                 (currentTranscription.endsWith("d") ||
                   currentTranscription.endsWith("D")) &&
@@ -319,6 +367,10 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 3;
                 mappingNumber = this.state.mappingNumber;
+                logData.push(
+                  'Chosen "d" command from suggestion list at : ' +
+                    Utils.getCurrentTime()
+                );
               } else if (
                 (currentTranscription.endsWith("e") ||
                   currentTranscription.endsWith("E")) &&
@@ -328,6 +380,10 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 4;
                 mappingNumber = this.state.mappingNumber;
+                logData.push(
+                  'Chosen "e" command from suggestion list at : ' +
+                    Utils.getCurrentTime()
+                );
               } else {
                 // Firstly we come here when we say "map " and after that If no "Done" , If no "spell" , if no "number"
                 // We do nothing
@@ -366,6 +422,11 @@ export default function SpeechRecognition(options) {
               if (ifContainsMap) {
                 commands.push("map");
                 hasCommand = true;
+                // TIMERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR STARTSSSS
+                ///////////////////////////////////////////////////////
+                logData.push(
+                  '"Map" command given at : ' + Utils.getCurrentTime()
+                );
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {
@@ -381,11 +442,22 @@ export default function SpeechRecognition(options) {
                 finalTranscript = this.replaceSpaceWithActualSpace(
                   finalTranscript
                 );
+                logData.push(
+                  '"Finish" command within spell mode given at : ' +
+                    Utils.getCurrentTime()
+                );
               } else if (ifContainsClear) {
                 if (this.state.spellMode) {
                   finalTranscript = oldTranscript;
+                  logData.push(
+                    '"Clear" command within spell mode given at : ' +
+                      Utils.getCurrentTime()
+                  );
                 } else {
                   finalTranscript = "";
+                  logData.push(
+                    '"Clear" command given at : ' + Utils.getCurrentTime()
+                  );
                 }
               }
               // finalscript k bhayo ta
@@ -423,7 +495,8 @@ export default function SpeechRecognition(options) {
           toCorrectInSpellModeWord,
           suggestionMode,
           suggestionList,
-          suggestionListNumber
+          suggestionListNumber,
+          logData
         });
       }
 

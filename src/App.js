@@ -23,6 +23,9 @@ const propTypes = {
 };
 
 class App extends Component {
+  componentDidMount() {
+    document.title = "Handsfree editing - Gaze and voice";
+  }
   render() {
     return (
       <div tabIndex="0" className="content">

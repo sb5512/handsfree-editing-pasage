@@ -6,6 +6,19 @@ class Utils {
     return Math.floor(Math.random() * Math.floor(max));
   }
 
+  static getCurrentTime() {
+    let today = new Date();
+    let time =
+      today.getHours() +
+      ":" +
+      today.getMinutes() +
+      ":" +
+      today.getSeconds() +
+      ":" +
+      today.getMilliseconds();
+    return time;
+  }
+
   static containsCommand(transcriptArr) {
     const lastText = transcriptArr[transcriptArr.length - 1];
 

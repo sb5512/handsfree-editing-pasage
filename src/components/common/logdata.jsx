@@ -7,9 +7,12 @@ class Logdata extends Component {
       <div className="border border-white bg-secondary d-block p-2 bg-light">
         <h5>Logs</h5>
         <hr />
-        {this.props.logdata.map(sentence => {
-          return <div> {sentence} </div>;
-        })}
+        {this.props.logdata
+          .slice(0)
+          .reverse()
+          .map(sentence => {
+            return <div> {sentence} </div>;
+          })}
       </div>
     );
   }

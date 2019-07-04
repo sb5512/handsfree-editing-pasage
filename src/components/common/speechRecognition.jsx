@@ -46,6 +46,7 @@ export default function SpeechRecognition(options) {
           listening,
           commands: [],
           hasCommand: false,
+          hasSelectCommand: false,
           spellMode: false,
           oldTranscript: "",
           mappingNumber: null,
@@ -113,7 +114,9 @@ export default function SpeechRecognition(options) {
           interimWord.endsWith("Map") ||
           interimWord.endsWith("Finish") ||
           interimWord.endsWith("clear") ||
-          interimWord.endsWith("Clear")
+          interimWord.endsWith("Clear") ||
+          interimWord.endsWith("select") ||
+          interimWord.endsWith("Select")
         );
       }
 
@@ -190,6 +193,7 @@ export default function SpeechRecognition(options) {
         let mappingNumber = null;
         let suggestionListNumber = null;
         let hasCommand = false;
+        let hasSelectCommand = false;
         let spellMode = this.state.spellMode;
         let suggestionMode = false;
         let oldTranscript = this.state.oldTranscript;
@@ -414,19 +418,26 @@ export default function SpeechRecognition(options) {
               let ifContainsClear =
                 trimmedTranscript.endsWith("Clear") ||
                 trimmedTranscript.endsWith("clear");
+              let ifContainsSelect =
+                trimmedTranscript.endsWith("Select") ||
+                trimmedTranscript.endsWith("select");
 
               // HERE WE RESET OUR SUGGESTIONS
               suggestionList = [];
               suggestionMode = false;
               suggestionListNumber = null;
               if (ifContainsMap) {
-                commands.push("map");
+                // commands.push("map");
                 hasCommand = true;
                 // TIMERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR STARTSSSS
                 ///////////////////////////////////////////////////////
                 logData.push(
                   '"Map" command given at : ' + Utils.getCurrentTime()
                 );
+              }
+              if (ifContainsSelect) {
+                hasSelectCommand = true;
+                // mappingNumber = 2;
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {
@@ -466,8 +477,12 @@ export default function SpeechRecognition(options) {
                 // if (this.state.spellMode){
                 //   event.results[i][0].transcript
                 // }
+                console.log(
+                  "I GO HjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjEREEEE FOR SELECT"
+                );
                 finalTranscript = this.concatTranscripts(
                   finalTranscript,
+
                   ifContainsMap
                     ? this.removeLastWord(event.results[i][0].transcript)
                     : event.results[i][0].transcript
@@ -489,6 +504,7 @@ export default function SpeechRecognition(options) {
           interimTranscript,
           commands,
           hasCommand,
+          hasSelectCommand,
           mappingNumber,
           spellMode,
           oldTranscript,
@@ -547,10 +563,10 @@ export default function SpeechRecognition(options) {
           interimTranscript
         );
 
-        console.log(
-          "SUGGESTION NUMBER FOR WORD IS : ",
-          this.state.mappingNumber
-        );
+        // console.log(
+        //   "SUGGESTION NUMBER FOR WORD IS : ",
+        //   this.state.mappingNumber
+        // );
         /** OBJECT CREATION FOR EACH WORD BEGINS */
         let transcriptObject = [];
         if (this.state.spellMode) {

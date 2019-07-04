@@ -27,7 +27,13 @@ class Transcription extends Component {
   };
 
   render() {
-    const { transcript, hasCommand, transcriptObject, spellMode } = this.props;
+    const {
+      transcript,
+      hasCommand,
+      transcriptObject,
+      spellMode,
+      hasSelectCommand
+    } = this.props;
 
     let toRenderDiv;
     // If in spell mode
@@ -39,6 +45,27 @@ class Transcription extends Component {
           toggleHoverOff={this.toggleHoverOff}
           {...this.props}
         />
+      );
+    } else if (hasSelectCommand) {
+      toRenderDiv = (
+        <div className="card">
+          <div className="card-body">
+            {transcriptObject.map((wordObject, index) => {
+              return (
+                <React.Fragment key={index}>
+                  <Autocomplete
+                    suggestions={wordObject.suggestions}
+                    text={wordObject.text}
+                    showSuggestion={wordObject.showSuggestion}
+                    indexing={index}
+                    selectMode={this.state.selectMode}
+                    {...this.props}
+                  />
+                </React.Fragment>
+              );
+            })}
+          </div>
+        </div>
       );
     } else {
       // Normal mode. This is where we show regular text and also autocomplete text

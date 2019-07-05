@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Utils from "../../utils/Utils";
+const exec = require("child_process").execFile;
 
 export default function SpeechRecognition(options) {
   const SpeechRecognitionInner = function(WrappedComponent) {
@@ -151,7 +152,13 @@ export default function SpeechRecognition(options) {
         return newSentenceArr.join(" ");
       }
 
-      replaceSpaceWithActualSpace(sentence) {
+      replaceSpaceWithActualSpace(sentence, logData) {
+        if (sentence.includes("space")) {
+          logData.push(
+            '"Finish" command within spell mode removed space with actual space at : ' +
+              Utils.getCurrentTime()
+          );
+        }
         return sentence.split("space").join(" ");
       }
 
@@ -186,6 +193,22 @@ export default function SpeechRecognition(options) {
         this.setState({
           suggestionList: newArr
         });
+      };
+
+      clickMouse = () => {
+        fetch(
+          "https://hooks.slack.com/services/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",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+              channel: "test_ob_tooling",
+              text: "#clickmouse"
+            })
+          }
+        );
       };
 
       updateTranscript(event) {
@@ -451,7 +474,8 @@ export default function SpeechRecognition(options) {
                 );
                 // now replace "space" with actual space
                 finalTranscript = this.replaceSpaceWithActualSpace(
-                  finalTranscript
+                  finalTranscript,
+                  logData
                 );
                 logData.push(
                   '"Finish" command within spell mode given at : ' +
@@ -489,6 +513,13 @@ export default function SpeechRecognition(options) {
                 );
               }
             } else {
+              // log data at beginning of transcription
+              if (finalTranscript === "" && logData.length == 0) {
+                logData.push(
+                  "Has begun the task at : " + Utils.getCurrentTime()
+                );
+                this.clickMouse();
+              }
               interimTranscript = this.concatTranscripts(
                 interimTranscript,
                 this.containsCommands(event.results[i][0].transcript.trim())

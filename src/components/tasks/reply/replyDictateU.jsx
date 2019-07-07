@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import ImageLoader from "./imageLoader";
 import Transcription from "../generic/transcription";
 import Logdata from "../../common/logdata";
 import SpellMode from "../generic/spellMode";
+import QuestionLoader from "./questionLoader";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -13,7 +13,7 @@ const propTypes = {
   browserSupportsSpeechRecognition: PropTypes.bool
 };
 
-class FreeTextFormationDictate extends Component {
+class ReplyDictate extends Component {
   state = {
     clickedWord: "",
     hover: false
@@ -59,7 +59,7 @@ class FreeTextFormationDictate extends Component {
     } else {
       renderDiv = (
         <React.Fragment>
-          <ImageLoader loadedImage={this.props.loadedImage} />{" "}
+          <QuestionLoader loadedImage={this.props.loadedImage} />{" "}
           <Transcription
             handleWordClick={this.handleWordClick}
             toggleHoverOn={this.toggleHoverOn}
@@ -76,6 +76,6 @@ class FreeTextFormationDictate extends Component {
   }
 }
 
-FreeTextFormationDictate.propTypes = propTypes;
+ReplyDictate.propTypes = propTypes;
 
-export default FreeTextFormationDictate;
+export default ReplyDictate;

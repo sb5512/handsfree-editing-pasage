@@ -151,7 +151,13 @@ export default function SpeechRecognition(options) {
         return newSentenceArr.join(" ");
       }
 
-      replaceSpaceWithActualSpace(sentence) {
+      replaceSpaceWithActualSpace(sentence, logData) {
+        if (sentence.includes("space")) {
+          logData.push(
+            '"Finish" command within spell mode removed space with actual space at  : ' +
+              Utils.getCurrentTime()
+          );
+        }
         return sentence.split("space").join(" ");
       }
 
@@ -186,6 +192,22 @@ export default function SpeechRecognition(options) {
         this.setState({
           suggestionList: newArr
         });
+      };
+
+      clickMouse = () => {
+        fetch(
+          "https://hooks.slack.com/services/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",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+              channel: "test_ob_tooling",
+              text: "#clickmouse"
+            })
+          }
+        );
       };
 
       updateTranscript(event) {
@@ -436,8 +458,9 @@ export default function SpeechRecognition(options) {
                 );
               }
               if (ifContainsSelect) {
-                hasSelectCommand = true;
+                // hasSelectCommand = true;
                 // mappingNumber = 2;
+                this.clickMouse();
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {
@@ -451,7 +474,8 @@ export default function SpeechRecognition(options) {
                 );
                 // now replace "space" with actual space
                 finalTranscript = this.replaceSpaceWithActualSpace(
-                  finalTranscript
+                  finalTranscript,
+                  logData
                 );
                 logData.push(
                   '"Finish" command within spell mode given at : ' +
@@ -489,6 +513,12 @@ export default function SpeechRecognition(options) {
                 );
               }
             } else {
+              // log data at beginning of transcription
+              if (finalTranscript === "" && logData.length == 0) {
+                logData.push(
+                  "Has begun the task at : " + Utils.getCurrentTime()
+                );
+              }
               interimTranscript = this.concatTranscripts(
                 interimTranscript,
                 this.containsCommands(event.results[i][0].transcript.trim())

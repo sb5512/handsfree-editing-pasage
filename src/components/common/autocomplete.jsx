@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { ButtonGroup, Button } from "react-bootstrap";
+import Utils from "../../utils/Utils";
 
 class Autocomplete extends Component {
   static propTypes = {
@@ -58,20 +59,26 @@ class Autocomplete extends Component {
 
   onClick = e => {
     // Update the user input and reset the rest of the state
-    if (!this.props.selectMode) {
-      this.setState({
-        activeSuggestion: 0,
-        filteredSuggestions: [],
-        showSuggestion: false,
-        userInput: e.currentTarget.innerText
-      });
-    }
+    // if (!this.props.selectMode) {
+    //   this.setState({
+    //     activeSuggestion: 0,
+    //     filteredSuggestions: [],
+    //     showSuggestion: false,
+    //     userInput: e.currentTarget.innerText[0]
+    //   });
+    // }
+    let textReplaceFromSuggestion = Utils.removeLastWordSeperateBylineIfpresent(
+      e.currentTarget.innerText
+    );
+    this.setState({
+      userInput: textReplaceFromSuggestion //e.currentTarget.innerText
+    });
   };
 
   onHoverSelectable = event => {
-    this.setState({
-      userInput: event.currentTarget.textContent
-    });
+    // this.setState({
+    //   userInput: event.currentTarget.innerText.split(" ")[0]
+    // });
   };
 
   // After this is for trying the modal bootstrap

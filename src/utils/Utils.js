@@ -19,6 +19,14 @@ class Utils {
     return time;
   }
 
+  static removeLastWordSeperateBylineIfpresent(sentence) {
+    var lastIndex = sentence.lastIndexOf("\n");
+    if (lastIndex > 0) {
+      return sentence.substring(0, lastIndex);
+    }
+    return sentence;
+  }
+
   static containsCommand(transcriptArr) {
     const lastText = transcriptArr[transcriptArr.length - 1];
 

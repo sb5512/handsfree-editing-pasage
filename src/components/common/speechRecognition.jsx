@@ -155,7 +155,7 @@ export default function SpeechRecognition(options) {
       replaceSpaceWithActualSpace(sentence, logData) {
         if (sentence.includes("space")) {
           logData.push(
-            '"Finish" command within spell mode removed space with actual space at : ' +
+            '"Finish" command within spell mode removed space with actual space at  : ' +
               Utils.getCurrentTime()
           );
         }
@@ -197,7 +197,7 @@ export default function SpeechRecognition(options) {
 
       clickMouse = () => {
         fetch(
-          "https://hooks.slack.com/services/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",
+          "https://hooks.slack.com/services/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",
           {
             method: "POST",
             headers: {
@@ -459,8 +459,9 @@ export default function SpeechRecognition(options) {
                 );
               }
               if (ifContainsSelect) {
-                hasSelectCommand = true;
+                // hasSelectCommand = true;
                 // mappingNumber = 2;
+                this.clickMouse();
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {
@@ -518,7 +519,6 @@ export default function SpeechRecognition(options) {
                 logData.push(
                   "Has begun the task at : " + Utils.getCurrentTime()
                 );
-                this.clickMouse();
               }
               interimTranscript = this.concatTranscripts(
                 interimTranscript,

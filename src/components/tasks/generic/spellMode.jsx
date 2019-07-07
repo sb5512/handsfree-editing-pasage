@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Autocomplete from "../../common/autocomplete";
-import commandsENUM from "./commandENUM";
 
 class SpellMode extends Component {
   render() {

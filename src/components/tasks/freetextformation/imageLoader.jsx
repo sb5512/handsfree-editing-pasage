@@ -14,15 +14,13 @@ class ImageLoader extends Component {
     return (
       <React.Fragment>
         {/* For Image */}
-        <div className="container">
-          <div className="row justify-content-md-center">
-            <div className="col col-lg-4">
-              <img
-                src={toLoadImage}
-                className="img-fluid img-thumbnail"
-                alt="freetext"
-              />
-            </div>
+        <div className="row justify-content-md-center">
+          <div className="col col-lg-4">
+            <img
+              src={toLoadImage}
+              className="img-fluid img-thumbnail"
+              alt="freetext"
+            />
           </div>
         </div>
         <br />

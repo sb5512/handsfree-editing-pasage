@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Scriptor from "./scriptor";
 import SpeechRecognition from "./speech";
 import Logdata from "./logdata";
-import Suggestion from "./suggestion";
+import Suggestion from "./suggestionold";
 import Autocomplete from "./autocomplete";
 import getPhrases from "../../utils/phrases";
 

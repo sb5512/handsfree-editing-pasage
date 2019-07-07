@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import Utils from "../../utils/Utils";
-const exec = require("child_process").execFile;
 
 export default function SpeechRecognition(options) {
   const SpeechRecognitionInner = function(WrappedComponent) {

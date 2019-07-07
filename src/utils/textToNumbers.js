@@ -63,7 +63,7 @@ class TextToNumbers {
     var x = Small[w];
     if (x != null) {
       g = g + x;
-    } else if (w == "hundred") {
+    } else if (w === "hundred") {
       g = g * 100;
     } else {
       x = Magnitude[w];

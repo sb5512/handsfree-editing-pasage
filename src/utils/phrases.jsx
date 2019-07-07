@@ -500,8 +500,9 @@ everyone wants to win the lottery
 the picket line gives me the chills
 `;
 
-function getPhrases() {
-  return text.split("\n");
+function getPhrases(index) {
+  let phrasesArr = text.split("\n");
+  return phrasesArr[index % phrasesArr.length];
 }
 
 module.exports = getPhrases;

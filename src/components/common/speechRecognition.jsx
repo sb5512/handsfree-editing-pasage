@@ -47,6 +47,8 @@ export default function SpeechRecognition(options) {
           commands: [],
           hasCommand: false,
           hasSelectCommand: false,
+          hasNextCommand: false,
+          phraseQuestionImageCount: 0,
           spellMode: false,
           oldTranscript: "",
           mappingNumber: null,
@@ -115,6 +117,8 @@ export default function SpeechRecognition(options) {
           interimWord.endsWith("Finish") ||
           interimWord.endsWith("clear") ||
           interimWord.endsWith("Clear") ||
+          interimWord.endsWith("Next") ||
+          interimWord.endsWith("next") ||
           interimWord.endsWith("select") ||
           interimWord.endsWith("Select")
         );
@@ -216,6 +220,8 @@ export default function SpeechRecognition(options) {
         let suggestionListNumber = null;
         let hasCommand = false;
         let hasSelectCommand = false;
+        let hasNextCommand = false;
+        let phraseQuestionImageCount = this.state.phraseQuestionImageCount;
         let spellMode = this.state.spellMode;
         let suggestionMode = false;
         let oldTranscript = this.state.oldTranscript;
@@ -443,6 +449,9 @@ export default function SpeechRecognition(options) {
               let ifContainsSelect =
                 trimmedTranscript.endsWith("Select") ||
                 trimmedTranscript.endsWith("select");
+              let ifContainsNext =
+                trimmedTranscript.endsWith("Next") ||
+                trimmedTranscript.endsWith("next");
 
               // HERE WE RESET OUR SUGGESTIONS
               suggestionList = [];
@@ -460,7 +469,17 @@ export default function SpeechRecognition(options) {
               if (ifContainsSelect) {
                 // hasSelectCommand = true;
                 // mappingNumber = 2;
+                logData.push(
+                  '"Click" command given at : ' + Utils.getCurrentTime()
+                );
                 this.clickMouse();
+              }
+              if (ifContainsNext) {
+                hasNextCommand = true;
+                phraseQuestionImageCount =
+                  this.state.phraseQuestionImageCount + 1;
+                // mappingNumber = 2;
+                // this.clickMouse();
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {
@@ -535,6 +554,8 @@ export default function SpeechRecognition(options) {
           commands,
           hasCommand,
           hasSelectCommand,
+          hasNextCommand,
+          phraseQuestionImageCount,
           mappingNumber,
           spellMode,
           oldTranscript,

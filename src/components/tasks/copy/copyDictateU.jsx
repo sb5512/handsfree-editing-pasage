@@ -58,7 +58,7 @@ class CopyDictate extends Component {
     } else {
       renderDiv = (
         <React.Fragment>
-          <PhraseLoader loadedImage={this.props.loadedImage} />{" "}
+          <PhraseLoader {...this.props} loadedImage={this.props.loadedImage} />{" "}
           <Transcription
             handleWordClick={this.handleWordClick}
             toggleHoverOn={this.toggleHoverOn}

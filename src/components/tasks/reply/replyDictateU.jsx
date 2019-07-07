@@ -59,7 +59,10 @@ class ReplyDictate extends Component {
     } else {
       renderDiv = (
         <React.Fragment>
-          <QuestionLoader loadedImage={this.props.loadedImage} />{" "}
+          <QuestionLoader
+            {...this.props}
+            loadedImage={this.props.loadedImage}
+          />{" "}
           <Transcription
             handleWordClick={this.handleWordClick}
             toggleHoverOn={this.toggleHoverOn}

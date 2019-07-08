@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import Utils from "../../../utils/Utils";
 
 class ImageLoader extends Component {
-  shouldComponentUpdate(nextProps, nextState) {
-    return false;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return false;
+  // }
 
   render() {
     // To get random images - Begins
-    let imageNumber = Utils.getRandomInt(4);
+    let imageNumber = this.props.imageNumber; //Utils.getRandomInt(4);
     let toLoadImage = require(`../../../fixtures/image${imageNumber}.jpg`);
     // To get random images - Ends
     return (

@@ -10,8 +10,8 @@ class Logdata extends Component {
         {this.props.logdata
           .slice(0)
           .reverse()
-          .map(sentence => {
-            return <div> {sentence} </div>;
+          .map((sentence, index) => {
+            return <div key={index}> {sentence} </div>;
           })}
       </div>
     );

@@ -26,6 +26,12 @@ class FreeTextFormationDictate extends Component {
 
   toggleHoverOn = event => {
     event.target.style.backgroundColor = "#FFFF4F";
+    console.log(
+      "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      event.target.innerHTML
+    );
+    this.props.logTimeDataWhenHoveredAtWord(event.target.innerHTML);
+
     this.setState({ hover: true });
   };
 
@@ -59,7 +65,7 @@ class FreeTextFormationDictate extends Component {
     } else {
       renderDiv = (
         <React.Fragment>
-          <ImageLoader loadedImage={this.props.loadedImage} />{" "}
+          <ImageLoader {...this.props} loadedImage={this.props.loadedImage} />{" "}
           <Transcription
             handleWordClick={this.handleWordClick}
             toggleHoverOn={this.toggleHoverOn}

@@ -49,6 +49,7 @@ export default function SpeechRecognition(options) {
           hasSelectCommand: false,
           hasNextCommand: false,
           phraseQuestionImageCount: 0,
+          imageNumber: Utils.getRandomInt(4),
           spellMode: false,
           oldTranscript: "",
           mappingNumber: null,
@@ -107,6 +108,17 @@ export default function SpeechRecognition(options) {
 
       containsMapCommands(interimWord) {
         return interimWord.endsWith("map") || interimWord.endsWith("Map");
+      }
+
+      containsNextMapSelectCommands(interimWord) {
+        return (
+          interimWord.endsWith("map") ||
+          interimWord.endsWith("Map") ||
+          interimWord.endsWith("Next") ||
+          interimWord.endsWith("next") ||
+          interimWord.endsWith("select") ||
+          interimWord.endsWith("Select")
+        );
       }
 
       containsCommands(interimWord) {
@@ -214,6 +226,13 @@ export default function SpeechRecognition(options) {
         );
       };
 
+      logTimeDataWhenHoveredAtWord = word => {
+        console.log("LOGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", word);
+        let logData = [...this.state.logData];
+        logData.push('Looked at "' + word + '" at : ' + Utils.getCurrentTime());
+        this.setState({ logData: logData });
+      };
+
       updateTranscript(event) {
         interimTranscript = "";
         let mappingNumber = null;
@@ -222,6 +241,7 @@ export default function SpeechRecognition(options) {
         let hasSelectCommand = false;
         let hasNextCommand = false;
         let phraseQuestionImageCount = this.state.phraseQuestionImageCount;
+        let imageNumber = this.state.imageNumber;
         let spellMode = this.state.spellMode;
         let suggestionMode = false;
         let oldTranscript = this.state.oldTranscript;
@@ -452,6 +472,9 @@ export default function SpeechRecognition(options) {
               let ifContainsNext =
                 trimmedTranscript.endsWith("Next") ||
                 trimmedTranscript.endsWith("next");
+              let ifContainsNextMapSelect = this.containsNextMapSelectCommands(
+                trimmedTranscript
+              );
 
               // HERE WE RESET OUR SUGGESTIONS
               suggestionList = [];
@@ -475,11 +498,15 @@ export default function SpeechRecognition(options) {
                 this.clickMouse();
               }
               if (ifContainsNext) {
-                hasNextCommand = true;
+                logData.push(
+                  '"Next" command given at : ' + Utils.getCurrentTime()
+                );
+                hasNextCommand = true; // not used so far
                 phraseQuestionImageCount =
                   this.state.phraseQuestionImageCount + 1;
-                // mappingNumber = 2;
-                // this.clickMouse();
+                imageNumber = Utils.getRandomInt(4); // change number 4 using total lengths of images available
+                logData = []; //make log data empty
+                finalTranscript = "";
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {
@@ -525,8 +552,7 @@ export default function SpeechRecognition(options) {
                 );
                 finalTranscript = this.concatTranscripts(
                   finalTranscript,
-
-                  ifContainsMap
+                  ifContainsNextMapSelect
                     ? this.removeLastWord(event.results[i][0].transcript)
                     : event.results[i][0].transcript
                 );
@@ -556,6 +582,7 @@ export default function SpeechRecognition(options) {
           hasSelectCommand,
           hasNextCommand,
           phraseQuestionImageCount,
+          imageNumber,
           mappingNumber,
           spellMode,
           oldTranscript,
@@ -697,6 +724,7 @@ export default function SpeechRecognition(options) {
             abortListening={this.abortListening}
             stopListening={this.stopListening}
             setSuggestionList={this.setSuggestionList}
+            logTimeDataWhenHoveredAtWord={this.logTimeDataWhenHoveredAtWord}
             transcript={transcript}
             transcriptObject={transcriptObject}
             recognition={recognition}

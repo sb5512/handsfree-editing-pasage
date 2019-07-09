@@ -212,7 +212,7 @@ export default function SpeechRecognition(options) {
 
       clickMouse = () => {
         fetch(
-          "https://hooks.slack.com/services/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",
+          "https://hooks.slack.com/services/TKU82KBUG/BLBJPBTHC/igh31aG7hFDwYWRSTGRxiX7",
           {
             method: "POST",
             headers: {

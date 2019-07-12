@@ -233,6 +233,24 @@ export default function SpeechRecognition(options) {
         this.setState({ logData: logData });
       };
 
+      handleWordClickToGetToMappingWithNumberState = (index, word) => {
+        let logData = [...this.state.logData];
+        logData.push(
+          'Clicked at "' +
+            word +
+            '" positioned index ' +
+            index +
+            " at : " +
+            Utils.getCurrentTime()
+        );
+        this.setState({
+          hasCommand: true,
+          mappingNumber: index,
+          suggestionMode: false,
+          logData: logData
+        });
+      };
+
       updateTranscript(event) {
         interimTranscript = "";
         let mappingNumber = null;
@@ -725,6 +743,9 @@ export default function SpeechRecognition(options) {
             stopListening={this.stopListening}
             setSuggestionList={this.setSuggestionList}
             logTimeDataWhenHoveredAtWord={this.logTimeDataWhenHoveredAtWord}
+            handleWordClickToGetToMappingWithNumberState={
+              this.handleWordClickToGetToMappingWithNumberState
+            }
             transcript={transcript}
             transcriptObject={transcriptObject}
             recognition={recognition}

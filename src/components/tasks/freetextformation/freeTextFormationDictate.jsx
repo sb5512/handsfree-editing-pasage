@@ -23,6 +23,7 @@ class FreeTextFormationDictate extends Component {
   handleWordClick = (e, word, index) => {
     e.target.style.backgroundColor = "#F44FFF";
     this.setState({ clickedWord: `${word} at index ${index + 1}` });
+    this.props.handleWordClickToGetToMappingWithNumberState(index + 1, word);
   };
 
   toggleHoverOn = event => {

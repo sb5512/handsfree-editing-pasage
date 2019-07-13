@@ -16,16 +16,38 @@ const propTypes = {
 class FreeTextFormationDictate extends Component {
   state = {
     clickedWord: "",
-    hover: false
+    hover: false,
+    timeoutId: null
   };
 
   handleWordClick = (e, word, index) => {
     e.target.style.backgroundColor = "#F44FFF";
     this.setState({ clickedWord: `${word} at index ${index + 1}` });
+    this.props.handleWordClickToGetToMappingWithNumberState(index + 1, word);
   };
 
   toggleHoverOn = event => {
     event.target.style.backgroundColor = "#FFFF4F";
+    if (!this.state.timeoutId) {
+      let timeoutId = window.setTimeout(() => {
+        this.setState({ timeoutId: null }); // EDIT: added this line
+        console.log("YAYYYYYYYYYYYYY 1 seconds");
+        fetch(
+          "https://hooks.slack.com/services/TKU82KBUG/BLBJPBTHC/igh31aG7hFDwYWRSTGRxiX7",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+              channel: "test_ob_tooling",
+              text: "#clickmouse"
+            })
+          }
+        );
+      }, 1000);
+      this.setState({ timeoutId: timeoutId });
+    }
     console.log(
       "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
       event.target.innerHTML
@@ -37,6 +59,10 @@ class FreeTextFormationDictate extends Component {
 
   toggleHoverOff = event => {
     event.target.style.backgroundColor = "#FFFFFF";
+    if (this.state.timeoutId) {
+      window.clearTimeout(this.state.timeoutId);
+      this.setState({ timeoutId: null });
+    }
     this.setState({ hover: false });
   };
 

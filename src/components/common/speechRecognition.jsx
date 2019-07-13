@@ -212,7 +212,7 @@ export default function SpeechRecognition(options) {
 
       clickMouse = () => {
         fetch(
-          "https://hooks.slack.com/services/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",
+          "https://hooks.slack.com/services/TKU82KBUG/BLBJPBTHC/igh31aG7hFDwYWRSTGRxiX7",
           {
             method: "POST",
             headers: {
@@ -231,6 +231,24 @@ export default function SpeechRecognition(options) {
         let logData = [...this.state.logData];
         logData.push('Looked at "' + word + '" at : ' + Utils.getCurrentTime());
         this.setState({ logData: logData });
+      };
+
+      handleWordClickToGetToMappingWithNumberState = (index, word) => {
+        let logData = [...this.state.logData];
+        logData.push(
+          'Clicked at "' +
+            word +
+            '" positioned index ' +
+            index +
+            " at : " +
+            Utils.getCurrentTime()
+        );
+        this.setState({
+          hasCommand: true,
+          mappingNumber: index,
+          suggestionMode: false,
+          logData: logData
+        });
       };
 
       updateTranscript(event) {
@@ -725,6 +743,9 @@ export default function SpeechRecognition(options) {
             stopListening={this.stopListening}
             setSuggestionList={this.setSuggestionList}
             logTimeDataWhenHoveredAtWord={this.logTimeDataWhenHoveredAtWord}
+            handleWordClickToGetToMappingWithNumberState={
+              this.handleWordClickToGetToMappingWithNumberState
+            }
             transcript={transcript}
             transcriptObject={transcriptObject}
             recognition={recognition}

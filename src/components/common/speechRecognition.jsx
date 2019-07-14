@@ -101,7 +101,6 @@ export default function SpeechRecognition(options) {
       }
 
       updateSplitFinalTranscriptCommands(toChangeScript) {
-        console.log(toChangeScript);
         toChangeScript = toChangeScript.substring(0, toChangeScript.length - 1);
         return toChangeScript;
       }
@@ -143,11 +142,6 @@ export default function SpeechRecognition(options) {
 
       lowercaseWordByIndex(sentence, index) {
         let newSentenceArr = sentence.split(" ");
-        console.log("WHATIS MT SENFSAKFA", newSentenceArr);
-        console.log(
-          "OKKKKKKKKKKKKKKKKKKK ONDEXXXXXXXXXXX",
-          newSentenceArr[index]
-        );
         newSentenceArr[index - 1] = newSentenceArr[
           index - 1
         ].toLocaleLowerCase();
@@ -167,13 +161,8 @@ export default function SpeechRecognition(options) {
       }
 
       removeWordByIndex(sentence, index) {
-        console.log("WHAAAAAAAAAAAAAAAAATTTTTTTTTTTTTt is my new index", index);
         let newSentenceArr = sentence.split(" ");
         newSentenceArr.splice(index - 1, 1);
-        console.log(
-          "WHAAAAAAAAAAAAAAAAATTTTTTTTTTTTTt is my new sentence",
-          newSentenceArr.join(" ")
-        );
         return newSentenceArr.join(" ");
       }
 
@@ -211,8 +200,6 @@ export default function SpeechRecognition(options) {
       }
 
       setSuggestionList = (word, suggestionList) => {
-        console.log("ACTUALLLLY YHR SUGGESTION word IS", word);
-        console.log("ACTUALLLLY YHR SUGGESTION LIST IS HERE", suggestionList);
         let newArr = this.state.suggestionList;
         newArr.push(suggestionList);
         this.setState({
@@ -237,7 +224,6 @@ export default function SpeechRecognition(options) {
       };
 
       logTimeDataWhenHoveredAtWord = word => {
-        console.log("LOGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", word);
         let logData = [...this.state.logData];
         logData.push('Looked at "' + word + '" at : ' + Utils.getCurrentTime());
         this.setState({ logData: logData });
@@ -322,9 +308,7 @@ export default function SpeechRecognition(options) {
                 !this.state.spellMode
               ) {
                 // This is where we will check if selection mode is on and "spell word is in the transcript"
-                console.log(
-                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM IN SPell MODEEEEEEEEE"
-                );
+                console.log("I AM IN SPELL MODE");
                 hasCommand = false; // Still command mode
                 spellMode = true;
                 suggestionMode = false;
@@ -341,9 +325,7 @@ export default function SpeechRecognition(options) {
                 currentTranscription.endsWith("delete") &&
                 this.state.mappingNumber
               ) {
-                console.log(
-                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM GOING TO delete word that is selected"
-                );
+                console.log("DELETE WORD AFTER SAYING MAP AND NUMBER");
                 suggestionMode = false;
                 finalTranscript = this.removeWordByIndex(
                   finalTranscript,
@@ -359,9 +341,7 @@ export default function SpeechRecognition(options) {
                     Utils.getCurrentTime()
                 );
               } else if (currentTranscription.endsWith("delete")) {
-                console.log(
-                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM GOING TO delete only"
-                );
+                console.log("DELETE LAST WORD OF SENTENCE");
                 suggestionMode = false;
                 finalTranscript = this.removeLastWord(finalTranscript);
                 logData.push(
@@ -386,7 +366,7 @@ export default function SpeechRecognition(options) {
                 currentTranscription.endsWith("lowercase") &&
                 this.state.mappingNumber //
               ) {
-                console.log("TO MAKE LOWERCASE");
+                console.log("GOING TO MAKE THE SELECTED WORD TO LOWERCASE");
                 suggestionMode = false;
                 finalTranscript = this.lowercaseWordByIndex(
                   finalTranscript,
@@ -590,9 +570,6 @@ export default function SpeechRecognition(options) {
                 // if (this.state.spellMode){
                 //   event.results[i][0].transcript
                 // }
-                console.log(
-                  "I GO HjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjEREEEE FOR SELECT"
-                );
                 finalTranscript = this.concatTranscripts(
                   finalTranscript,
                   ifContainsNextMapSelect
@@ -684,10 +661,6 @@ export default function SpeechRecognition(options) {
           interimTranscript
         );
 
-        // console.log(
-        //   "SUGGESTION NUMBER FOR WORD IS : ",
-        //   this.state.mappingNumber
-        // );
         /** OBJECT CREATION FOR EACH WORD BEGINS */
         let transcriptObject = [];
         if (this.state.spellMode) {
@@ -722,13 +695,7 @@ export default function SpeechRecognition(options) {
             if (index + 1 === this.state.mappingNumber) {
               updatedWord = this.state.suggestionList[index][
                 this.state.suggestionListNumber
-              ]; // TO DOOOOOOOOOOOOOOOOOOOO
-              console.log(
-                "TO DO : Get the updated word from suggestion list number. Maybe set suggestions list"
-              );
-              // this.obtainSuggestionForWord(word)[
-              //   this.state.suggestionListNumber
-              // ];
+              ];
               toReplaceWord = word;
               replacingWord = updatedWord;
             }

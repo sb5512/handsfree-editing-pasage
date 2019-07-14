@@ -136,6 +136,11 @@ export default function SpeechRecognition(options) {
         );
       }
 
+      checkSecondLastWord(toCheckWord, sentence) {
+        let removedLastWordSentence = this.removeLastWord(sentence);
+        return removedLastWordSentence.endsWith(toCheckWord);
+      }
+
       lowercaseWordByIndex(sentence, index) {
         let newSentenceArr = sentence.split(" ");
         console.log("WHATIS MT SENFSAKFA", newSentenceArr);
@@ -148,6 +153,11 @@ export default function SpeechRecognition(options) {
         ].toLocaleLowerCase();
         return newSentenceArr.join(" ");
       }
+
+      insertWordInFrontByIndex(sentence, toInsertWord, index) {
+        return Utils.insert(sentence, toInsertWord, index);
+      }
+
       removeLastWord(sentence) {
         var lastIndex = sentence.lastIndexOf(" ");
         if (lastIndex > 0) {
@@ -384,6 +394,21 @@ export default function SpeechRecognition(options) {
                 );
                 logData.push(
                   '"lowercase" command given at : ' + Utils.getCurrentTime()
+                );
+              } else if (
+                // secondlast word is an insert
+                this.checkSecondLastWord("insert", currentTranscription) &&
+                this.state.mappingNumber //
+              ) {
+                console.log("TO INSERT TEXT INFRONT OF A SENTENCE");
+                suggestionMode = false;
+                finalTranscript = this.insertWordInFrontByIndex(
+                  finalTranscript,
+                  currentTranscription,
+                  this.state.mappingNumber
+                );
+                logData.push(
+                  '"Insert" command given at : ' + Utils.getCurrentTime()
                 );
               } else if (
                 (currentTranscription.endsWith("a") ||

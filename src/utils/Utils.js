@@ -56,6 +56,11 @@ class Utils {
     return main_string_arr.join(" ");
   }
 
+  // static saveAsCsv(data) {
+  //   const ws = fs.createWriteStream("out.csv");
+  //   fastcsv.write(data, { headers: true }).pipe(ws);
+  // }
+
   static checkStringIsNumberWordOrNumber(currentTranscription) {
     let suggestionListNumber =
       currentTranscription.lastIndexOf(" ") > 0

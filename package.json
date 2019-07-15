@@ -9,6 +9,7 @@
     "react": "^16.8.6",
     "react-bootstrap": "^1.0.0-beta.9",
     "react-countdown-clock": "^2.6.0",
+    "react-csv": "^1.1.1",
     "react-dom": "^16.8.6",
     "react-hover-delay-trigger": "^0.2.1",
     "react-keydown": "^1.9.8",

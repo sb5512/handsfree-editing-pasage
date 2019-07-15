@@ -85,7 +85,10 @@ class FreeTextFormationDictate extends Component {
             toggleHoverOff={this.toggleHoverOff}
             {...this.props}
           />
-          <Logdata logdata={this.props.logData} />
+          <Logdata
+            logDataPersist={this.props.logDataPersist}
+            logdata={this.props.logData}
+          />
         </React.Fragment>
       );
     } else {
@@ -99,7 +102,10 @@ class FreeTextFormationDictate extends Component {
             clickedWord={this.state.clickedWord}
             {...this.props}
           />
-          <Logdata logdata={this.props.logData} />
+          <Logdata
+            logDataPersist={this.props.logDataPersist}
+            logData={this.props.logData}
+          />
         </React.Fragment>
       );
     }

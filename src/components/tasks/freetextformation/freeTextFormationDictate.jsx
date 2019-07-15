@@ -48,10 +48,6 @@ class FreeTextFormationDictate extends Component {
       }, 1000);
       this.setState({ timeoutId: timeoutId });
     }
-    console.log(
-      "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      event.target.innerHTML
-    );
     this.props.logTimeDataWhenHoveredAtWord(event.target.innerHTML);
 
     this.setState({ hover: true });
@@ -87,7 +83,7 @@ class FreeTextFormationDictate extends Component {
           />
           <Logdata
             logDataPersist={this.props.logDataPersist}
-            logdata={this.props.logData}
+            logData={this.props.logData}
           />
         </React.Fragment>
       );

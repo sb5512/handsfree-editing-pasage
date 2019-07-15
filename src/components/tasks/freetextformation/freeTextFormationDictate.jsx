@@ -48,10 +48,6 @@ class FreeTextFormationDictate extends Component {
       }, 1000);
       this.setState({ timeoutId: timeoutId });
     }
-    console.log(
-      "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-      event.target.innerHTML
-    );
     this.props.logTimeDataWhenHoveredAtWord(event.target.innerHTML);
 
     this.setState({ hover: true });
@@ -85,7 +81,10 @@ class FreeTextFormationDictate extends Component {
             toggleHoverOff={this.toggleHoverOff}
             {...this.props}
           />
-          <Logdata logdata={this.props.logData} />
+          <Logdata
+            logDataPersist={this.props.logDataPersist}
+            logData={this.props.logData}
+          />
         </React.Fragment>
       );
     } else {
@@ -99,7 +98,10 @@ class FreeTextFormationDictate extends Component {
             clickedWord={this.state.clickedWord}
             {...this.props}
           />
-          <Logdata logdata={this.props.logData} />
+          <Logdata
+            logDataPersist={this.props.logDataPersist}
+            logData={this.props.logData}
+          />
         </React.Fragment>
       );
     }

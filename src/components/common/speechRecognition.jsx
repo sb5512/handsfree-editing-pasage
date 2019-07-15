@@ -61,6 +61,7 @@ export default function SpeechRecognition(options) {
 
           // Logging information Begins
           logData: [],
+          logDataPersist: [],
           // Logging information Ends
 
           toCorrectInSpellModeWord: ""
@@ -101,7 +102,6 @@ export default function SpeechRecognition(options) {
       }
 
       updateSplitFinalTranscriptCommands(toChangeScript) {
-        console.log(toChangeScript);
         toChangeScript = toChangeScript.substring(0, toChangeScript.length - 1);
         return toChangeScript;
       }
@@ -136,18 +136,23 @@ export default function SpeechRecognition(options) {
         );
       }
 
+      checkSecondLastWord(toCheckWord, sentence) {
+        let removedLastWordSentence = this.removeLastWord(sentence);
+        return removedLastWordSentence.endsWith(toCheckWord);
+      }
+
       lowercaseWordByIndex(sentence, index) {
         let newSentenceArr = sentence.split(" ");
-        console.log("WHATIS MT SENFSAKFA", newSentenceArr);
-        console.log(
-          "OKKKKKKKKKKKKKKKKKKK ONDEXXXXXXXXXXX",
-          newSentenceArr[index]
-        );
         newSentenceArr[index - 1] = newSentenceArr[
           index - 1
         ].toLocaleLowerCase();
         return newSentenceArr.join(" ");
       }
+
+      insertWordInFrontByIndex(sentence, toInsertWord, index) {
+        return Utils.insert(sentence, toInsertWord, index);
+      }
+
       removeLastWord(sentence) {
         var lastIndex = sentence.lastIndexOf(" ");
         if (lastIndex > 0) {
@@ -157,22 +162,20 @@ export default function SpeechRecognition(options) {
       }
 
       removeWordByIndex(sentence, index) {
-        console.log("WHAAAAAAAAAAAAAAAAATTTTTTTTTTTTTt is my new index", index);
         let newSentenceArr = sentence.split(" ");
         newSentenceArr.splice(index - 1, 1);
-        console.log(
-          "WHAAAAAAAAAAAAAAAAATTTTTTTTTTTTTt is my new sentence",
-          newSentenceArr.join(" ")
-        );
         return newSentenceArr.join(" ");
       }
 
       replaceSpaceWithActualSpace(sentence, logData) {
         if (sentence.includes("space")) {
-          logData.push(
-            '"Finish" command within spell mode removed space with actual space at  : ' +
+          logData.push({
+            command: "S_SpaceReplace",
+            time: Utils.getCurrentTime(),
+            text:
+              '"Finish" command within spell mode removed space with actual space at  : ' +
               Utils.getCurrentTime()
-          );
+          });
         }
         return sentence.split("space").join(" ");
       }
@@ -201,8 +204,6 @@ export default function SpeechRecognition(options) {
       }
 
       setSuggestionList = (word, suggestionList) => {
-        console.log("ACTUALLLLY YHR SUGGESTION word IS", word);
-        console.log("ACTUALLLLY YHR SUGGESTION LIST IS HERE", suggestionList);
         let newArr = this.state.suggestionList;
         newArr.push(suggestionList);
         this.setState({
@@ -227,22 +228,28 @@ export default function SpeechRecognition(options) {
       };
 
       logTimeDataWhenHoveredAtWord = word => {
-        console.log("LOGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG", word);
         let logData = [...this.state.logData];
-        logData.push('Looked at "' + word + '" at : ' + Utils.getCurrentTime());
+        logData.push({
+          command: "Looked",
+          time: Utils.getCurrentTime(),
+          text: 'Looked at "' + word + '" at : ' + Utils.getCurrentTime()
+        });
         this.setState({ logData: logData });
       };
 
       handleWordClickToGetToMappingWithNumberState = (index, word) => {
         let logData = [...this.state.logData];
-        logData.push(
-          'Clicked at "' +
+        logData.push({
+          command: "Gaze Click",
+          time: Utils.getCurrentTime(),
+          text:
+            'Clicked at "' +
             word +
             '" positioned index ' +
             index +
             " at : " +
             Utils.getCurrentTime()
-        );
+        });
         this.setState({
           hasCommand: true,
           mappingNumber: index,
@@ -266,6 +273,7 @@ export default function SpeechRecognition(options) {
         let toCorrectInSpellModeWord = this.state.toCorrectInSpellModeWord;
         let suggestionList = this.state.suggestionList;
         let logData = this.state.logData;
+        let logDataPersist = this.state.logDataPersist;
 
         /**
          * state hascommand true bhayo bhane hami command mode ma cham
@@ -297,14 +305,20 @@ export default function SpeechRecognition(options) {
                     this.state.toCorrectInSpellModeWord,
                     finalTranscript
                   );
-                  logData.push(
-                    '"Finish" command within spell mode given at : ' +
+                  logData.push({
+                    command: "S_Finish",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      '"Finish" command within spell mode given at : ' +
                       Utils.getCurrentTime()
-                  );
+                  });
                 } else {
-                  logData.push(
-                    '"Finish" command given at : ' + Utils.getCurrentTime()
-                  );
+                  logData.push({
+                    command: "Finish",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      '"Finish" command given at : ' + Utils.getCurrentTime()
+                  });
                 }
               } else if (
                 currentTranscription.endsWith("spell") &&
@@ -312,9 +326,7 @@ export default function SpeechRecognition(options) {
                 !this.state.spellMode
               ) {
                 // This is where we will check if selection mode is on and "spell word is in the transcript"
-                console.log(
-                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM IN SPell MODEEEEEEEEE"
-                );
+                console.log("I AM IN SPELL MODE");
                 hasCommand = false; // Still command mode
                 spellMode = true;
                 suggestionMode = false;
@@ -323,17 +335,18 @@ export default function SpeechRecognition(options) {
                   " "
                 )[this.state.mappingNumber - 1];
                 mappingNumber = null;
-                logData.push(
-                  '"spell" command activated spell mode at : ' +
+                logData.push({
+                  command: "Spell",
+                  time: Utils.getCurrentTime(),
+                  text:
+                    '"spell" command activated spell mode at : ' +
                     Utils.getCurrentTime()
-                );
+                });
               } else if (
                 currentTranscription.endsWith("delete") &&
                 this.state.mappingNumber
               ) {
-                console.log(
-                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM GOING TO delete word that is selected"
-                );
+                console.log("DELETE WORD AFTER SAYING MAP AND NUMBER");
                 suggestionMode = false;
                 finalTranscript = this.removeWordByIndex(
                   finalTranscript,
@@ -342,21 +355,24 @@ export default function SpeechRecognition(options) {
                         this.state.oldTranscript.split(" ").length
                     : this.state.mappingNumber
                 );
-                logData.push(
-                  '"delete" command for mapped number' +
+                logData.push({
+                  command: "Delete No." + this.state.mappingNumber,
+                  time: Utils.getCurrentTime(),
+                  text:
+                    '"delete" command for mapped number' +
                     this.state.mappingNumber +
                     "given at : " +
                     Utils.getCurrentTime()
-                );
+                });
               } else if (currentTranscription.endsWith("delete")) {
-                console.log(
-                  "NOWWWWWWWWWWWW I AMMMMMMMMMMM GOING TO delete only"
-                );
+                console.log("DELETE LAST WORD OF SENTENCE");
                 suggestionMode = false;
                 finalTranscript = this.removeLastWord(finalTranscript);
-                logData.push(
-                  '"delete" command given at : ' + Utils.getCurrentTime()
-                );
+                logData.push({
+                  command: "Delete Last",
+                  time: Utils.getCurrentTime(),
+                  text: '"delete" command given at : ' + Utils.getCurrentTime()
+                });
               } else if (
                 // Here we check if the transcript is a number
                 //
@@ -366,25 +382,51 @@ export default function SpeechRecognition(options) {
                 spellMode = this.state.spellMode;
                 suggestionMode = false;
                 mappingNumber = objIsNumberAndVal.value;
-                logData.push(
-                  "Mapped Number " +
+                logData.push({
+                  command: "Map No. " + mappingNumber,
+                  time: Utils.getCurrentTime(),
+                  text:
+                    "Mapped Number " +
                     mappingNumber +
                     " given at : " +
                     Utils.getCurrentTime()
-                );
+                });
               } else if (
                 currentTranscription.endsWith("lowercase") &&
                 this.state.mappingNumber //
               ) {
-                console.log("TO MAKE LOWERCASE");
+                console.log("GOING TO MAKE THE SELECTED WORD TO LOWERCASE");
                 suggestionMode = false;
                 finalTranscript = this.lowercaseWordByIndex(
                   finalTranscript,
                   this.state.mappingNumber
                 );
-                logData.push(
-                  '"lowercase" command given at : ' + Utils.getCurrentTime()
+                logData.push({
+                  command: "Lowercase",
+                  time: Utils.getCurrentTime(),
+                  text:
+                    '"lowercase" command given at : ' + Utils.getCurrentTime()
+                });
+              } else if (
+                // secondlast word is an insert
+                this.checkSecondLastWord("insert", currentTranscription) &&
+                this.state.mappingNumber //
+              ) {
+                console.log("TO INSERT TEXT INFRONT OF A SENTENCE");
+                suggestionMode = false;
+                finalTranscript = this.insertWordInFrontByIndex(
+                  finalTranscript,
+                  currentTranscription
+                    .trim()
+                    .split(" ")
+                    .pop(),
+                  this.state.mappingNumber
                 );
+                logData.push({
+                  command: "Insert",
+                  time: Utils.getCurrentTime(),
+                  text: '"Insert" command given at : ' + Utils.getCurrentTime()
+                });
               } else if (
                 (currentTranscription.endsWith("a") ||
                   currentTranscription.endsWith("A")) &&
@@ -398,10 +440,13 @@ export default function SpeechRecognition(options) {
                 // get suggestion list array
                 // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
 
-                logData.push(
-                  'Chosen "a" command from suggestion list at : ' +
+                logData.push({
+                  command: "Option 'a'",
+                  time: Utils.getCurrentTime(),
+                  text:
+                    'Chosen "a" command from suggestion list at : ' +
                     Utils.getCurrentTime()
-                );
+                });
               } else if (
                 (currentTranscription.endsWith("B") ||
                   currentTranscription.endsWith("b")) &&
@@ -411,10 +456,13 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 1;
                 mappingNumber = this.state.mappingNumber;
-                logData.push(
-                  'Chosen "b" command from suggestion list at : ' +
+                logData.push({
+                  command: "Option 'b'",
+                  time: Utils.getCurrentTime(),
+                  text:
+                    'Chosen "b" command from suggestion list at : ' +
                     Utils.getCurrentTime()
-                );
+                });
               } else if (
                 (currentTranscription.endsWith("c") ||
                   currentTranscription.endsWith("C")) &&
@@ -424,10 +472,13 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 2;
                 mappingNumber = this.state.mappingNumber;
-                logData.push(
-                  'Chosen "c" command from suggestion list at : ' +
+                logData.push({
+                  command: "Option 'c'",
+                  time: Utils.getCurrentTime(),
+                  text:
+                    'Chosen "c" command from suggestion list at : ' +
                     Utils.getCurrentTime()
-                );
+                });
               } else if (
                 (currentTranscription.endsWith("d") ||
                   currentTranscription.endsWith("D")) &&
@@ -437,10 +488,13 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 3;
                 mappingNumber = this.state.mappingNumber;
-                logData.push(
-                  'Chosen "d" command from suggestion list at : ' +
+                logData.push({
+                  command: "Option 'd'",
+                  time: Utils.getCurrentTime(),
+                  text:
+                    'Chosen "d" command from suggestion list at : ' +
                     Utils.getCurrentTime()
-                );
+                });
               } else if (
                 (currentTranscription.endsWith("e") ||
                   currentTranscription.endsWith("E")) &&
@@ -450,10 +504,13 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 4;
                 mappingNumber = this.state.mappingNumber;
-                logData.push(
-                  'Chosen "e" command from suggestion list at : ' +
+                logData.push({
+                  command: "Option 'e'",
+                  time: Utils.getCurrentTime(),
+                  text:
+                    'Chosen "e" command from suggestion list at : ' +
                     Utils.getCurrentTime()
-                );
+                });
               } else {
                 // Firstly we come here when we say "map " and after that If no "Done" , If no "spell" , if no "number"
                 // We do nothing
@@ -503,26 +560,39 @@ export default function SpeechRecognition(options) {
                 hasCommand = true;
                 // TIMERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR STARTSSSS
                 ///////////////////////////////////////////////////////
-                logData.push(
-                  '"Map" command given at : ' + Utils.getCurrentTime()
-                );
+                logData.push({
+                  command: "Map",
+                  time: Utils.getCurrentTime(),
+                  text: '"Map" command given at : ' + Utils.getCurrentTime()
+                });
               }
               if (ifContainsSelect) {
                 // hasSelectCommand = true;
                 // mappingNumber = 2;
-                logData.push(
-                  '"Click" command given at : ' + Utils.getCurrentTime()
-                );
+                logData.push({
+                  command: "Click",
+                  time: Utils.getCurrentTime(),
+                  text: '"Click" command given at : ' + Utils.getCurrentTime()
+                });
                 this.clickMouse();
               }
               if (ifContainsNext) {
-                logData.push(
-                  '"Next" command given at : ' + Utils.getCurrentTime()
-                );
+                logData.push({
+                  command: "EndTask",
+                  time: Utils.getCurrentTime(),
+                  text: '"Next" command given at : ' + Utils.getCurrentTime()
+                });
+                logData.push({
+                  command: "",
+                  time: "",
+                  text:
+                    "--------------------------------------------------------"
+                });
                 hasNextCommand = true; // not used so far
                 phraseQuestionImageCount =
                   this.state.phraseQuestionImageCount + 1;
                 imageNumber = Utils.getRandomInt(4); // change number 4 using total lengths of images available
+                logDataPersist = [...logDataPersist, ...logData];
                 logData = []; //make log data empty
                 finalTranscript = "";
               }
@@ -541,22 +611,30 @@ export default function SpeechRecognition(options) {
                   finalTranscript,
                   logData
                 );
-                logData.push(
-                  '"Finish" command within spell mode given at : ' +
+                logData.push({
+                  command: "S_Finish",
+                  time: Utils.getCurrentTime(),
+                  text:
+                    '"Finish" command within spell mode given at : ' +
                     Utils.getCurrentTime()
-                );
+                });
               } else if (ifContainsClear) {
                 if (this.state.spellMode) {
                   finalTranscript = oldTranscript;
-                  logData.push(
-                    '"Clear" command within spell mode given at : ' +
+                  logData.push({
+                    command: "S_Clear",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      '"Clear" command within spell mode given at : ' +
                       Utils.getCurrentTime()
-                  );
+                  });
                 } else {
                   finalTranscript = "";
-                  logData.push(
-                    '"Clear" command given at : ' + Utils.getCurrentTime()
-                  );
+                  logData.push({
+                    command: "Clear",
+                    time: Utils.getCurrentTime(),
+                    text: '"Clear" command given at : ' + Utils.getCurrentTime()
+                  });
                 }
               }
               // finalscript k bhayo ta
@@ -565,9 +643,6 @@ export default function SpeechRecognition(options) {
                 // if (this.state.spellMode){
                 //   event.results[i][0].transcript
                 // }
-                console.log(
-                  "I GO HjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjEREEEE FOR SELECT"
-                );
                 finalTranscript = this.concatTranscripts(
                   finalTranscript,
                   ifContainsNextMapSelect
@@ -578,9 +653,11 @@ export default function SpeechRecognition(options) {
             } else {
               // log data at beginning of transcription
               if (finalTranscript === "" && logData.length == 0) {
-                logData.push(
-                  "Has begun the task at : " + Utils.getCurrentTime()
-                );
+                logData.push({
+                  command: "Start",
+                  time: Utils.getCurrentTime(),
+                  text: "Has begun the task at : " + Utils.getCurrentTime()
+                });
               }
               interimTranscript = this.concatTranscripts(
                 interimTranscript,
@@ -608,7 +685,8 @@ export default function SpeechRecognition(options) {
           suggestionMode,
           suggestionList,
           suggestionListNumber,
-          logData
+          logData,
+          logDataPersist
         });
       }
 
@@ -659,10 +737,6 @@ export default function SpeechRecognition(options) {
           interimTranscript
         );
 
-        // console.log(
-        //   "SUGGESTION NUMBER FOR WORD IS : ",
-        //   this.state.mappingNumber
-        // );
         /** OBJECT CREATION FOR EACH WORD BEGINS */
         let transcriptObject = [];
         if (this.state.spellMode) {
@@ -697,13 +771,7 @@ export default function SpeechRecognition(options) {
             if (index + 1 === this.state.mappingNumber) {
               updatedWord = this.state.suggestionList[index][
                 this.state.suggestionListNumber
-              ]; // TO DOOOOOOOOOOOOOOOOOOOO
-              console.log(
-                "TO DO : Get the updated word from suggestion list number. Maybe set suggestions list"
-              );
-              // this.obtainSuggestionForWord(word)[
-              //   this.state.suggestionListNumber
-              // ];
+              ];
               toReplaceWord = word;
               replacingWord = updatedWord;
             }

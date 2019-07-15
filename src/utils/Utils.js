@@ -44,6 +44,23 @@ class Utils {
     }
   }
 
+  static insert(main_string, ins_string, pos) {
+    if (typeof pos == "undefined") {
+      pos = 0;
+    }
+    if (typeof ins_string == "undefined") {
+      ins_string = "";
+    }
+    let main_string_arr = main_string.split(" ");
+    main_string_arr.splice(pos - 1, 0, ins_string);
+    return main_string_arr.join(" ");
+  }
+
+  // static saveAsCsv(data) {
+  //   const ws = fs.createWriteStream("out.csv");
+  //   fastcsv.write(data, { headers: true }).pipe(ws);
+  // }
+
   static checkStringIsNumberWordOrNumber(currentTranscription) {
     let suggestionListNumber =
       currentTranscription.lastIndexOf(" ") > 0

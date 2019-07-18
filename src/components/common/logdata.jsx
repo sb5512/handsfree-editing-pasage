@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { CSVLink } from "react-csv";
+import ModalSession from "../tasks/generic/modalSessions";
 
 class Logdata extends Component {
   state = {};
@@ -8,19 +8,7 @@ class Logdata extends Component {
       <React.Fragment>
         {" "}
         <div className="border border-white bg-secondary d-block p-2 bg-light">
-          <CSVLink
-            filename={"logdata.csv"}
-            className="btn btn-primary float-right"
-            target="_blank"
-            data={this.props.logDataPersist}
-            headers={[
-              { label: "Command", key: "command" },
-              { label: "Time", key: "time" },
-              { label: "Text", key: "text" }
-            ]}
-          >
-            Download log data
-          </CSVLink>
+          <ModalSession data={this.props.logDataPersist} />
           <h5>Logs</h5> <hr />
           {this.props.logData
             .slice(0)

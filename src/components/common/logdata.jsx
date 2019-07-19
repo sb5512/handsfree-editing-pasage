@@ -2,8 +2,12 @@ import React, { Component } from "react";
 import ModalSession from "../tasks/generic/modalSessions";
 
 class Logdata extends Component {
-  state = { sessionCounter: 4 };
+  state = { sessionCounter: 10 };
   render() {
+    let filename =
+      "session" +
+      this.props.phraseQuestionImageCount / this.state.sessionCounter +
+      "logdata.csv";
     return (
       <React.Fragment>
         {" "}
@@ -15,6 +19,7 @@ class Logdata extends Component {
               startListening={this.props.startListening}
               stopListening={this.props.stopListening}
               data={this.props.logDataPersist}
+              filename={filename}
             />
           ) : (
             <React.Fragment />

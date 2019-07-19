@@ -29,7 +29,7 @@ class ModalSession extends Component {
           <Modal.Footer>
             {this.props.data.length > 1 ? (
               <CSVLink
-                filename={"logdata.csv"}
+                filename={this.props.filename}
                 className="btn btn-primary float-right"
                 target="_blank"
                 onClick={this.handleClose}
@@ -37,7 +37,7 @@ class ModalSession extends Component {
                 headers={[
                   { label: "Command", key: "command" },
                   { label: "Time", key: "time" },
-                  { label: "Text", key: "text" }
+                  { label: "Text", key: "textForLog" }
                 ]}
               >
                 Download log data

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import Utils from "../../utils/Utils";
+import getReplyQuestions from "../../utils/replyQuestions";
+import getPhrases from "../../utils/phrases";
 
 export default function SpeechRecognition(options) {
   const SpeechRecognitionInner = function(WrappedComponent) {
@@ -49,7 +51,7 @@ export default function SpeechRecognition(options) {
           hasSelectCommand: false,
           hasNextCommand: false,
           phraseQuestionImageCount: 0,
-          imageNumber: Utils.getRandomInt(4),
+          imageNumber: 0, //Utils.getRandomInt(4),
           spellMode: false,
           oldTranscript: "",
           mappingNumber: null,
@@ -174,7 +176,8 @@ export default function SpeechRecognition(options) {
             time: Utils.getCurrentTime(),
             text:
               '"Finish" command within spell mode removed space with actual space at  : ' +
-              Utils.getCurrentTime()
+              Utils.getCurrentTime(),
+            textForLog: ""
           });
         }
         return sentence.split("space").join(" ");
@@ -230,9 +233,10 @@ export default function SpeechRecognition(options) {
       logTimeDataWhenHoveredAtWord = word => {
         let logData = [...this.state.logData];
         logData.push({
-          command: "Looked",
+          command: "Look",
           time: Utils.getCurrentTime(),
-          text: 'Looked at "' + word + '" at : ' + Utils.getCurrentTime()
+          text: 'Looked at "' + word + '" at : ' + Utils.getCurrentTime(),
+          textForLog: word
         });
         this.setState({ logData: logData });
       };
@@ -248,7 +252,8 @@ export default function SpeechRecognition(options) {
             '" positioned index ' +
             index +
             " at : " +
-            Utils.getCurrentTime()
+            Utils.getCurrentTime(),
+          textForLog: word
         });
         this.setState({
           hasCommand: true,
@@ -310,14 +315,16 @@ export default function SpeechRecognition(options) {
                     time: Utils.getCurrentTime(),
                     text:
                       '"Finish" command within spell mode given at : ' +
-                      Utils.getCurrentTime()
+                      Utils.getCurrentTime(),
+                    textForLog: ""
                   });
                 } else {
                   logData.push({
                     command: "Finish",
                     time: Utils.getCurrentTime(),
                     text:
-                      '"Finish" command given at : ' + Utils.getCurrentTime()
+                      '"Finish" command given at : ' + Utils.getCurrentTime(),
+                    textForLog: ""
                   });
                 }
               } else if (
@@ -340,7 +347,8 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     '"spell" command activated spell mode at : ' +
-                    Utils.getCurrentTime()
+                    Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (
                 currentTranscription.endsWith("delete") &&
@@ -362,7 +370,8 @@ export default function SpeechRecognition(options) {
                     '"delete" command for mapped number' +
                     this.state.mappingNumber +
                     "given at : " +
-                    Utils.getCurrentTime()
+                    Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (currentTranscription.endsWith("delete")) {
                 console.log("DELETE LAST WORD OF SENTENCE");
@@ -371,7 +380,8 @@ export default function SpeechRecognition(options) {
                 logData.push({
                   command: "Delete Last",
                   time: Utils.getCurrentTime(),
-                  text: '"delete" command given at : ' + Utils.getCurrentTime()
+                  text: '"delete" command given at : ' + Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (
                 // Here we check if the transcript is a number
@@ -389,7 +399,8 @@ export default function SpeechRecognition(options) {
                     "Mapped Number " +
                     mappingNumber +
                     " given at : " +
-                    Utils.getCurrentTime()
+                    Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (
                 currentTranscription.endsWith("lowercase") &&
@@ -405,7 +416,8 @@ export default function SpeechRecognition(options) {
                   command: "Lowercase",
                   time: Utils.getCurrentTime(),
                   text:
-                    '"lowercase" command given at : ' + Utils.getCurrentTime()
+                    '"lowercase" command given at : ' + Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (
                 // secondlast word is an insert
@@ -425,7 +437,8 @@ export default function SpeechRecognition(options) {
                 logData.push({
                   command: "Insert",
                   time: Utils.getCurrentTime(),
-                  text: '"Insert" command given at : ' + Utils.getCurrentTime()
+                  text: '"Insert" command given at : ' + Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (
                 (currentTranscription.endsWith("a") ||
@@ -445,7 +458,8 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "a" command from suggestion list at : ' +
-                    Utils.getCurrentTime()
+                    Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (
                 (currentTranscription.endsWith("B") ||
@@ -461,7 +475,8 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "b" command from suggestion list at : ' +
-                    Utils.getCurrentTime()
+                    Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (
                 (currentTranscription.endsWith("c") ||
@@ -477,7 +492,8 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "c" command from suggestion list at : ' +
-                    Utils.getCurrentTime()
+                    Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (
                 (currentTranscription.endsWith("d") ||
@@ -493,7 +509,8 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "d" command from suggestion list at : ' +
-                    Utils.getCurrentTime()
+                    Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (
                 (currentTranscription.endsWith("e") ||
@@ -509,7 +526,8 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "e" command from suggestion list at : ' +
-                    Utils.getCurrentTime()
+                    Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else {
                 // Firstly we come here when we say "map " and after that If no "Done" , If no "spell" , if no "number"
@@ -563,7 +581,8 @@ export default function SpeechRecognition(options) {
                 logData.push({
                   command: "Map",
                   time: Utils.getCurrentTime(),
-                  text: '"Map" command given at : ' + Utils.getCurrentTime()
+                  text: '"Map" command given at : ' + Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               }
               if (ifContainsSelect) {
@@ -572,7 +591,8 @@ export default function SpeechRecognition(options) {
                 logData.push({
                   command: "Click",
                   time: Utils.getCurrentTime(),
-                  text: '"Click" command given at : ' + Utils.getCurrentTime()
+                  text: '"Click" command given at : ' + Utils.getCurrentTime(),
+                  textForLog: ""
                 });
                 this.clickMouse();
               }
@@ -580,7 +600,8 @@ export default function SpeechRecognition(options) {
                 logData.push({
                   command: "EndTask",
                   time: Utils.getCurrentTime(),
-                  text: '"Next" command given at : ' + Utils.getCurrentTime()
+                  text: '"Next" command given at : ' + Utils.getCurrentTime(),
+                  textForLog: finalTranscript
                 });
                 hasNextCommand = true; // not used so far
 
@@ -616,7 +637,8 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     '"Finish" command within spell mode given at : ' +
-                    Utils.getCurrentTime()
+                    Utils.getCurrentTime(),
+                  textForLog: ""
                 });
               } else if (ifContainsClear) {
                 if (this.state.spellMode) {
@@ -626,14 +648,17 @@ export default function SpeechRecognition(options) {
                     time: Utils.getCurrentTime(),
                     text:
                       '"Clear" command within spell mode given at : ' +
-                      Utils.getCurrentTime()
+                      Utils.getCurrentTime(),
+                    textForLog: ""
                   });
                 } else {
                   finalTranscript = "";
                   logData.push({
                     command: "Clear",
                     time: Utils.getCurrentTime(),
-                    text: '"Clear" command given at : ' + Utils.getCurrentTime()
+                    text:
+                      '"Clear" command given at : ' + Utils.getCurrentTime(),
+                    textForLog: ""
                   });
                 }
               }
@@ -652,11 +677,37 @@ export default function SpeechRecognition(options) {
               }
             } else {
               // log data at beginning of transcription
-              if (finalTranscript === "" && logData.length == 0) {
+              if (finalTranscript === "" && logData.length === 0) {
+                let whichTask = window.location.pathname.split("/").pop();
+                let startingSentence = "";
+                switch (whichTask) {
+                  case "freetextformationtask":
+                    startingSentence =
+                      "Image " + this.state.imageNumber + " is used";
+                    break;
+                  case "replytask":
+                    startingSentence = getReplyQuestions(
+                      this.state.phraseQuestionImageCount
+                    );
+                    break;
+                  case "copytask":
+                    startingSentence = getPhrases(
+                      this.state.phraseQuestionImageCount
+                    );
+                    break;
+                  default:
+                    startingSentence = getReplyQuestions(
+                      this.state.phraseQuestionImageCount
+                    );
+
+                    break;
+                }
+
                 logData.push({
                   command: "Start",
                   time: Utils.getCurrentTime(),
-                  text: "Has begun the task at : " + Utils.getCurrentTime()
+                  text: "Has begun the task at : " + Utils.getCurrentTime(),
+                  textForLog: startingSentence
                 });
               }
               interimTranscript = this.concatTranscripts(

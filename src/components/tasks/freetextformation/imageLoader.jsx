@@ -8,7 +8,8 @@ class ImageLoader extends Component {
 
   render() {
     // To get random images - Begins
-    let imageNumber = this.props.imageNumber; //Utils.getRandomInt(4);
+    let totalImages = 4;
+    let imageNumber = this.props.imageNumber % totalImages; //Utils.getRandomInt(4);
     let toLoadImage = require(`../../../fixtures/image${imageNumber}.jpg`);
     // To get random images - Ends
     return (

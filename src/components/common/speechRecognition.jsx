@@ -582,18 +582,18 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text: '"Next" command given at : ' + Utils.getCurrentTime()
                 });
-                logData.push({
-                  command: "",
-                  time: "",
-                  text:
-                    "--------------------------------------------------------"
-                });
                 hasNextCommand = true; // not used so far
-                phraseQuestionImageCount =
-                  this.state.phraseQuestionImageCount + 1;
-                imageNumber = Utils.getRandomInt(4); // change number 4 using total lengths of images available
+
+                let whichTask = window.location.pathname.split("/").pop();
+                whichTask === "freetextformationtask"
+                  ? (imageNumber = this.state.imageNumber + 1) // change number 4 using total lengths of images available
+                  : (phraseQuestionImageCount =
+                      this.state.phraseQuestionImageCount + 1);
+
+                interimTranscript = "";
                 logDataPersist = [...logDataPersist, ...logData];
                 logData = []; //make log data empty
+
                 finalTranscript = "";
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
@@ -732,6 +732,9 @@ export default function SpeechRecognition(options) {
       };
 
       render() {
+        if (this.state.hasNextCommand) {
+          finalTranscript = "";
+        }
         let transcript = this.concatTranscripts(
           finalTranscript,
           interimTranscript

@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import ModalSession from "../tasks/generic/modalSessions";
 
-class Logdata extends Component {
+class LogdataImageTask extends Component {
   state = { sessionCounter: 4 };
   render() {
     return (
       <React.Fragment>
         {" "}
         <div className="border border-white bg-secondary d-block p-2 bg-light">
-          {(this.props.phraseQuestionImageCount !== 0) &
-          (this.props.phraseQuestionImageCount % this.state.sessionCounter ===
-            0) ? (
+          {(this.props.imageNumber !== 0) &
+          (this.props.imageNumber % this.state.sessionCounter === 0) ? (
             <ModalSession
               startListening={this.props.startListening}
               stopListening={this.props.stopListening}
@@ -19,7 +18,7 @@ class Logdata extends Component {
           ) : (
             <React.Fragment />
           )}
-          <h5>Logs {this.props.phraseQuestionImageCount}</h5> <hr />
+          <h5>Logs {this.props.imageNumber}</h5> <hr />
           {this.props.logData
             .slice(0)
             .reverse()
@@ -32,4 +31,4 @@ class Logdata extends Component {
   }
 }
 
-export default Logdata;
+export default LogdataImageTask;

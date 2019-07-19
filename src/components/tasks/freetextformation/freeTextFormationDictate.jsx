@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 
 import ImageLoader from "./imageLoader";
 import Transcription from "../generic/transcription";
-import Logdata from "../../common/logdata";
 import SpellMode from "../generic/spellMode";
+import LogdataImageTask from "../../common/logdataImageTask";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -81,9 +81,12 @@ class FreeTextFormationDictate extends Component {
             toggleHoverOff={this.toggleHoverOff}
             {...this.props}
           />
-          <Logdata
+          <LogdataImageTask
             logDataPersist={this.props.logDataPersist}
             logData={this.props.logData}
+            imageNumber={this.props.imageNumber}
+            stopListening={this.props.stopListening}
+            startListening={this.props.startListening}
           />
         </React.Fragment>
       );
@@ -98,9 +101,12 @@ class FreeTextFormationDictate extends Component {
             clickedWord={this.state.clickedWord}
             {...this.props}
           />
-          <Logdata
+          <LogdataImageTask
             logDataPersist={this.props.logDataPersist}
             logData={this.props.logData}
+            imageNumber={this.props.imageNumber}
+            stopListening={this.props.stopListening}
+            startListening={this.props.startListening}
           />
         </React.Fragment>
       );

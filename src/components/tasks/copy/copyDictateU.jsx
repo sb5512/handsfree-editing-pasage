@@ -83,6 +83,9 @@ class CopyDictate extends Component {
           <Logdata
             logDataPersist={this.props.logDataPersist}
             logData={this.props.logData}
+            phraseQuestionImageCount={this.props.phraseQuestionImageCount}
+            stopListening={this.props.stopListening}
+            startListening={this.props.startListening}
           />
         </React.Fragment>
       );
@@ -100,6 +103,9 @@ class CopyDictate extends Component {
           <Logdata
             logDataPersist={this.props.logDataPersist}
             logData={this.props.logData}
+            phraseQuestionImageCount={this.props.phraseQuestionImageCount}
+            stopListening={this.props.stopListening}
+            startListening={this.props.startListening}
           />
         </React.Fragment>
       );

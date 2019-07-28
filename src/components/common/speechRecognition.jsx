@@ -461,7 +461,11 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("a") ||
-                  currentTranscription.endsWith("A")) &&
+                  currentTranscription.endsWith("hey") ||
+                  currentTranscription.endsWith("Hey") ||
+                  currentTranscription.endsWith("A") ||
+                  currentTranscription.endsWith("First") ||
+                  currentTranscription.endsWith("first")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR A");
@@ -482,7 +486,11 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("B") ||
-                  currentTranscription.endsWith("b")) &&
+                  currentTranscription.endsWith("b") ||
+                  currentTranscription.endsWith("be") ||
+                  currentTranscription.endsWith("Be") ||
+                  currentTranscription.endsWith("Second") ||
+                  currentTranscription.endsWith("second")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR B");
@@ -499,7 +507,14 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("c") ||
-                  currentTranscription.endsWith("C")) &&
+                  currentTranscription.endsWith("C") ||
+                  currentTranscription.endsWith("see") ||
+                  currentTranscription.endsWith("scene") ||
+                  currentTranscription.endsWith("Scene") ||
+                  currentTranscription.endsWith("Sing") ||
+                  currentTranscription.endsWith("sing") ||
+                  currentTranscription.endsWith("Third") ||
+                  currentTranscription.endsWith("third")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR C");
@@ -516,7 +531,10 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("d") ||
-                  currentTranscription.endsWith("D")) &&
+                  currentTranscription.endsWith("D") ||
+                  currentTranscription.endsWith("D&D") ||
+                  currentTranscription.endsWith("Fourth") ||
+                  currentTranscription.endsWith("fourth")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR D");
@@ -533,7 +551,9 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("e") ||
-                  currentTranscription.endsWith("E")) &&
+                  currentTranscription.endsWith("E") ||
+                  currentTranscription.endsWith("Fifth") ||
+                  currentTranscription.endsWith("fifth")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR E");
@@ -595,6 +615,7 @@ export default function SpeechRecognition(options) {
               if (ifContainsMap) {
                 // commands.push("map");
                 hasCommand = true;
+
                 // TIMERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR STARTSSSS
                 ///////////////////////////////////////////////////////
                 logData.push({
@@ -845,8 +866,14 @@ export default function SpeechRecognition(options) {
               updatedWord = this.state.suggestionList[index][
                 this.state.suggestionListNumber
               ];
+
               toReplaceWord = word;
               replacingWord = updatedWord;
+              console.log(
+                "WHATTTTTTTTTTT IS MY UPDATEDDDDDDD WORD",
+                replacingWord
+              );
+              console.log("WHATTTTTTTTTTT IS MY toReplace WORD", toReplaceWord);
             }
 
             transcriptObject.push({

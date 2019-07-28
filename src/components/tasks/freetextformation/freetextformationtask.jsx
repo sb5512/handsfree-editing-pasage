@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import FreeTextFormationDictate from "./freeTextFormationDictate";
 import keydown from "react-keydown";
+import { Image, Container, Col, Row } from "react-bootstrap";
 
 import ReactCountdownClock from "react-countdown-clock";
 
@@ -55,19 +56,25 @@ class FreeTextFormationTask extends Component {
         ));
     return (
       <React.Fragment>
-        <div>
-          <ReactCountdownClock
-            seconds={3}
-            color="#000"
-            alpha={0.9}
-            size={100}
-            onComplete={this.myCallback}
-          />
-          {speechButton}
-        </div>
-        <div className="container-fluid">
-          <FreeTextFormationDictate {...this.props} {...this.state} />
-        </div>
+        <Row>
+          <Col xs={6} md={10}>
+            <ReactCountdownClock
+              seconds={3}
+              color="#000"
+              alpha={0.9}
+              size={100}
+              onComplete={this.myCallback}
+            />
+          </Col>
+          <Col xs={6} md={2}>
+            {speechButton}
+          </Col>
+        </Row>{" "}
+        <Row>
+          <div className="container-fluid">
+            <FreeTextFormationDictate {...this.props} {...this.state} />
+          </div>{" "}
+        </Row>
       </React.Fragment>
     );
   }

@@ -29,6 +29,7 @@ export default function SpeechRecognition(options) {
     let pauseAfterDisconnect = false;
     let interimTranscript = "";
     let finalTranscript = "";
+    let holdingFinalTranscript = "";
     let commands = [];
 
     return class SpeechRecognitionContainer extends Component {
@@ -328,7 +329,26 @@ export default function SpeechRecognition(options) {
                   });
                 }
               } else if (
-                currentTranscription.endsWith("spell") &&
+                currentTranscription.endsWith("cancel") ||
+                currentTranscription.endsWith("Cancel")
+              ) {
+                if (this.state.spellMode) {
+                  console.log("Cancel command when inside spell mode");
+                  suggestionMode = false;
+                  hasCommand = false;
+                  // finalTranscript = this.removeLastWord(finalTranscript);
+                  logData.push({
+                    command: "S_Cancel",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      '"Cancel" command given within spell mode at : ' +
+                      Utils.getCurrentTime(),
+                    textForLog: ""
+                  });
+                }
+              } else if (
+                (currentTranscription.endsWith("spell") ||
+                  currentTranscription.endsWith("Spell")) &&
                 this.state.mappingNumber &&
                 !this.state.spellMode
               ) {
@@ -442,7 +462,11 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("a") ||
-                  currentTranscription.endsWith("A")) &&
+                  currentTranscription.endsWith("hey") ||
+                  currentTranscription.endsWith("Hey") ||
+                  currentTranscription.endsWith("A") ||
+                  currentTranscription.endsWith("First") ||
+                  currentTranscription.endsWith("first")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR A");
@@ -463,7 +487,11 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("B") ||
-                  currentTranscription.endsWith("b")) &&
+                  currentTranscription.endsWith("b") ||
+                  currentTranscription.endsWith("be") ||
+                  currentTranscription.endsWith("Be") ||
+                  currentTranscription.endsWith("Second") ||
+                  currentTranscription.endsWith("second")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR B");
@@ -480,7 +508,14 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("c") ||
-                  currentTranscription.endsWith("C")) &&
+                  currentTranscription.endsWith("C") ||
+                  currentTranscription.endsWith("see") ||
+                  currentTranscription.endsWith("scene") ||
+                  currentTranscription.endsWith("Scene") ||
+                  currentTranscription.endsWith("Sing") ||
+                  currentTranscription.endsWith("sing") ||
+                  currentTranscription.endsWith("Third") ||
+                  currentTranscription.endsWith("third")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR C");
@@ -497,7 +532,10 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("d") ||
-                  currentTranscription.endsWith("D")) &&
+                  currentTranscription.endsWith("D") ||
+                  currentTranscription.endsWith("D&D") ||
+                  currentTranscription.endsWith("Fourth") ||
+                  currentTranscription.endsWith("fourth")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR D");
@@ -514,7 +552,9 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 (currentTranscription.endsWith("e") ||
-                  currentTranscription.endsWith("E")) &&
+                  currentTranscription.endsWith("E") ||
+                  currentTranscription.endsWith("Fifth") ||
+                  currentTranscription.endsWith("fifth")) &&
                 this.state.mappingNumber
               ) {
                 console.log("SUGGESTION LIST FOR E");
@@ -576,6 +616,7 @@ export default function SpeechRecognition(options) {
               if (ifContainsMap) {
                 // commands.push("map");
                 hasCommand = true;
+
                 // TIMERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR STARTSSSS
                 ///////////////////////////////////////////////////////
                 logData.push({
@@ -603,7 +644,7 @@ export default function SpeechRecognition(options) {
                   text: '"Next" command given at : ' + Utils.getCurrentTime(),
                   textForLog: finalTranscript
                 });
-                hasNextCommand = true; // not used so far
+                hasNextCommand = true; // Used when we think some finalscript comes late .i.e race condition
 
                 let whichTask = window.location.pathname.split("/").pop();
                 whichTask === "freetextformationtask"
@@ -676,6 +717,7 @@ export default function SpeechRecognition(options) {
                 );
               }
             } else {
+              // INTERIM TRANSCRIPT HORA YO??
               // log data at beginning of transcription
               if (finalTranscript === "" && logData.length === 0) {
                 let whichTask = window.location.pathname.split("/").pop();
@@ -702,6 +744,21 @@ export default function SpeechRecognition(options) {
 
                     break;
                 }
+                console.log(
+                  "Yo honita data ta persisted ",
+                  this.state.logDataPersist
+                );
+                if (holdingFinalTranscript.length > 0) {
+                  // Here we merge the last log data with textForlog with holdinFinalTranscript
+                  logDataPersist[logDataPersist.length - 1].textForLog =
+                    logDataPersist[logDataPersist.length - 1].textForLog +
+                    " " +
+                    holdingFinalTranscript;
+                  console.log(
+                    "WHATTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT MY LAST LOGGGGGGGGGG",
+                    logDataPersist
+                  );
+                }
 
                 logData.push({
                   command: "Start",
@@ -710,6 +767,7 @@ export default function SpeechRecognition(options) {
                   textForLog: startingSentence
                 });
               }
+              holdingFinalTranscript = "";
               interimTranscript = this.concatTranscripts(
                 interimTranscript,
                 this.containsCommands(event.results[i][0].transcript.trim())
@@ -783,7 +841,16 @@ export default function SpeechRecognition(options) {
       };
 
       render() {
+        // This is to make sure we do not have a race condition
         if (this.state.hasNextCommand) {
+          console.log(
+            "LAst maaaaaaaaaaaaaaaaaaaaaaaaaaaaa ta finalscript zero bhayo bhaneko ta",
+            finalTranscript
+          );
+          if (finalTranscript) {
+            holdingFinalTranscript = finalTranscript;
+          }
+          // If finalscript not null then we need to update the logdata value
           finalTranscript = "";
         }
         let transcript = this.concatTranscripts(
@@ -826,8 +893,14 @@ export default function SpeechRecognition(options) {
               updatedWord = this.state.suggestionList[index][
                 this.state.suggestionListNumber
               ];
+
               toReplaceWord = word;
               replacingWord = updatedWord;
+              console.log(
+                "WHATTTTTTTTTTT IS MY UPDATEDDDDDDD WORD",
+                replacingWord
+              );
+              console.log("WHATTTTTTTTTTT IS MY toReplace WORD", toReplaceWord);
             }
 
             transcriptObject.push({

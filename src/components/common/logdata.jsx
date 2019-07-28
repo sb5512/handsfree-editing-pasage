@@ -20,6 +20,7 @@ class Logdata extends Component {
               stopListening={this.props.stopListening}
               data={this.props.logDataPersist}
               filename={filename}
+              historyStates={this.props.historyStates}
             />
           ) : (
             <React.Fragment />

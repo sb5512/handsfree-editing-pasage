@@ -87,6 +87,7 @@ class ReplyDictate extends Component {
             phraseQuestionImageCount={this.props.phraseQuestionImageCount}
             stopListening={this.props.stopListening}
             startListening={this.props.startListening}
+            historyStates={this.props.state}
           />
         </React.Fragment>
       );
@@ -110,6 +111,7 @@ class ReplyDictate extends Component {
             phraseQuestionImageCount={this.props.phraseQuestionImageCount}
             stopListening={this.props.stopListening}
             startListening={this.props.startListening}
+            historyStates={this.props.state}
           />
         </React.Fragment>
       );

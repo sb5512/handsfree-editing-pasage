@@ -107,6 +107,7 @@ class FreeTextFormationDictate extends Component {
             imageNumber={this.props.imageNumber}
             stopListening={this.props.stopListening}
             startListening={this.props.startListening}
+            historyStates={this.props.state}
           />
         </React.Fragment>
       );

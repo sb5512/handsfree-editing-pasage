@@ -29,6 +29,7 @@ export default function SpeechRecognition(options) {
     let pauseAfterDisconnect = false;
     let interimTranscript = "";
     let finalTranscript = "";
+    let holdingFinalTranscript = "";
     let commands = [];
 
     return class SpeechRecognitionContainer extends Component {
@@ -643,7 +644,7 @@ export default function SpeechRecognition(options) {
                   text: '"Next" command given at : ' + Utils.getCurrentTime(),
                   textForLog: finalTranscript
                 });
-                hasNextCommand = true; // not used so far
+                hasNextCommand = true; // Used when we think some finalscript comes late .i.e race condition
 
                 let whichTask = window.location.pathname.split("/").pop();
                 whichTask === "freetextformationtask"
@@ -716,6 +717,7 @@ export default function SpeechRecognition(options) {
                 );
               }
             } else {
+              // INTERIM TRANSCRIPT HORA YO??
               // log data at beginning of transcription
               if (finalTranscript === "" && logData.length === 0) {
                 let whichTask = window.location.pathname.split("/").pop();
@@ -742,6 +744,21 @@ export default function SpeechRecognition(options) {
 
                     break;
                 }
+                console.log(
+                  "Yo honita data ta persisted ",
+                  this.state.logDataPersist
+                );
+                if (holdingFinalTranscript.length > 0) {
+                  // Here we merge the last log data with textForlog with holdinFinalTranscript
+                  logDataPersist[logDataPersist.length - 1].textForLog =
+                    logDataPersist[logDataPersist.length - 1].textForLog +
+                    " " +
+                    holdingFinalTranscript;
+                  console.log(
+                    "WHATTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT MY LAST LOGGGGGGGGGG",
+                    logDataPersist
+                  );
+                }
 
                 logData.push({
                   command: "Start",
@@ -750,6 +767,7 @@ export default function SpeechRecognition(options) {
                   textForLog: startingSentence
                 });
               }
+              holdingFinalTranscript = "";
               interimTranscript = this.concatTranscripts(
                 interimTranscript,
                 this.containsCommands(event.results[i][0].transcript.trim())
@@ -823,7 +841,16 @@ export default function SpeechRecognition(options) {
       };
 
       render() {
+        // This is to make sure we do not have a race condition
         if (this.state.hasNextCommand) {
+          console.log(
+            "LAst maaaaaaaaaaaaaaaaaaaaaaaaaaaaa ta finalscript zero bhayo bhaneko ta",
+            finalTranscript
+          );
+          if (finalTranscript) {
+            holdingFinalTranscript = finalTranscript;
+          }
+          // If finalscript not null then we need to update the logdata value
           finalTranscript = "";
         }
         let transcript = this.concatTranscripts(

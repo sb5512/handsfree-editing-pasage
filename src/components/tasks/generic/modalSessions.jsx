@@ -6,7 +6,8 @@ class ModalSession extends Component {
   state = { show: true };
 
   handleClose = () => {
-    this.props.startListening();
+    // this.props.startListening();
+    this.props.historyStates.history.goBack();
     this.setState({ show: false });
   };
   handleShow = () => this.setState({ show: true });

@@ -328,7 +328,26 @@ export default function SpeechRecognition(options) {
                   });
                 }
               } else if (
-                currentTranscription.endsWith("spell") &&
+                currentTranscription.endsWith("cancel") ||
+                currentTranscription.endsWith("Cancel")
+              ) {
+                if (this.state.spellMode) {
+                  console.log("Cancel command when inside spell mode");
+                  suggestionMode = false;
+                  hasCommand = false;
+                  // finalTranscript = this.removeLastWord(finalTranscript);
+                  logData.push({
+                    command: "S_Cancel",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      '"Cancel" command given within spell mode at : ' +
+                      Utils.getCurrentTime(),
+                    textForLog: ""
+                  });
+                }
+              } else if (
+                (currentTranscription.endsWith("spell") ||
+                  currentTranscription.endsWith("Spell")) &&
                 this.state.mappingNumber &&
                 !this.state.spellMode
               ) {

@@ -59,7 +59,7 @@ export default function SpeechRecognition(options) {
           // Part of suggestion - Begins
           suggestionMode: false,
           suggestionListNumber: null,
-          suggestionList: [],
+          suggestionList: {},
           // Part of suggestion - Ends
 
           // Logging information Begins
@@ -207,11 +207,13 @@ export default function SpeechRecognition(options) {
         return ["m", "a", "n"];
       }
 
-      setSuggestionList = (word, suggestionList) => {
-        let newArr = this.state.suggestionList;
-        newArr.push(suggestionList);
+      setSuggestionList = (word, suggestions) => {
+        // let newArr = this.state.suggestionList;
+        // newArr.push(suggestionList);
+        let newDict = this.state.suggestionList;
+        newDict[word] = suggestions;
         this.setState({
-          suggestionList: newArr
+          suggestionList: newDict
         });
       };
 
@@ -701,7 +703,7 @@ export default function SpeechRecognition(options) {
               );
 
               // HERE WE RESET OUR SUGGESTIONS
-              suggestionList = [];
+              // suggestionList = [];
               suggestionMode = false;
               suggestionListNumber = null;
               if (ifContainsMap) {
@@ -981,7 +983,7 @@ export default function SpeechRecognition(options) {
             // if we have index matching mapping number we replace that with suggestionlist[suggestionlistnumber]
             let updatedWord = word;
             if (index + 1 === this.state.mappingNumber) {
-              updatedWord = this.state.suggestionList[index][
+              updatedWord = this.state.suggestionList[word][
                 this.state.suggestionListNumber
               ];
 

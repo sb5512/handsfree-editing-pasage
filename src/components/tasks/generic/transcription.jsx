@@ -3,6 +3,31 @@ import Autocomplete from "../../common/autocomplete";
 import ClickedWord from "./clickedWord";
 
 class Transcription extends Component {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.finalTranscript !== nextProps.finalTranscript) {
+      // Go through each of the transcribed word and put it in an array
+      this.props.transcriptObject.map((wordObject, index) => {
+        // if wordbject.text has already been fetched i.e. suggestionlist has it already than ignore fetch.
+        console.log(
+          "I ACTUALLY THOUGHT THIS WAS A SUGGESTION YOYA ",
+          this.props.suggestionList[wordObject.text]
+        );
+        if (!this.props.suggestionList[wordObject.text]) {
+          fetch(`https://api.datamuse.com//words?sl=${wordObject.text}&max=5`)
+            .then(res => res.json())
+            .then(data => {
+              let answer = data.map(el => el.word);
+              console.log("Fetched information are: ", data);
+              this.props.setSuggestionList(wordObject.text, answer);
+              // this.setState({ suggestions: answer });
+            })
+            .catch //this.setState({ suggestions: ["Loading..."] })
+            ();
+        }
+      });
+    }
+  }
+
   render() {
     const {
       transcript,
@@ -25,7 +50,7 @@ class Transcription extends Component {
               return (
                 <React.Fragment key={index}>
                   <Autocomplete
-                    suggestions={wordObject.suggestions}
+                    suggestions={this.props.suggestionList[wordObject.text]}
                     text={wordObject.text}
                     showSuggestion={wordObject.showSuggestion}
                     indexing={index}

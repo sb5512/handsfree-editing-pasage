@@ -207,11 +207,25 @@ export default function SpeechRecognition(options) {
         return ["m", "a", "n"];
       }
 
+      // THIS IS WHERE WE INDUCE ERRORS
       setSuggestionList = (word, suggestions) => {
-        // let newArr = this.state.suggestionList;
-        // newArr.push(suggestionList);
         let newDict = this.state.suggestionList;
-        newDict[word] = suggestions;
+        let tossCoin = Math.floor(Math.random() * 2) == 0;
+        console.log("LETS SUSUS FLIS ACO I", tossCoin);
+        if (word.length > 6 && tossCoin) {
+          if (!newDict[word + "***"]) {
+            finalTranscript = finalTranscript.replace(word, suggestions[1]);
+          }
+          let replacedWord = suggestions[1] + "***";
+          newDict[replacedWord] = [word];
+        }
+        if (newDict[word + "***"]) {
+          suggestions[1] = newDict[word + "***"];
+          newDict[word] = suggestions;
+        } else {
+          newDict[word] = suggestions;
+        }
+
         this.setState({
           suggestionList: newDict
         });
@@ -219,7 +233,7 @@ export default function SpeechRecognition(options) {
 
       clickMouse = () => {
         fetch(
-          "https://hooks.slack.com/services/TKU82KBUG/BLBJPBTHC/igh31aG7hFDwYWRSTGRxiX7",
+          "https://hooks.slack.com/services/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",
           {
             method: "POST",
             headers: {

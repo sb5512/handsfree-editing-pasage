@@ -208,11 +208,11 @@ export default function SpeechRecognition(options) {
       }
 
       // THIS IS WHERE WE INDUCE ERRORS
-      setSuggestionList = (word, suggestions) => {
+      setSuggestionList = (word, suggestions, shouldReplace) => {
+        console.log("THIS WORD SHOULD BE REPLACED", word, shouldReplace);
         let newDict = this.state.suggestionList;
-        let tossCoin = Math.floor(Math.random() * 2) == 0;
-        console.log("LETS SUSUS FLIS ACO I", tossCoin);
-        if (word.length > 6 && tossCoin) {
+
+        if (shouldReplace) {
           if (!newDict[word + "***"]) {
             finalTranscript = finalTranscript.replace(word, suggestions[1]);
           }

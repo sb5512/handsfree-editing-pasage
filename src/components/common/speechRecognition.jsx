@@ -850,7 +850,7 @@ export default function SpeechRecognition(options) {
                 induceError = true;
                 finalTranscript = "";
                 // Now we start gaze again
-                this.pressf4ToStartStopGaze();
+                // this.pressf4ToStartStopGaze();
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {

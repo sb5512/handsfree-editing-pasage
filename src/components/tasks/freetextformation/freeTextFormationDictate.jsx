@@ -5,6 +5,7 @@ import ImageLoader from "./imageLoader";
 import Transcription from "../generic/transcription";
 import SpellMode from "../generic/spellMode";
 import LogdataImageTask from "../../common/logdataImageTask";
+import { Image, Container, Col, Row } from "react-bootstrap";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -24,6 +25,19 @@ class FreeTextFormationDictate extends Component {
     e.target.style.backgroundColor = "#F44FFF";
     this.setState({ clickedWord: `${word} at index ${index + 1}` });
     this.props.handleWordClickToGetToMappingWithNumberState(index + 1, word);
+    fetch(
+      "https://hooks.slack.com/services/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",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+          channel: "test_ob_tooling",
+          text: "#f4press"
+        })
+      }
+    );
   };
 
   toggleHoverOn = event => {
@@ -33,7 +47,7 @@ class FreeTextFormationDictate extends Component {
         this.setState({ timeoutId: null }); // EDIT: added this line
         console.log("YAYYYYYYYYYYYYY 1 seconds");
         fetch(
-          "https://hooks.slack.com/services/TKU82KBUG/BLBJPBTHC/igh31aG7hFDwYWRSTGRxiX7",
+          "https://hooks.slack.com/services/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",
           {
             method: "POST",
             headers: {
@@ -87,6 +101,7 @@ class FreeTextFormationDictate extends Component {
             imageNumber={this.props.imageNumber}
             stopListening={this.props.stopListening}
             startListening={this.props.startListening}
+            historyStates={this.props.state}
           />
         </React.Fragment>
       );
@@ -94,13 +109,15 @@ class FreeTextFormationDictate extends Component {
       renderDiv = (
         <React.Fragment>
           <ImageLoader {...this.props} loadedImage={this.props.loadedImage} />{" "}
-          <Transcription
-            handleWordClick={this.handleWordClick}
-            toggleHoverOn={this.toggleHoverOn}
-            toggleHoverOff={this.toggleHoverOff}
-            clickedWord={this.state.clickedWord}
-            {...this.props}
-          />
+          <Container>
+            <Transcription
+              handleWordClick={this.handleWordClick}
+              toggleHoverOn={this.toggleHoverOn}
+              toggleHoverOff={this.toggleHoverOff}
+              clickedWord={this.state.clickedWord}
+              {...this.props}
+            />
+          </Container>
           <LogdataImageTask
             logDataPersist={this.props.logDataPersist}
             logData={this.props.logData}

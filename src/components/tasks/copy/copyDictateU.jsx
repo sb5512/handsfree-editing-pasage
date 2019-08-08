@@ -24,33 +24,51 @@ class CopyDictate extends Component {
     e.target.style.backgroundColor = "#F44FFF";
     this.setState({ clickedWord: `${word} at index ${index + 1}` });
     this.props.handleWordClickToGetToMappingWithNumberState(index + 1, word);
+    fetch(
+      "https://hooks.slack.com/services/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",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+          channel: "test_ob_tooling",
+          text: "#f4press"
+        })
+      }
+    );
   };
 
   toggleHoverOn = event => {
-    event.target.style.backgroundColor = "#FFFF4F";
-    if (!this.state.timeoutId) {
-      let timeoutId = window.setTimeout(() => {
-        this.setState({ timeoutId: null }); // EDIT: added this line
-        console.log("YAYYYYYYYYYYYYY 1 seconds");
-        fetch(
-          "https://hooks.slack.com/services/TKU82KBUG/BLBJPBTHC/igh31aG7hFDwYWRSTGRxiX7",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: JSON.stringify({
-              channel: "test_ob_tooling",
-              text: "#clickmouse"
-            })
-          }
-        );
-      }, 1000);
-      this.setState({ timeoutId: timeoutId });
+    if (this.props.commandTag) {
+      event.target.style.backgroundColor = "#FFFF4F";
+    } else {
+      event.target.style.backgroundColor = "#FFFF4F";
+      if (!this.state.timeoutId) {
+        let timeoutId = window.setTimeout(() => {
+          this.setState({ timeoutId: null }); // EDIT: added this line
+          console.log("YAYYYYYYYYYYYYY 1 seconds");
+          fetch(
+            "https://hooks.slack.com/services/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",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: JSON.stringify({
+                channel: "test_ob_tooling",
+                text: "#clickmouse"
+              })
+            }
+          );
+        }, 1000);
+        this.setState({ timeoutId: timeoutId });
+      }
     }
+
     this.props.logTimeDataWhenHoveredAtWord(event.target.innerHTML);
 
-    this.setState({ hover: true });
+    // this.setState({ hover: true });
   };
 
   toggleHoverOff = event => {

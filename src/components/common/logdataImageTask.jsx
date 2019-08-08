@@ -2,7 +2,11 @@ import React, { Component } from "react";
 import ModalSession from "../tasks/generic/modalSessions";
 
 class LogdataImageTask extends Component {
-  state = { sessionCounter: 4 };
+  state = { sessionCounter: 1 };
+
+  sessionCounterUp = () => {
+    this.setState({ sessionCounter: this.state.sessionCounter + 1 });
+  };
   render() {
     let filename =
       "session" +
@@ -12,14 +16,14 @@ class LogdataImageTask extends Component {
       <React.Fragment>
         {" "}
         <div className="border border-white bg-secondary d-block p-2 bg-light">
-          {(this.props.imageNumber !== 0) &
-          (this.props.imageNumber % this.state.sessionCounter === 0) ? (
+          {this.state.sessionCounter - this.props.imageNumber === 0 ? (
             <ModalSession
               startListening={this.props.startListening}
               stopListening={this.props.stopListening}
               data={this.props.logDataPersist}
               filename={filename}
               historyStates={this.props.historyStates}
+              sessionCounterUp={this.sessionCounterUp}
             />
           ) : (
             <React.Fragment />

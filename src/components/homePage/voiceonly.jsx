@@ -39,6 +39,7 @@ class Voiceonly extends Component {
               </button>
             </Link>
           </div>
+
           <div className="col-4">
             <Link to="/replytask">
               <button

@@ -44,7 +44,7 @@ class Multimodal extends Component {
         </button>
 
         <div className="row justify-content-between">
-          <div className="col-4">
+          <div className="col-3">
             <Link to="/copytask">
               <button
                 type="button"
@@ -56,7 +56,19 @@ class Multimodal extends Component {
               </button>
             </Link>
           </div>
-          <div className="col-4">
+          <div className="col-3">
+            <Link to="/copytaskdwell">
+              <button
+                type="button"
+                className="btn btn-success btn-lg btn-block"
+              >
+                <h2>Copy Task Dwell</h2>
+                <br />
+                <br />
+              </button>
+            </Link>
+          </div>
+          <div className="col-3">
             <Link to="/replytask">
               <button
                 type="button"
@@ -68,7 +80,7 @@ class Multimodal extends Component {
               </button>
             </Link>
           </div>
-          <div className="col-4">
+          <div className="col-3">
             <Link to="/freetextformationtask">
               <button
                 type="button"

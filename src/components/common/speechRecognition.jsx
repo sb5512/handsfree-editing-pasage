@@ -136,8 +136,8 @@ export default function SpeechRecognition(options) {
           interimWord.endsWith("Clear") ||
           interimWord.endsWith("Next") ||
           interimWord.endsWith("next") ||
-          interimWord.endsWith("select") ||
-          interimWord.endsWith("Select")
+          interimWord.endsWith("Select") ||
+          interimWord.endsWith("select")
         );
       }
 
@@ -213,6 +213,7 @@ export default function SpeechRecognition(options) {
       // Need to have aboolean names induceError = true which has to be false once a word is replaced
       // Only when the "Next command is called we set the induceError = true"
       setSuggestionList = (word, suggestions, shouldReplace) => {
+        let logData = this.state.logData;
         console.log("THIS WORD SHOULD BE REPLACED", word, shouldReplace);
         let newDict = this.state.suggestionList;
         let induceError = this.state.induceError;
@@ -234,6 +235,18 @@ export default function SpeechRecognition(options) {
               word,
               suggestions[randomNumber]
             );
+            logData.push({
+              command: "Induce Error",
+              time: Utils.getCurrentTime(),
+              text:
+                'Induced error for "' +
+                word +
+                '" with ' +
+                suggestions[randomNumber] +
+                " at : " +
+                Utils.getCurrentTime(),
+              textForLog: word
+            });
             induceError = false;
           }
           let replacedWord = suggestions[randomNumber] + "***";
@@ -250,6 +263,7 @@ export default function SpeechRecognition(options) {
         }
 
         this.setState({
+          logData: logData,
           suggestionList: newDict,
           induceError: induceError
         });
@@ -266,6 +280,22 @@ export default function SpeechRecognition(options) {
             body: JSON.stringify({
               channel: "test_ob_tooling",
               text: "#clickmouse"
+            })
+          }
+        );
+      };
+
+      pressf4ToStartStopGaze = () => {
+        fetch(
+          "https://hooks.slack.com/services/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",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+              channel: "test_ob_tooling",
+              text: "#f4press"
             })
           }
         );
@@ -358,7 +388,7 @@ export default function SpeechRecognition(options) {
                     text:
                       '"Finish" command within spell mode given at : ' +
                       Utils.getCurrentTime(),
-                    textForLog: ""
+                    textForLog: finalTranscript
                   });
                 } else {
                   logData.push({
@@ -366,9 +396,10 @@ export default function SpeechRecognition(options) {
                     time: Utils.getCurrentTime(),
                     text:
                       '"Finish" command given at : ' + Utils.getCurrentTime(),
-                    textForLog: ""
+                    textForLog: finalTranscript
                   });
                 }
+                this.pressf4ToStartStopGaze();
               } else if (
                 currentTranscription.endsWith("cancel") ||
                 currentTranscription.endsWith("Cancel")
@@ -384,9 +415,18 @@ export default function SpeechRecognition(options) {
                     text:
                       '"Cancel" command given within spell mode at : ' +
                       Utils.getCurrentTime(),
-                    textForLog: ""
+                    textForLog: finalTranscript
+                  });
+                } else {
+                  logData.push({
+                    command: "Cancel",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      '"Cancel" command given at : ' + Utils.getCurrentTime(),
+                    textForLog: finalTranscript
                   });
                 }
+                this.pressf4ToStartStopGaze();
               } else if (
                 (currentTranscription.endsWith("spell") ||
                   currentTranscription.endsWith("Spell")) &&
@@ -409,7 +449,7 @@ export default function SpeechRecognition(options) {
                   text:
                     '"spell" command activated spell mode at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               } else if (
                 currentTranscription.endsWith("delete") &&
@@ -432,7 +472,7 @@ export default function SpeechRecognition(options) {
                     this.state.mappingNumber +
                     "given at : " +
                     Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               } else if (currentTranscription.endsWith("delete")) {
                 console.log("DELETE LAST WORD OF SENTENCE");
@@ -442,7 +482,7 @@ export default function SpeechRecognition(options) {
                   command: "Delete Last",
                   time: Utils.getCurrentTime(),
                   text: '"delete" command given at : ' + Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               } else if (
                 // Here we check if the transcript is a number
@@ -462,7 +502,7 @@ export default function SpeechRecognition(options) {
                     mappingNumber +
                     " given at : " +
                     Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               } else if (
                 currentTranscription.endsWith("lowercase") &&
@@ -479,7 +519,7 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     '"lowercase" command given at : ' + Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               } else if (
                 // secondlast word is an insert
@@ -500,7 +540,7 @@ export default function SpeechRecognition(options) {
                   command: "Insert",
                   time: Utils.getCurrentTime(),
                   text: '"Insert" command given at : ' + Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               } // Let us check if we can check for numbers if they exist
               else if (
@@ -516,13 +556,14 @@ export default function SpeechRecognition(options) {
                 // get suggestion list array
                 // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
 
+                this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Option '1'",
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "1" i.e. first element from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               }
               // else if (
@@ -560,13 +601,15 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 1;
                 mappingNumber = this.state.mappingNumber;
+
+                this.pressf4ToStartStopGaze(); // turning back on the gaze
                 logData.push({
                   command: "Option '2'",
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "2" command from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               }
               // else if (
@@ -600,13 +643,15 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 2;
                 mappingNumber = this.state.mappingNumber;
+
+                this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Option '3'",
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "3" command from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               }
               // else if (
@@ -643,13 +688,15 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 3;
                 mappingNumber = this.state.mappingNumber;
+
+                this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Option '4'",
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "4" command from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               }
               // else if (
@@ -682,13 +729,15 @@ export default function SpeechRecognition(options) {
                 suggestionMode = true;
                 suggestionListNumber = 4;
                 mappingNumber = this.state.mappingNumber;
+
+                this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Option 'e'",
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "5" command from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               }
               // else if (
@@ -761,11 +810,12 @@ export default function SpeechRecognition(options) {
 
                 // TIMERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR STARTSSSS
                 ///////////////////////////////////////////////////////
+                this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Map",
                   time: Utils.getCurrentTime(),
                   text: '"Map" command given at : ' + Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               }
               if (ifContainsSelect) {
@@ -775,7 +825,7 @@ export default function SpeechRecognition(options) {
                   command: "Click",
                   time: Utils.getCurrentTime(),
                   text: '"Click" command given at : ' + Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
                 this.clickMouse();
               }
@@ -799,6 +849,8 @@ export default function SpeechRecognition(options) {
                 logData = []; //make log data empty
                 induceError = true;
                 finalTranscript = "";
+                // Now we start gaze again
+                this.pressf4ToStartStopGaze();
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {
@@ -821,7 +873,7 @@ export default function SpeechRecognition(options) {
                   text:
                     '"Finish" command within spell mode given at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: ""
+                  textForLog: finalTranscript
                 });
               } else if (ifContainsClear) {
                 if (this.state.spellMode) {
@@ -832,7 +884,7 @@ export default function SpeechRecognition(options) {
                     text:
                       '"Clear" command within spell mode given at : ' +
                       Utils.getCurrentTime(),
-                    textForLog: ""
+                    textForLog: finalTranscript
                   });
                 } else {
                   finalTranscript = "";
@@ -841,7 +893,7 @@ export default function SpeechRecognition(options) {
                     time: Utils.getCurrentTime(),
                     text:
                       '"Clear" command given at : ' + Utils.getCurrentTime(),
-                    textForLog: ""
+                    textForLog: finalTranscript
                   });
                 }
               }
@@ -859,7 +911,7 @@ export default function SpeechRecognition(options) {
                 );
               }
             } else {
-              // INTERIM TRANSCRIPT HORA YO??
+              // INTERIM TRANSCRIPT HORA YO?? HO JASTAI CHA
               // log data at beginning of transcription
               if (finalTranscript === "" && logData.length === 0) {
                 let whichTask = window.location.pathname.split("/").pop();
@@ -916,6 +968,7 @@ export default function SpeechRecognition(options) {
                   ? this.removeLastWord(event.results[i][0].transcript)
                   : event.results[i][0].transcript
               );
+              // interimTranscript = interimTranscript.toUpperCase();
             }
           }
         }
@@ -1000,6 +1053,9 @@ export default function SpeechRecognition(options) {
           finalTranscript,
           interimTranscript
         );
+
+        // Maybe upeercase already here?
+        // transcript = transcript.charAt(0).toUpperCase() + transcript.slice(1);
 
         /** OBJECT CREATION FOR EACH WORD BEGINS */
         let transcriptObject = [];

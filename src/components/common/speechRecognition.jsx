@@ -1042,19 +1042,26 @@ export default function SpeechRecognition(options) {
             );
             if (
               index + 1 === this.state.mappingNumber &&
-              this.state.suggestionList[word][this.state.suggestionListNumber]
+              this.state.suggestionList[word]
             ) {
-              updatedWord = this.state.suggestionList[word][
-                this.state.suggestionListNumber
-              ];
+              if (
+                this.state.suggestionList[word][this.state.suggestionListNumber]
+              ) {
+                updatedWord = this.state.suggestionList[word][
+                  this.state.suggestionListNumber
+                ];
 
-              toReplaceWord = word;
-              replacingWord = updatedWord;
-              console.log(
-                "WHATTTTTTTTTTT IS MY UPDATEDDDDDDD WORD",
-                replacingWord
-              );
-              console.log("WHATTTTTTTTTTT IS MY toReplace WORD", toReplaceWord);
+                toReplaceWord = word;
+                replacingWord = updatedWord;
+                console.log(
+                  "WHATTTTTTTTTTT IS MY UPDATEDDDDDDD WORD",
+                  replacingWord
+                );
+                console.log(
+                  "WHATTTTTTTTTTT IS MY toReplace WORD",
+                  toReplaceWord
+                );
+              }
             }
 
             transcriptObject.push({

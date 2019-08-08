@@ -40,9 +40,9 @@ class CopyDictate extends Component {
   };
 
   toggleHoverOn = event => {
-    if (this.props.commandTag) {
+    if (this.props.commandTag && !this.props.dwellTag) {
       event.target.style.backgroundColor = "#FFFF4F";
-    } else {
+    } else if (!this.props.commandTag && this.props.dwellTag) {
       event.target.style.backgroundColor = "#FFFF4F";
       if (!this.state.timeoutId) {
         let timeoutId = window.setTimeout(() => {
@@ -64,11 +64,13 @@ class CopyDictate extends Component {
         }, 1000);
         this.setState({ timeoutId: timeoutId });
       }
+    } else {
+      // TODO maybe we can send a message where a mouse cursor gets hidden
     }
 
     this.props.logTimeDataWhenHoveredAtWord(event.target.innerHTML);
 
-    // this.setState({ hover: true });
+    this.setState({ hover: true });
   };
 
   toggleHoverOff = event => {

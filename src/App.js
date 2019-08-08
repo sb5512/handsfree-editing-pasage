@@ -34,13 +34,34 @@ class App extends Component {
           <Route
             path="/copytask"
             render={props => (
-              <CopyTask state={props} commandTag={true} {...this.props} />
+              <CopyTask
+                state={props}
+                commandTag={false}
+                dwellTag={false}
+                {...this.props}
+              />
+            )}
+          />
+          <Route
+            path="/copytaskcommand"
+            render={props => (
+              <CopyTask
+                state={props}
+                commandTag={true}
+                dwellTag={false}
+                {...this.props}
+              />
             )}
           />
           <Route
             path="/copytaskdwell"
             render={props => (
-              <CopyTask state={props} commandTag={false} {...this.props} />
+              <CopyTask
+                state={props}
+                commandTag={false}
+                dwellTag={true}
+                {...this.props}
+              />
             )}
           />
           <Route
@@ -53,6 +74,32 @@ class App extends Component {
               <FreeTextFormationTask
                 state={props}
                 loadedImage={true}
+                commandTag={false}
+                dwellTag={false}
+                {...this.props}
+              />
+            )}
+          />
+          <Route
+            path="/freetextformationtaskcommand"
+            render={props => (
+              <FreeTextFormationTask
+                state={props}
+                loadedImage={true}
+                commandTag={true}
+                dwellTag={false}
+                {...this.props}
+              />
+            )}
+          />
+          <Route
+            path="/freetextformationtaskdwell"
+            render={props => (
+              <FreeTextFormationTask
+                state={props}
+                loadedImage={true}
+                commandTag={false}
+                dwellTag={true}
                 {...this.props}
               />
             )}

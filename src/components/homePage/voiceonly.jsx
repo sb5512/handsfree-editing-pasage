@@ -27,7 +27,7 @@ class Voiceonly extends Component {
           <i className="fa fa-microphone" />
         </button>
         <div className="row justify-content-between">
-          <div className="col-4">
+          <div className="col-6">
             <Link to="/copytask">
               <button
                 type="button"
@@ -40,7 +40,7 @@ class Voiceonly extends Component {
             </Link>
           </div>
 
-          <div className="col-4">
+          {/* <div className="col-4">
             <Link to="/replytask">
               <button
                 type="button"
@@ -51,8 +51,8 @@ class Voiceonly extends Component {
                 <h1>2</h1>
               </button>
             </Link>
-          </div>
-          <div className="col-4">
+          </div> */}
+          <div className="col-6">
             <Link to="/freetextformationtask">
               <button
                 type="button"

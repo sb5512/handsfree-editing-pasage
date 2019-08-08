@@ -41,27 +41,34 @@ class FreeTextFormationDictate extends Component {
   };
 
   toggleHoverOn = event => {
-    event.target.style.backgroundColor = "#FFFF4F";
-    if (!this.state.timeoutId) {
-      let timeoutId = window.setTimeout(() => {
-        this.setState({ timeoutId: null }); // EDIT: added this line
-        console.log("YAYYYYYYYYYYYYY 1 seconds");
-        fetch(
-          "https://hooks.slack.com/services/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",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: JSON.stringify({
-              channel: "test_ob_tooling",
-              text: "#clickmouse"
-            })
-          }
-        );
-      }, 1000);
-      this.setState({ timeoutId: timeoutId });
+    if (this.props.commandTag && !this.props.dwellTag) {
+      event.target.style.backgroundColor = "#FFFF4F";
+    } else if (!this.props.commandTag && this.props.dwellTag) {
+      event.target.style.backgroundColor = "#FFFF4F";
+      if (!this.state.timeoutId) {
+        let timeoutId = window.setTimeout(() => {
+          this.setState({ timeoutId: null }); // EDIT: added this line
+          console.log("YAYYYYYYYYYYYYY 1 seconds");
+          fetch(
+            "https://hooks.slack.com/services/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",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: JSON.stringify({
+                channel: "test_ob_tooling",
+                text: "#clickmouse"
+              })
+            }
+          );
+        }, 1000);
+        this.setState({ timeoutId: timeoutId });
+      }
+    } else {
+      // TODO maybe we can send a message where a mouse cursor gets hidden
     }
+
     this.props.logTimeDataWhenHoveredAtWord(event.target.innerHTML);
 
     this.setState({ hover: true });

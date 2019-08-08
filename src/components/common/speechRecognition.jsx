@@ -1055,7 +1055,7 @@ export default function SpeechRecognition(options) {
         );
 
         // Maybe upeercase already here?
-        // transcript = transcript.charAt(0).toUpperCase() + transcript.slice(1);
+        transcript = transcript.charAt(0).toUpperCase() + transcript.slice(1);
 
         /** OBJECT CREATION FOR EACH WORD BEGINS */
         let transcriptObject = [];

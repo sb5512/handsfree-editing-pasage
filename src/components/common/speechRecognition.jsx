@@ -67,6 +67,8 @@ export default function SpeechRecognition(options) {
           logDataPersist: [],
           // Logging information Ends
 
+          induceError: true,
+
           toCorrectInSpellModeWord: ""
         };
       }
@@ -208,17 +210,31 @@ export default function SpeechRecognition(options) {
       }
 
       // THIS IS WHERE WE INDUCE ERRORS
+      // Need to have aboolean names induceError = true which has to be false once a word is replaced
+      // Only when the "Next command is called we set the induceError = true"
       setSuggestionList = (word, suggestions, shouldReplace) => {
         console.log("THIS WORD SHOULD BE REPLACED", word, shouldReplace);
         let newDict = this.state.suggestionList;
-
-        let randomNumber = Math.floor(Math.random() * 6); // use this to replace a suggestion word in list
+        let induceError = this.state.induceError;
+        let randomNumber = Math.floor(Math.random() * 5); // use this to replace a suggestion word in list
         if (shouldReplace) {
-          if (!newDict[word + "***"]) {
+          console.log(
+            "The random number which picks up the random suggestion word for replacement is?",
+            randomNumber
+          );
+          console.log(
+            "And the induceError boolean is already taken? ",
+            induceError
+          );
+          if (!newDict[word + "***"] && induceError) {
+            while (word == suggestions[randomNumber]) {
+              randomNumber = Math.floor(Math.random() * 5);
+            }
             finalTranscript = finalTranscript.replace(
               word,
               suggestions[randomNumber]
             );
+            induceError = false;
           }
           let replacedWord = suggestions[randomNumber] + "***";
           newDict[replacedWord] = [word];
@@ -234,7 +250,8 @@ export default function SpeechRecognition(options) {
         }
 
         this.setState({
-          suggestionList: newDict
+          suggestionList: newDict,
+          induceError: induceError
         });
       };
 
@@ -303,6 +320,7 @@ export default function SpeechRecognition(options) {
         let suggestionList = this.state.suggestionList;
         let logData = this.state.logData;
         let logDataPersist = this.state.logDataPersist;
+        let induceError = this.state.induceError;
 
         /**
          * state hascommand true bhayo bhane hami command mode ma cham
@@ -506,32 +524,34 @@ export default function SpeechRecognition(options) {
                     Utils.getCurrentTime(),
                   textForLog: ""
                 });
-              } else if (
-                (currentTranscription.endsWith("a") ||
-                  currentTranscription.endsWith("hey") ||
-                  currentTranscription.endsWith("Hey") ||
-                  currentTranscription.endsWith("A") ||
-                  currentTranscription.endsWith("First") ||
-                  currentTranscription.endsWith("first")) &&
-                this.state.mappingNumber
-              ) {
-                console.log("SUGGESTION LIST FOR A");
-                suggestionMode = true;
-                suggestionListNumber = 0;
-                mappingNumber = this.state.mappingNumber;
-                // No spell mode but we have suggestion list number set, which means we want to select from suggestion list
-                // get suggestion list array
-                // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
+              }
+              // else if (
+              //   (currentTranscription.endsWith("a") ||
+              //     currentTranscription.endsWith("hey") ||
+              //     currentTranscription.endsWith("Hey") ||
+              //     currentTranscription.endsWith("A") ||
+              //     currentTranscription.endsWith("First") ||
+              //     currentTranscription.endsWith("first")) &&
+              //   this.state.mappingNumber
+              // ) {
+              //   console.log("SUGGESTION LIST FOR A");
+              //   suggestionMode = true;
+              //   suggestionListNumber = 0;
+              //   mappingNumber = this.state.mappingNumber;
+              //   // No spell mode but we have suggestion list number set, which means we want to select from suggestion list
+              //   // get suggestion list array
+              //   // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
 
-                logData.push({
-                  command: "Option 'a'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "a" command from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog: ""
-                });
-              } else if (
+              //   logData.push({
+              //     command: "Option 'a'",
+              //     time: Utils.getCurrentTime(),
+              //     text:
+              //       'Chosen "a" command from suggestion list at : ' +
+              //       Utils.getCurrentTime(),
+              //     textForLog: ""
+              //   });
+              // }
+              else if (
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 2 //
@@ -548,28 +568,30 @@ export default function SpeechRecognition(options) {
                     Utils.getCurrentTime(),
                   textForLog: ""
                 });
-              } else if (
-                (currentTranscription.endsWith("B") ||
-                  currentTranscription.endsWith("b") ||
-                  currentTranscription.endsWith("be") ||
-                  currentTranscription.endsWith("Be") ||
-                  currentTranscription.endsWith("Second") ||
-                  currentTranscription.endsWith("second")) &&
-                this.state.mappingNumber
-              ) {
-                console.log("SUGGESTION LIST FOR B");
-                suggestionMode = true;
-                suggestionListNumber = 1;
-                mappingNumber = this.state.mappingNumber;
-                logData.push({
-                  command: "Option 'b'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "b" command from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog: ""
-                });
-              } else if (
+              }
+              // else if (
+              //   (currentTranscription.endsWith("B") ||
+              //     currentTranscription.endsWith("b") ||
+              //     currentTranscription.endsWith("be") ||
+              //     currentTranscription.endsWith("Be") ||
+              //     currentTranscription.endsWith("Second") ||
+              //     currentTranscription.endsWith("second")) &&
+              //   this.state.mappingNumber
+              // ) {
+              //   console.log("SUGGESTION LIST FOR B");
+              //   suggestionMode = true;
+              //   suggestionListNumber = 1;
+              //   mappingNumber = this.state.mappingNumber;
+              //   logData.push({
+              //     command: "Option 'b'",
+              //     time: Utils.getCurrentTime(),
+              //     text:
+              //       'Chosen "b" command from suggestion list at : ' +
+              //       Utils.getCurrentTime(),
+              //     textForLog: ""
+              //   });
+              // }
+              else if (
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 3 //
@@ -586,31 +608,33 @@ export default function SpeechRecognition(options) {
                     Utils.getCurrentTime(),
                   textForLog: ""
                 });
-              } else if (
-                (currentTranscription.endsWith("c") ||
-                  currentTranscription.endsWith("C") ||
-                  currentTranscription.endsWith("see") ||
-                  currentTranscription.endsWith("scene") ||
-                  currentTranscription.endsWith("Scene") ||
-                  currentTranscription.endsWith("Sing") ||
-                  currentTranscription.endsWith("sing") ||
-                  currentTranscription.endsWith("Third") ||
-                  currentTranscription.endsWith("third")) &&
-                this.state.mappingNumber
-              ) {
-                console.log("SUGGESTION LIST FOR C");
-                suggestionMode = true;
-                suggestionListNumber = 2;
-                mappingNumber = this.state.mappingNumber;
-                logData.push({
-                  command: "Option 'c'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "c" command from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog: ""
-                });
-              } else if (
+              }
+              // else if (
+              //   (currentTranscription.endsWith("c") ||
+              //     currentTranscription.endsWith("C") ||
+              //     currentTranscription.endsWith("see") ||
+              //     currentTranscription.endsWith("scene") ||
+              //     currentTranscription.endsWith("Scene") ||
+              //     currentTranscription.endsWith("Sing") ||
+              //     currentTranscription.endsWith("sing") ||
+              //     currentTranscription.endsWith("Third") ||
+              //     currentTranscription.endsWith("third")) &&
+              //   this.state.mappingNumber
+              // ) {
+              //   console.log("SUGGESTION LIST FOR C");
+              //   suggestionMode = true;
+              //   suggestionListNumber = 2;
+              //   mappingNumber = this.state.mappingNumber;
+              //   logData.push({
+              //     command: "Option 'c'",
+              //     time: Utils.getCurrentTime(),
+              //     text:
+              //       'Chosen "c" command from suggestion list at : ' +
+              //       Utils.getCurrentTime(),
+              //     textForLog: ""
+              //   });
+              // }
+              else if (
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 4 //
@@ -627,27 +651,29 @@ export default function SpeechRecognition(options) {
                     Utils.getCurrentTime(),
                   textForLog: ""
                 });
-              } else if (
-                (currentTranscription.endsWith("d") ||
-                  currentTranscription.endsWith("D") ||
-                  currentTranscription.endsWith("D&D") ||
-                  currentTranscription.endsWith("Fourth") ||
-                  currentTranscription.endsWith("fourth")) &&
-                this.state.mappingNumber
-              ) {
-                console.log("SUGGESTION LIST FOR D");
-                suggestionMode = true;
-                suggestionListNumber = 3;
-                mappingNumber = this.state.mappingNumber;
-                logData.push({
-                  command: "Option 'd'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "d" command from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog: ""
-                });
-              } else if (
+              }
+              // else if (
+              //   (currentTranscription.endsWith("d") ||
+              //     currentTranscription.endsWith("D") ||
+              //     currentTranscription.endsWith("D&D") ||
+              //     currentTranscription.endsWith("Fourth") ||
+              //     currentTranscription.endsWith("fourth")) &&
+              //   this.state.mappingNumber
+              // ) {
+              //   console.log("SUGGESTION LIST FOR D");
+              //   suggestionMode = true;
+              //   suggestionListNumber = 3;
+              //   mappingNumber = this.state.mappingNumber;
+              //   logData.push({
+              //     command: "Option 'd'",
+              //     time: Utils.getCurrentTime(),
+              //     text:
+              //       'Chosen "d" command from suggestion list at : ' +
+              //       Utils.getCurrentTime(),
+              //     textForLog: ""
+              //   });
+              // }
+              else if (
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 5 //
@@ -664,26 +690,28 @@ export default function SpeechRecognition(options) {
                     Utils.getCurrentTime(),
                   textForLog: ""
                 });
-              } else if (
-                (currentTranscription.endsWith("e") ||
-                  currentTranscription.endsWith("E") ||
-                  currentTranscription.endsWith("Fifth") ||
-                  currentTranscription.endsWith("fifth")) &&
-                this.state.mappingNumber
-              ) {
-                console.log("SUGGESTION LIST FOR E");
-                suggestionMode = true;
-                suggestionListNumber = 4;
-                mappingNumber = this.state.mappingNumber;
-                logData.push({
-                  command: "Option 'e'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "e" command from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog: ""
-                });
-              } else {
+              }
+              // else if (
+              //   (currentTranscription.endsWith("e") ||
+              //     currentTranscription.endsWith("E") ||
+              //     currentTranscription.endsWith("Fifth") ||
+              //     currentTranscription.endsWith("fifth")) &&
+              //   this.state.mappingNumber
+              // ) {
+              //   console.log("SUGGESTION LIST FOR E");
+              //   suggestionMode = true;
+              //   suggestionListNumber = 4;
+              //   mappingNumber = this.state.mappingNumber;
+              //   logData.push({
+              //     command: "Option 'e'",
+              //     time: Utils.getCurrentTime(),
+              //     text:
+              //       'Chosen "e" command from suggestion list at : ' +
+              //       Utils.getCurrentTime(),
+              //     textForLog: ""
+              //   });
+              // }
+              else {
                 // Firstly we come here when we say "map " and after that If no "Done" , If no "spell" , if no "number"
                 // We do nothing
                 mappingNumber = this.state.mappingNumber;
@@ -769,7 +797,7 @@ export default function SpeechRecognition(options) {
                 interimTranscript = "";
                 logDataPersist = [...logDataPersist, ...logData];
                 logData = []; //make log data empty
-
+                induceError = true;
                 finalTranscript = "";
               }
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
@@ -909,7 +937,8 @@ export default function SpeechRecognition(options) {
           suggestionList,
           suggestionListNumber,
           logData,
-          logDataPersist
+          logDataPersist,
+          induceError
         });
       }
 
@@ -1003,7 +1032,18 @@ export default function SpeechRecognition(options) {
           for (const [index, word] of transcript.split(" ").entries()) {
             // if we have index matching mapping number we replace that with suggestionlist[suggestionlistnumber]
             let updatedWord = word;
-            if (index + 1 === this.state.mappingNumber) {
+            console.log(
+              "Why always the problem with suggestion list ",
+              this.state.suggestionList
+            );
+            console.log(
+              "Why always the problem with the sugesstion list and its word",
+              word
+            );
+            if (
+              index + 1 === this.state.mappingNumber &&
+              this.state.suggestionList[word][this.state.suggestionListNumber]
+            ) {
               updatedWord = this.state.suggestionList[word][
                 this.state.suggestionListNumber
               ];

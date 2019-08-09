@@ -20,10 +20,30 @@ class Voiceonly extends Component {
     }
   }
 
+  pressf4ToStartStopGaze = () => {
+    console.log("Called");
+    fetch(
+      "https://hooks.slack.com/services/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",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+          channel: "test_ob_tooling",
+          text: "#f4press"
+        })
+      }
+    );
+  };
+
   render() {
     return (
       <div className="container">
-        <button className="btn btn-light btn-lg float-right text-center">
+        <button
+          className="btn btn-light btn-lg float-right text-center"
+          onClick={this.pressf4ToStartStopGaze}
+        >
           <i className="fa fa-microphone" />
         </button>
         <div className="row justify-content-between">

@@ -206,7 +206,16 @@ export default function SpeechRecognition(options) {
       obtainSuggestionForLetter(word) {
         // call api and set the suggestion list using the word
         // TODO
-        return ["m", "a", "n"];
+        var result = [];
+        var characters = "abcdefghijklmnopqrstuvwxyz";
+        var charactersLength = characters.length;
+        for (var i = 0; i < 5; i++) {
+          result.push(
+            characters.charAt(Math.floor(Math.random() * charactersLength))
+          );
+        }
+        return result;
+        //return ["m", "a", "n"];
       }
 
       // THIS IS WHERE WE INDUCE ERRORS
@@ -399,7 +408,7 @@ export default function SpeechRecognition(options) {
                     textForLog: finalTranscript
                   });
                 }
-                this.pressf4ToStartStopGaze();
+                // this.pressf4ToStartStopGaze();
               } else if (
                 currentTranscription.endsWith("cancel") ||
                 currentTranscription.endsWith("Cancel")
@@ -426,7 +435,7 @@ export default function SpeechRecognition(options) {
                     textForLog: finalTranscript
                   });
                 }
-                this.pressf4ToStartStopGaze();
+                // this.pressf4ToStartStopGaze();
               } else if (
                 (currentTranscription.endsWith("spell") ||
                   currentTranscription.endsWith("Spell")) &&
@@ -556,7 +565,7 @@ export default function SpeechRecognition(options) {
                 // get suggestion list array
                 // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
 
-                this.pressf4ToStartStopGaze();
+                // this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Option '1'",
                   time: Utils.getCurrentTime(),
@@ -602,7 +611,7 @@ export default function SpeechRecognition(options) {
                 suggestionListNumber = 1;
                 mappingNumber = this.state.mappingNumber;
 
-                this.pressf4ToStartStopGaze(); // turning back on the gaze
+                // this.pressf4ToStartStopGaze(); // turning back on the gaze
                 logData.push({
                   command: "Option '2'",
                   time: Utils.getCurrentTime(),
@@ -644,7 +653,7 @@ export default function SpeechRecognition(options) {
                 suggestionListNumber = 2;
                 mappingNumber = this.state.mappingNumber;
 
-                this.pressf4ToStartStopGaze();
+                // this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Option '3'",
                   time: Utils.getCurrentTime(),
@@ -689,7 +698,7 @@ export default function SpeechRecognition(options) {
                 suggestionListNumber = 3;
                 mappingNumber = this.state.mappingNumber;
 
-                this.pressf4ToStartStopGaze();
+                // this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Option '4'",
                   time: Utils.getCurrentTime(),
@@ -730,7 +739,7 @@ export default function SpeechRecognition(options) {
                 suggestionListNumber = 4;
                 mappingNumber = this.state.mappingNumber;
 
-                this.pressf4ToStartStopGaze();
+                // this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Option 'e'",
                   time: Utils.getCurrentTime(),
@@ -810,7 +819,7 @@ export default function SpeechRecognition(options) {
 
                 // TIMERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR STARTSSSS
                 ///////////////////////////////////////////////////////
-                this.pressf4ToStartStopGaze();
+                // this.pressf4ToStartStopGaze();
                 logData.push({
                   command: "Map",
                   time: Utils.getCurrentTime(),
@@ -1055,7 +1064,8 @@ export default function SpeechRecognition(options) {
         );
 
         // Maybe upeercase already here?
-        transcript = transcript.charAt(0).toUpperCase() + transcript.slice(1);
+
+        // transcript = transcript.charAt(0).toUpperCase() + transcript.slice(1);
 
         /** OBJECT CREATION FOR EACH WORD BEGINS */
         let transcriptObject = [];

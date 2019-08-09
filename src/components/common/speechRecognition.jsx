@@ -220,9 +220,10 @@ export default function SpeechRecognition(options) {
           );
           let newDict = this.state.suggestionList;
 
-          // while (word == this.state.suggestionList[word][randomNumber]) {
-          //   randomNumber = Math.floor(Math.random() * 5);
-          // }
+          while (word == this.state.suggestionList[word][randomNumber]) {
+            randomNumber = Math.floor(Math.random() * 5);
+          }
+
           finalTranscript = finalTranscript.replace(
             word,
             this.state.suggestionList[word][randomNumber]

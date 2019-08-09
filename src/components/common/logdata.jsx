@@ -7,6 +7,7 @@ class Logdata extends Component {
   sessionCounterUp = () => {
     this.setState({ sessionCounter: this.state.sessionCounter + 5 });
   };
+
   render() {
     let filename =
       "session" +

@@ -1,5 +1,6 @@
 import commandsENUM from "../components/tasks/freetextformation/commandENUM";
 import TextToNumbers from "./textToNumbers";
+import getSuggestionDictionary from "./suggestions";
 
 class Utils {
   static getRandomInt(max) {
@@ -60,6 +61,10 @@ class Utils {
   //   const ws = fs.createWriteStream("out.csv");
   //   fastcsv.write(data, { headers: true }).pipe(ws);
   // }
+
+  static getSuggestionsDict() {
+    return getSuggestionDictionary();
+  }
 
   static checkStringIsNumberWordOrNumber(currentTranscription) {
     let suggestionListNumber =

@@ -12,12 +12,7 @@ class Transcription extends Component {
         }
       );
       if (filteredTranscribedObject.length > 0) {
-        console.log(
-          "YOOOooooooooooooooooooooo honita filtered object",
-          filteredTranscribedObject
-        );
-
-        let longestObj = filteredTranscribedObject.reduce(function(a, b) {
+        let longestObj = this.props.transcriptObject.reduce(function(a, b) {
           return a.text.length > b.text.length ? a : b;
         });
 
@@ -25,23 +20,26 @@ class Transcription extends Component {
           "THE LONGEST WORD IN THIS TRANSCRIPTION SECTION IS",
           longestObj
         );
-        filteredTranscribedObject.map((wordObject, index) => {
-          // if wordbject.text has already been fetched i.e. suggestionlist has it already than ignore fetch.
-          console.log(
-            "I ACTUALLY THOUGHT THIS WAS A SUGGESTION YOYA ",
-            this.props.suggestionList[wordObject.text]
-          );
+        this.props.transcriptObject.map((wordObject, index) => {
+          if (
+            this.props.suggestionList[wordObject.text] &&
+            wordObject.text === longestObj.text
+          ) {
+            this.props.setInducedError(wordObject.text);
+          }
+
           if (!this.props.suggestionList[wordObject.text]) {
+            console.log(
+              "No Suggestion stored in dictionary for word: ",
+              wordObject.text
+            );
+            console.log("Fetching....................");
             fetch(`https://api.datamuse.com//words?sl=${wordObject.text}&max=5`)
               .then(res => res.json())
               .then(data => {
                 let answer = data.map(el => el.word);
                 console.log("Fetched information are: ", data);
-                this.props.setSuggestionList(
-                  wordObject.text,
-                  answer,
-                  wordObject.text === longestObj.text
-                );
+                this.props.setSuggestionList(wordObject.text, answer, false);
                 // this.setState({ suggestions: answer });
               })
               .catch //this.setState({ suggestions: ["Loading..."] })

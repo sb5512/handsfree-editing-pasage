@@ -59,7 +59,8 @@ export default function SpeechRecognition(options) {
           // Part of suggestion - Begins
           suggestionMode: false,
           suggestionListNumber: null,
-          suggestionList: {},
+          // suggestionList: {},
+          suggestionList: Utils.getSuggestionsDict(),
           // Part of suggestion - Ends
 
           // Logging information Begins
@@ -221,6 +222,53 @@ export default function SpeechRecognition(options) {
       // THIS IS WHERE WE INDUCE ERRORS
       // Need to have aboolean names induceError = true which has to be false once a word is replaced
       // Only when the "Next command is called we set the induceError = true"
+      setInducedError = word => {
+        if (this.state.induceError) {
+          console.log("We are going to replace the longest word now", word);
+          let induceError = this.state.induceError;
+          let logData = this.state.logData;
+          let randomNumber = Math.floor(Math.random() * 5); // use this to replace a suggestion word in list
+          let newDict = this.state.suggestionList;
+
+          while (word == this.state.suggestionList[word][randomNumber]) {
+            randomNumber = Math.floor(Math.random() * 5);
+          }
+          finalTranscript = finalTranscript.replace(
+            word,
+            this.state.suggestionList[word][randomNumber]
+          );
+
+          let newSuggestionForinduced = [...this.state.suggestionList[word]];
+          if (!newSuggestionForinduced.includes(word)) {
+            newSuggestionForinduced[randomNumber] = word;
+          }
+
+          newDict[
+            this.state.suggestionList[word][randomNumber]
+          ] = newSuggestionForinduced;
+
+          logData.push({
+            command: "Induce Error",
+            time: Utils.getCurrentTime(),
+            text:
+              'Induced error for "' +
+              word +
+              '" with ' +
+              this.state.suggestionList[word][randomNumber] +
+              " at : " +
+              Utils.getCurrentTime(),
+            textForLog: word
+          });
+          induceError = false;
+
+          this.setState({
+            logData: logData,
+            induceError: induceError,
+            suggestionList: newDict
+          });
+        }
+      };
+
       setSuggestionList = (word, suggestions, shouldReplace) => {
         let logData = this.state.logData;
         console.log("THIS WORD SHOULD BE REPLACED", word, shouldReplace);
@@ -240,10 +288,10 @@ export default function SpeechRecognition(options) {
             while (word == suggestions[randomNumber]) {
               randomNumber = Math.floor(Math.random() * 5);
             }
-            finalTranscript = finalTranscript.replace(
-              word,
-              suggestions[randomNumber]
-            );
+            // finalTranscript = finalTranscript.replace(
+            //   word,
+            //   suggestions[randomNumber]
+            // );
             logData.push({
               command: "Induce Error",
               time: Utils.getCurrentTime(),
@@ -858,6 +906,10 @@ export default function SpeechRecognition(options) {
                 logData = []; //make log data empty
                 induceError = true;
                 finalTranscript = "";
+                var dt = new Date();
+                while (new Date() - dt <= 1000) {
+                  /* Do nothing */
+                }
                 // Now we start gaze again
                 // this.pressf4ToStartStopGaze();
               }
@@ -904,6 +956,7 @@ export default function SpeechRecognition(options) {
                       '"Clear" command given at : ' + Utils.getCurrentTime(),
                     textForLog: finalTranscript
                   });
+                  induceError = true;
                 }
               }
               // finalscript k bhayo ta
@@ -1164,6 +1217,7 @@ export default function SpeechRecognition(options) {
             abortListening={this.abortListening}
             stopListening={this.stopListening}
             setSuggestionList={this.setSuggestionList}
+            setInducedError={this.setInducedError}
             logTimeDataWhenHoveredAtWord={this.logTimeDataWhenHoveredAtWord}
             handleWordClickToGetToMappingWithNumberState={
               this.handleWordClickToGetToMappingWithNumberState

@@ -23,7 +23,7 @@ dont ask me to carry an oily rag like that
 this was easy for us
 swing your arm as high as you can
 the roll of wire lay near the wall
-help him pic a peck of potatoes
+help him pick a peck of potatoes
 coconut cream cake makes a nice dessert
 academic aptitude gurantees diploma
 the prowler wore a skimask for disguise

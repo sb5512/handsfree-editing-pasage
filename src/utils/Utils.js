@@ -66,6 +66,26 @@ class Utils {
     return getSuggestionDictionary();
   }
 
+  static obtainSuggestionForAllCharacters() {
+    // call api and set the suggestion list using the word
+    // TODO
+    console.log("This function on getting all dictionary value is called");
+    let characters = "abcdefghijklmnopqrstuvwxyz";
+    let dictAllCharacters = {};
+    characters.split("").map(character => {
+      let result = [];
+      let charactersLength = characters.length;
+      for (var i = 0; i < 5; i++) {
+        result.push(
+          characters.charAt(Math.floor(Math.random() * charactersLength))
+        );
+      }
+      dictAllCharacters[character] = result;
+    });
+    console.log(dictAllCharacters);
+    return dictAllCharacters;
+  }
+
   static checkStringIsNumberWordOrNumber(currentTranscription) {
     let suggestionListNumber =
       currentTranscription.lastIndexOf(" ") > 0

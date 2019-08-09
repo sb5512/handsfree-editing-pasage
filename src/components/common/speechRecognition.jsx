@@ -61,6 +61,7 @@ export default function SpeechRecognition(options) {
           suggestionListNumber: null,
           // suggestionList: {},
           suggestionList: Utils.getSuggestionsDict(),
+          suggestionListCharacters: Utils.obtainSuggestionForAllCharacters(),
           // Part of suggestion - Ends
 
           // Logging information Begins
@@ -204,21 +205,6 @@ export default function SpeechRecognition(options) {
         return allTranscript.replace(toReplaceWord, replacingWord);
       }
 
-      obtainSuggestionForLetter(word) {
-        // call api and set the suggestion list using the word
-        // TODO
-        var result = [];
-        var characters = "abcdefghijklmnopqrstuvwxyz";
-        var charactersLength = characters.length;
-        for (var i = 0; i < 5; i++) {
-          result.push(
-            characters.charAt(Math.floor(Math.random() * charactersLength))
-          );
-        }
-        return result;
-        //return ["m", "a", "n"];
-      }
-
       // THIS IS WHERE WE INDUCE ERRORS
       // Need to have aboolean names induceError = true which has to be false once a word is replaced
       // Only when the "Next command is called we set the induceError = true"
@@ -228,11 +214,15 @@ export default function SpeechRecognition(options) {
           let induceError = this.state.induceError;
           let logData = this.state.logData;
           let randomNumber = Math.floor(Math.random() * 5); // use this to replace a suggestion word in list
+          console.log(
+            "Our random Number whose word is going to be replaced is",
+            randomNumber
+          );
           let newDict = this.state.suggestionList;
 
-          while (word == this.state.suggestionList[word][randomNumber]) {
-            randomNumber = Math.floor(Math.random() * 5);
-          }
+          // while (word == this.state.suggestionList[word][randomNumber]) {
+          //   randomNumber = Math.floor(Math.random() * 5);
+          // }
           finalTranscript = finalTranscript.replace(
             word,
             this.state.suggestionList[word][randomNumber]
@@ -562,7 +552,10 @@ export default function SpeechRecognition(options) {
                   textForLog: finalTranscript
                 });
               } else if (
-                currentTranscription.endsWith("lowercase") &&
+                (currentTranscription.endsWith("lowercase") ||
+                  currentTranscription.endsWith("Lowercase") ||
+                  currentTranscription.endsWith("lotus") ||
+                  currentTranscription.endsWith("Lotus")) &&
                 this.state.mappingNumber //
               ) {
                 console.log("GOING TO MAKE THE SELECTED WORD TO LOWERCASE");
@@ -652,7 +645,9 @@ export default function SpeechRecognition(options) {
               else if (
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
-                objIsNumberAndVal.value === 2 //
+                (objIsNumberAndVal.value === 2 ||
+                  currentTranscription.endsWith("To") ||
+                  currentTranscription.endsWith("to")) //
               ) {
                 console.log("SUGGESTION LIST FOR SECOND ELEMENT");
                 suggestionMode = true;
@@ -739,7 +734,8 @@ export default function SpeechRecognition(options) {
               else if (
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
-                objIsNumberAndVal.value === 4 //
+                (objIsNumberAndVal.value === 4 ||
+                  currentTranscription.endsWith("for")) //
               ) {
                 console.log("SUGGESTION LIST FOR FOURTH ELEMENT");
                 suggestionMode = true;
@@ -789,7 +785,7 @@ export default function SpeechRecognition(options) {
 
                 // this.pressf4ToStartStopGaze();
                 logData.push({
-                  command: "Option 'e'",
+                  command: "Option '5'",
                   time: Utils.getCurrentTime(),
                   text:
                     'Chosen "5" command from suggestion list at : ' +
@@ -936,6 +932,10 @@ export default function SpeechRecognition(options) {
                     Utils.getCurrentTime(),
                   textForLog: finalTranscript
                 });
+                var dt = new Date();
+                while (new Date() - dt <= 1000) {
+                  /* Do nothing */
+                }
               } else if (ifContainsClear) {
                 if (this.state.spellMode) {
                   finalTranscript = oldTranscript;
@@ -1136,7 +1136,9 @@ export default function SpeechRecognition(options) {
               transcriptObject.push({
                 text: word,
                 showSuggestion: showSuggestionBool,
-                suggestions: this.obtainSuggestionForLetter(word),
+                suggestions: this.state.suggestionListCharacters[
+                  word.charAt(0)
+                ],
                 spellMode: this.state.spellMode
               });
             }

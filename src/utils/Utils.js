@@ -1,6 +1,6 @@
 import commandsENUM from "../components/tasks/freetextformation/commandENUM";
 import TextToNumbers from "./textToNumbers";
-import getSuggestionDictionary from "./suggestionsold";
+import getSuggestionDictionary from "./suggestions";
 
 class Utils {
   static getRandomInt(max) {
@@ -87,15 +87,24 @@ class Utils {
   }
 
   static checkStringIsNumberWordOrNumber(currentTranscription) {
-    let suggestionListNumber =
-      currentTranscription.lastIndexOf(" ") > 0
-        ? TextToNumbers.text2num(
-            currentTranscription.substring(
-              currentTranscription.lastIndexOf(" "),
-              currentTranscription.length
+    let suggestionListNumber;
+    if (
+      currentTranscription.endsWith("4") ||
+      currentTranscription.endsWith("for")
+    ) {
+      console.log("It actually came here for the map numbers");
+      suggestionListNumber = 4;
+    } else {
+      suggestionListNumber =
+        currentTranscription.lastIndexOf(" ") > 0
+          ? TextToNumbers.text2num(
+              currentTranscription.substring(
+                currentTranscription.lastIndexOf(" "),
+                currentTranscription.length
+              )
             )
-          )
-        : parseInt(currentTranscription);
+          : parseInt(currentTranscription);
+    }
     return {
       check: !isNaN(suggestionListNumber) && suggestionListNumber > 0,
       value: suggestionListNumber

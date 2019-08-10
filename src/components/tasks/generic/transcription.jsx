@@ -8,11 +8,14 @@ class Transcription extends Component {
       // Let us check if the wordObject has the longest word
       const filteredTranscribedObject = this.props.transcriptObject.filter(
         wordObject => {
-          return !this.props.suggestionList[wordObject.text];
+          return (
+            this.props.suggestionList[wordObject.text] &&
+            this.props.suggestionList[wordObject.text].length > 0
+          );
         }
       );
       // if (filteredTranscribedObject.length > 0) {
-      let longestObj = this.props.transcriptObject.reduce(function(a, b) {
+      let longestObj = filteredTranscribedObject.reduce(function(a, b) {
         return a.text.length > b.text.length ? a : b;
       });
 

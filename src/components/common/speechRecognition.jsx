@@ -220,9 +220,9 @@ export default function SpeechRecognition(options) {
           );
           let newDict = this.state.suggestionList;
 
-          while (word === this.state.suggestionList[word][randomNumber]) {
-            randomNumber = Math.floor(Math.random() * 5);
-          }
+          // while (word === this.state.suggestionList[word][randomNumber]) {
+          //   randomNumber = Math.floor(Math.random() * 5);
+          // }
 
           console.log(
             "Our random Number after checking word === sugesstion[list]",
@@ -236,7 +236,15 @@ export default function SpeechRecognition(options) {
 
           // Now the unique word from suggestion has to be added to the dictionary
           let newSuggestionForinduced = [...this.state.suggestionList[word]];
+          console.log(
+            "My to induced suggestion list is for word ",
+            word,
+            newSuggestionForinduced
+          );
           if (!newSuggestionForinduced.includes(word)) {
+            console.log(
+              "I am confused if the newSuggestionForInduced has that word already"
+            );
             newSuggestionForinduced[randomNumber] = word;
           }
 
@@ -244,18 +252,20 @@ export default function SpeechRecognition(options) {
             this.state.suggestionList[word][randomNumber]
           ] = newSuggestionForinduced;
 
-          logData.push({
-            command: "Induce Error",
-            time: Utils.getCurrentTime(),
-            text:
-              'Induced error for "' +
-              word +
-              '" with ' +
-              this.state.suggestionList[word][randomNumber] +
-              " at : " +
-              Utils.getCurrentTime(),
-            textForLog: word
-          });
+          if (finalTranscript.length > 0) {
+            logData.push({
+              command: "Induce Error",
+              time: Utils.getCurrentTime(),
+              text:
+                'Induced error for "' +
+                word +
+                '" with ' +
+                this.state.suggestionList[word][randomNumber] +
+                " at : " +
+                Utils.getCurrentTime(),
+              textForLog: word
+            });
+          }
           induceError = false;
 
           this.setState({
@@ -906,12 +916,12 @@ export default function SpeechRecognition(options) {
                 interimTranscript = "";
                 logDataPersist = [...logDataPersist, ...logData];
                 logData = []; //make log data empty
-                induceError = true;
                 finalTranscript = "";
                 var dt = new Date();
                 while (new Date() - dt <= 1000) {
                   /* Do nothing */
                 }
+                // induceError = true;
                 // Now we start gaze again
                 // this.pressf4ToStartStopGaze();
               }
@@ -1028,6 +1038,7 @@ export default function SpeechRecognition(options) {
                   text: "Has begun the task at : " + Utils.getCurrentTime(),
                   textForLog: startingSentence
                 });
+                induceError = true;
               }
               holdingFinalTranscript = "";
               interimTranscript = this.concatTranscripts(

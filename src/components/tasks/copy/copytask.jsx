@@ -3,6 +3,7 @@ import CopyDictate from "./copyDictateU";
 import keydown from "react-keydown";
 
 import ReactCountdownClock from "react-countdown-clock";
+import { Image, Container, Col, Row } from "react-bootstrap";
 
 class CopyTask extends Component {
   state = { readyToListen: false, counterTimer: 3 };
@@ -63,24 +64,30 @@ class CopyTask extends Component {
         ));
     return (
       <React.Fragment>
-        <div>
-          <ReactCountdownClock
-            key={this.state.counterTimer}
-            seconds={3}
-            color="#000"
-            alpha={0.9}
-            size={100}
-            onComplete={this.myCallback}
-          />
-          {speechButton}
-        </div>
-        <div className="container-fluid">
-          <CopyDictate
-            {...this.props}
-            {...this.state}
-            restartTimer={this.restartTimer}
-          />
-        </div>
+        <Row>
+          <Col xs={6} md={10}>
+            <ReactCountdownClock
+              key={this.state.counterTimer}
+              seconds={3}
+              color="#000"
+              alpha={0.9}
+              size={100}
+              onComplete={this.myCallback}
+            />
+          </Col>
+          <Col xs={6} md={2}>
+            {speechButton}
+          </Col>
+        </Row>{" "}
+        <Row>
+          <div className="container-fluid">
+            <CopyDictate
+              {...this.props}
+              {...this.state}
+              restartTimer={this.restartTimer}
+            />
+          </div>
+        </Row>
       </React.Fragment>
     );
   }

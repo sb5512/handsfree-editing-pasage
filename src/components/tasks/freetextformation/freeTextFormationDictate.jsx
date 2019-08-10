@@ -109,6 +109,8 @@ class FreeTextFormationDictate extends Component {
             stopListening={this.props.stopListening}
             startListening={this.props.startListening}
             historyStates={this.props.state}
+            restartTimer={this.props.restartTimer}
+            {...this.props}
           />
         </React.Fragment>
       );
@@ -132,6 +134,8 @@ class FreeTextFormationDictate extends Component {
             stopListening={this.props.stopListening}
             startListening={this.props.startListening}
             historyStates={this.props.state}
+            restartTimer={this.props.restartTimer}
+            {...this.props}
           />
         </React.Fragment>
       );

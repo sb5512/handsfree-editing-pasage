@@ -7,6 +7,7 @@ class ModalSession extends Component {
     this.props.startListening();
     // this.props.historyStates.history.goBack();
     this.props.sessionCounterUp();
+    this.props.restartTimer();
   };
 
   componentWillMount() {

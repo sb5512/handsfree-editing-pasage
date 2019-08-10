@@ -14,18 +14,21 @@ class Transcription extends Component {
           );
         }
       );
-      // if (filteredTranscribedObject.length > 0) {
-      let longestObj = filteredTranscribedObject.reduce(function(a, b) {
-        return a.text.length > b.text.length ? a : b;
-      });
+      let longestObj;
+      if (filteredTranscribedObject.length > 0) {
+        longestObj = filteredTranscribedObject.reduce(function(a, b) {
+          return a.text.length > b.text.length ? a : b;
+        });
 
-      console.log(
-        "THE LONGEST WORD IN THIS TRANSCRIPTION SECTION IS",
-        longestObj
-      );
+        console.log(
+          "THE LONGEST WORD IN THIS TRANSCRIPTION SECTION IS",
+          longestObj
+        );
+      }
       this.props.transcriptObject.map((wordObject, index) => {
         if (
           this.props.suggestionList[wordObject.text] &&
+          longestObj &&
           wordObject.text === longestObj.text
         ) {
           this.props.setInducedError(wordObject.text);
@@ -52,7 +55,6 @@ class Transcription extends Component {
         }
       });
     }
-    // }
   }
 
   render() {

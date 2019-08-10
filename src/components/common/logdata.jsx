@@ -11,6 +11,7 @@ class Logdata extends Component {
 
   handleClose = () => {
     // Maybe we need to turn off gaze or something
+    this.props.restartTimer();
   };
 
   render() {
@@ -19,12 +20,25 @@ class Logdata extends Component {
       this.state.sessionCounter -
       this.props.phraseQuestionImageCount +
       "logdata.csv";
+    console.log(
+      "WHAT IS MY LASSSSSSSSSSSSSSSSSSSSSS LOG DATA INFOOOOOOOOO",
+      this.props.logData
+    );
+    let randomLogDataDownloadBtnFix =
+      this.props.logData.length > 0
+        ? this.props.logData[this.props.logData.length - 1].command !==
+          "S_Finish"
+        : true;
+
+    console.log("Will I have download?", randomLogDataDownloadBtnFix);
     return (
       <React.Fragment>
         {" "}
         <div className="border border-white bg-secondary d-block p-2 bg-light">
           {this.state.sessionCounter - this.props.phraseQuestionImageCount ===
-          0 ? (
+            0 &&
+          !this.props.spellMode &&
+          randomLogDataDownloadBtnFix ? (
             <ModalSession
               startListening={this.props.startListening}
               stopListening={this.props.stopListening}
@@ -32,6 +46,8 @@ class Logdata extends Component {
               filename={filename}
               historyStates={this.props.historyStates}
               sessionCounterUp={this.sessionCounterUp}
+              restartTimer={this.props.restartTimer}
+              {...this.props}
             />
           ) : (
             <React.Fragment />

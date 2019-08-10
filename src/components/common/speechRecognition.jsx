@@ -220,15 +220,21 @@ export default function SpeechRecognition(options) {
           );
           let newDict = this.state.suggestionList;
 
-          while (word == this.state.suggestionList[word][randomNumber]) {
+          while (word === this.state.suggestionList[word][randomNumber]) {
             randomNumber = Math.floor(Math.random() * 5);
           }
 
+          console.log(
+            "Our random Number after checking word === sugesstion[list]",
+            randomNumber
+          );
+          // Here we replace the finaltranscript with a unique word that was in suggestion
           finalTranscript = finalTranscript.replace(
             word,
             this.state.suggestionList[word][randomNumber]
           );
 
+          // Now the unique word from suggestion has to be added to the dictionary
           let newSuggestionForinduced = [...this.state.suggestionList[word]];
           if (!newSuggestionForinduced.includes(word)) {
             newSuggestionForinduced[randomNumber] = word;
@@ -261,59 +267,58 @@ export default function SpeechRecognition(options) {
       };
 
       setSuggestionList = (word, suggestions, shouldReplace) => {
-        let logData = this.state.logData;
-        console.log("THIS WORD SHOULD BE REPLACED", word, shouldReplace);
         let newDict = this.state.suggestionList;
-        let induceError = this.state.induceError;
-        let randomNumber = Math.floor(Math.random() * 5); // use this to replace a suggestion word in list
-        if (shouldReplace) {
-          console.log(
-            "The random number which picks up the random suggestion word for replacement is?",
-            randomNumber
-          );
-          console.log(
-            "And the induceError boolean is already taken? ",
-            induceError
-          );
-          if (!newDict[word + "***"] && induceError) {
-            while (word == suggestions[randomNumber]) {
-              randomNumber = Math.floor(Math.random() * 5);
-            }
-            // finalTranscript = finalTranscript.replace(
-            //   word,
-            //   suggestions[randomNumber]
-            // );
-            logData.push({
-              command: "Induce Error",
-              time: Utils.getCurrentTime(),
-              text:
-                'Induced error for "' +
-                word +
-                '" with ' +
-                suggestions[randomNumber] +
-                " at : " +
-                Utils.getCurrentTime(),
-              textForLog: word
-            });
-            induceError = false;
-          }
-          let replacedWord = suggestions[randomNumber] + "***";
-          newDict[replacedWord] = [word];
-        }
-        if (newDict[word + "***"]) {
-          // if suggestion doesnot have the newDict[word + "***"]
-          if (suggestions.indexOf(newDict[word + "***"]) > -1) {
-            suggestions[randomNumber] = newDict[word + "***"];
-          }
-          newDict[word] = suggestions;
-        } else {
-          newDict[word] = suggestions;
-        }
+        // let logData = this.state.logData;
+        // console.log("THIS WORD SHOULD BE REPLACED", word, shouldReplace);
+        // let induceError = this.state.induceError;
+        // let randomNumber = Math.floor(Math.random() * 5); // use this to replace a suggestion word in list
+        // if (shouldReplace) {
+        //   console.log(
+        //     "The random number which picks up the random suggestion word for replacement is?",
+        //     randomNumber
+        //   );
+        //   console.log(
+        //     "And the induceError boolean is already taken? ",
+        //     induceError
+        //   );
+        //   if (!newDict[word + "***"] && induceError) {
+        //     while (word == suggestions[randomNumber]) {
+        //       randomNumber = Math.floor(Math.random() * 5);
+        //     }
+        //     // finalTranscript = finalTranscript.replace(
+        //     //   word,
+        //     //   suggestions[randomNumber]
+        //     // );
+        //     logData.push({
+        //       command: "Induce Error",
+        //       time: Utils.getCurrentTime(),
+        //       text:
+        //         'Induced error for "' +
+        //         word +
+        //         '" with ' +
+        //         suggestions[randomNumber] +
+        //         " at : " +
+        //         Utils.getCurrentTime(),
+        //       textForLog: word
+        //     });
+        //     induceError = false;
+        //   }
+        //   let replacedWord = suggestions[randomNumber] + "***";
+        //   newDict[replacedWord] = [word];
+        // }
+        // if (newDict[word + "***"]) {
+        //   // if suggestion doesnot have the newDict[word + "***"]
+        //   if (suggestions.indexOf(newDict[word + "***"]) > -1) {
+        //     suggestions[randomNumber] = newDict[word + "***"];
+        //   }
+        //   newDict[word] = suggestions;
+        // } else {
+        //   newDict[word] = suggestions;
+        // }
+        newDict[word] = suggestions;
 
         this.setState({
-          logData: logData,
-          suggestionList: newDict,
-          induceError: induceError
+          suggestionList: newDict
         });
       };
 

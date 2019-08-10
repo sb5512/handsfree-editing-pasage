@@ -1,6 +1,6 @@
 import commandsENUM from "../components/tasks/freetextformation/commandENUM";
 import TextToNumbers from "./textToNumbers";
-import getSuggestionDictionary from "./suggestions";
+import getSuggestionDictionary from "./suggestionsold";
 
 class Utils {
   static getRandomInt(max) {

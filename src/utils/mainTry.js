@@ -310,13 +310,14 @@ let request = new XMLHttpRequest();
 toCreateSuggestionWord.map((word, index) => {
   request.open(
     "GET",
-    `https://api.datamuse.com//words?sl=${word}&max=5`,
+    `https://api.datamuse.com//words?sl=${word}&max=6`,
     false
   ); // `false` makes the request synchronous
   request.send(null);
   if (request.status === 200) {
     let myArr = JSON.parse(request.responseText);
     let answer = myArr.map(el => el.word);
+    answer.shift();
     console.log(answer);
     newDict[word] = answer;
   }

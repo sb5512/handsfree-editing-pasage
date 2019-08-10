@@ -11,43 +11,45 @@ class Transcription extends Component {
           return !this.props.suggestionList[wordObject.text];
         }
       );
-      if (filteredTranscribedObject.length > 0) {
-        let longestObj = this.props.transcriptObject.reduce(function(a, b) {
-          return a.text.length > b.text.length ? a : b;
-        });
+      // if (filteredTranscribedObject.length > 0) {
+      let longestObj = this.props.transcriptObject.reduce(function(a, b) {
+        return a.text.length > b.text.length ? a : b;
+      });
 
-        console.log(
-          "THE LONGEST WORD IN THIS TRANSCRIPTION SECTION IS",
-          longestObj
-        );
-        this.props.transcriptObject.map((wordObject, index) => {
-          if (
-            this.props.suggestionList[wordObject.text] &&
-            wordObject.text === longestObj.text
-          ) {
-            this.props.setInducedError(wordObject.text);
-          }
+      console.log(
+        "THE LONGEST WORD IN THIS TRANSCRIPTION SECTION IS",
+        longestObj
+      );
+      this.props.transcriptObject.map((wordObject, index) => {
+        if (
+          this.props.suggestionList[wordObject.text] &&
+          wordObject.text === longestObj.text
+        ) {
+          this.props.setInducedError(wordObject.text);
+        }
 
-          if (!this.props.suggestionList[wordObject.text]) {
-            console.log(
-              "No Suggestion stored in dictionary for word: ",
-              wordObject.text
-            );
-            console.log("Fetching....................");
-            fetch(`https://api.datamuse.com//words?sl=${wordObject.text}&max=5`)
-              .then(res => res.json())
-              .then(data => {
-                let answer = data.map(el => el.word);
-                console.log("Fetched information are: ", data);
-                this.props.setSuggestionList(wordObject.text, answer, false);
-                // this.setState({ suggestions: answer });
-              })
-              .catch //this.setState({ suggestions: ["Loading..."] })
-              ();
-          }
-        });
-      }
+        if (!this.props.suggestionList[wordObject.text]) {
+          console.log(
+            "No Suggestion stored in dictionary for word: ",
+            wordObject.text
+          );
+          console.log("Fetching....................");
+          fetch(`https://api.datamuse.com//words?sl=${wordObject.text}&max=6`)
+            .then(res => res.json())
+            .then(data => {
+              let answer = data.map(el => el.word);
+              // remove the first suggestion as it is always what the word was sent as
+              answer.shift();
+              console.log("Fetched information are: ", data);
+              this.props.setSuggestionList(wordObject.text, answer, false);
+              // this.setState({ suggestions: answer });
+            })
+            .catch //this.setState({ suggestions: ["Loading..."] })
+            ();
+        }
+      });
     }
+    // }
   }
 
   render() {

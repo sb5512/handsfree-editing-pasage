@@ -898,7 +898,7 @@ export default function SpeechRecognition(options) {
                 });
                 this.clickMouse();
               }
-              if (ifContainsNext) {
+              if (ifContainsNext && !this.state.spellMode) {
                 logData.push({
                   command: "EndTask",
                   time: Utils.getCurrentTime(),

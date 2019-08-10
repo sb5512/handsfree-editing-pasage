@@ -142,6 +142,9 @@ class App extends Component {
           <Navbar.Brand className="font-weight-bold mx-auto">
             insert
           </Navbar.Brand>
+          <Navbar.Brand className="font-weight-bold mx-auto">
+            space
+          </Navbar.Brand>
           <Navbar.Brand className="font-weight-bold mx-auto">next</Navbar.Brand>
           <Navbar.Brand className="font-weight-bold mx-auto">
             click

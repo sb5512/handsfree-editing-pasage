@@ -3,12 +3,6 @@ import ModalSession from "../tasks/generic/modalSessions";
 import { CSVLink } from "react-csv";
 
 class Logdata extends Component {
-  state = { sessionCounter: 5 };
-
-  sessionCounterUp = () => {
-    this.setState({ sessionCounter: this.state.sessionCounter + 5 });
-  };
-
   handleClose = () => {
     // Maybe we need to turn off gaze or something
     this.props.restartTimer();
@@ -17,7 +11,7 @@ class Logdata extends Component {
   render() {
     let filename =
       "session" +
-      this.state.sessionCounter -
+      this.props.sessionCounter -
       this.props.phraseQuestionImageCount +
       "logdata.csv";
     console.log(
@@ -35,7 +29,7 @@ class Logdata extends Component {
       <React.Fragment>
         {" "}
         <div className="border border-white bg-secondary d-block p-2 bg-light">
-          {this.state.sessionCounter - this.props.phraseQuestionImageCount ===
+          {this.props.sessionCounter - this.props.phraseQuestionImageCount ===
             0 &&
           !this.props.spellMode &&
           randomLogDataDownloadBtnFix ? (
@@ -45,7 +39,7 @@ class Logdata extends Component {
               data={this.props.logDataPersist}
               filename={filename}
               historyStates={this.props.historyStates}
-              sessionCounterUp={this.sessionCounterUp}
+              sessionCounterUp={this.props.sessionCounterUp}
               restartTimer={this.props.restartTimer}
               {...this.props}
             />

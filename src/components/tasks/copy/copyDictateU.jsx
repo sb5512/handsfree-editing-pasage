@@ -17,7 +17,12 @@ class CopyDictate extends Component {
   state = {
     clickedWord: "",
     hover: false,
-    timeoutId: null
+    timeoutId: null,
+    sessionCounter: 5
+  };
+
+  sessionCounterUp = () => {
+    this.setState({ sessionCounter: this.state.sessionCounter + 5 });
   };
 
   handleWordClick = (e, word, index) => {
@@ -99,6 +104,8 @@ class CopyDictate extends Component {
             toggleHoverOn={this.toggleHoverOn}
             toggleHoverOff={this.toggleHoverOff}
             {...this.props}
+            sessionCounter={this.state.sessionCounter}
+            sessionCounterUp={this.sessionCounterUp}
           />
           <Logdata
             logDataPersist={this.props.logDataPersist}
@@ -109,6 +116,8 @@ class CopyDictate extends Component {
             historyStates={this.props.state}
             restartTimer={this.props.restartTimer}
             {...this.props}
+            sessionCounter={this.state.sessionCounter}
+            sessionCounterUp={this.sessionCounterUp}
           />
         </React.Fragment>
       );
@@ -132,6 +141,8 @@ class CopyDictate extends Component {
             historyStates={this.props.state}
             restartTimer={this.props.restartTimer}
             {...this.props}
+            sessionCounter={this.state.sessionCounter}
+            sessionCounterUp={this.sessionCounterUp}
           />
         </React.Fragment>
       );

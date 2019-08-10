@@ -18,7 +18,12 @@ class FreeTextFormationDictate extends Component {
   state = {
     clickedWord: "",
     hover: false,
-    timeoutId: null
+    timeoutId: null,
+    sessionCounter: 1
+  };
+
+  sessionCounterUp = () => {
+    this.setState({ sessionCounter: this.state.sessionCounter + 1 });
   };
 
   handleWordClick = (e, word, index) => {
@@ -101,6 +106,8 @@ class FreeTextFormationDictate extends Component {
             toggleHoverOn={this.toggleHoverOn}
             toggleHoverOff={this.toggleHoverOff}
             {...this.props}
+            sessionCounter={this.state.sessionCounter}
+            sessionCounterUp={this.sessionCounterUp}
           />
           <LogdataImageTask
             logDataPersist={this.props.logDataPersist}
@@ -111,6 +118,8 @@ class FreeTextFormationDictate extends Component {
             historyStates={this.props.state}
             restartTimer={this.props.restartTimer}
             {...this.props}
+            sessionCounter={this.state.sessionCounter}
+            sessionCounterUp={this.sessionCounterUp}
           />
         </React.Fragment>
       );
@@ -136,6 +145,8 @@ class FreeTextFormationDictate extends Component {
             historyStates={this.props.state}
             restartTimer={this.props.restartTimer}
             {...this.props}
+            sessionCounter={this.state.sessionCounter}
+            sessionCounterUp={this.sessionCounterUp}
           />
         </React.Fragment>
       );

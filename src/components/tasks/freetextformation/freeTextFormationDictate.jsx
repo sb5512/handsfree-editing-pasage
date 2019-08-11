@@ -39,7 +39,7 @@ class FreeTextFormationDictate extends Component {
         },
         body: JSON.stringify({
           channel: "test_ob_tooling",
-          text: "#f4press"
+          text: "#clickmouse"
         })
       }
     );

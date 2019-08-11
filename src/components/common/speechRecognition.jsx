@@ -264,7 +264,11 @@ export default function SpeechRecognition(options) {
                 this.state.suggestionList[word][randomNumber] +
                 " at : " +
                 Utils.getCurrentTime(),
-              textForLog: word
+              textForLog:
+                'Induced error for "' +
+                word +
+                '" with ' +
+                this.state.suggestionList[word][randomNumber]
             });
           }
           induceError = false;
@@ -577,12 +581,16 @@ export default function SpeechRecognition(options) {
                 // Here we check if the transcript is a number
                 //&&
                 !this.state.mappingNumber &&
-                objIsNumberAndVal.check
+                objIsNumberAndVal.check &&
+                finalTranscript.split(" ").length >= objIsNumberAndVal.value
               ) {
                 hasCommand = true;
                 spellMode = this.state.spellMode;
                 suggestionMode = false;
                 mappingNumber = objIsNumberAndVal.value;
+                let selectedMappedWord = finalTranscript.split(" ")[
+                  mappingNumber - 1
+                ];
                 logData.push({
                   command: "Map No. " + mappingNumber,
                   time: Utils.getCurrentTime(),
@@ -591,7 +599,11 @@ export default function SpeechRecognition(options) {
                     mappingNumber +
                     " given at : " +
                     Utils.getCurrentTime(),
-                  textForLog: finalTranscript
+                  textForLog:
+                    selectedMappedWord +
+                    " with suggestions [" +
+                    this.state.suggestionList[selectedMappedWord] +
+                    "]"
                 });
               } else if (
                 (currentTranscription.endsWith("lowercase") ||
@@ -611,7 +623,7 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     '"lowercase" command given at : ' + Utils.getCurrentTime(),
-                  textForLog: finalTranscript
+                  textForLog: finalTranscript.split(" ")[mappingNumber - 1]
                 });
               } else if (
                 // secondlast word is an insert
@@ -620,19 +632,20 @@ export default function SpeechRecognition(options) {
               ) {
                 console.log("TO INSERT TEXT INFRONT OF A SENTENCE");
                 suggestionMode = false;
+                let wordToInsert = currentTranscription
+                  .trim()
+                  .split(" ")
+                  .pop();
                 finalTranscript = this.insertWordInFrontByIndex(
                   finalTranscript,
-                  currentTranscription
-                    .trim()
-                    .split(" ")
-                    .pop(),
+                  wordToInsert,
                   this.state.mappingNumber
                 );
                 logData.push({
                   command: "Insert",
                   time: Utils.getCurrentTime(),
                   text: '"Insert" command given at : ' + Utils.getCurrentTime(),
-                  textForLog: finalTranscript
+                  textForLog: "Inserted " + wordToInsert
                 });
               } // Let us check if we can check for numbers if they exist
               else if (
@@ -655,7 +668,11 @@ export default function SpeechRecognition(options) {
                   text:
                     'Chosen "1" i.e. first element from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: finalTranscript
+                  textForLog:
+                    "Option 1 selected is : " +
+                    this.state.suggestionList[
+                      finalTranscript.split(" ")[mappingNumber - 1]
+                    ][suggestionListNumber]
                 });
               }
               // else if (
@@ -703,7 +720,11 @@ export default function SpeechRecognition(options) {
                   text:
                     'Chosen "2" command from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: finalTranscript
+                  textForLog:
+                    "Option 2 selected is : " +
+                    this.state.suggestionList[
+                      finalTranscript.split(" ")[mappingNumber - 1]
+                    ][suggestionListNumber]
                 });
               }
               // else if (
@@ -745,7 +766,11 @@ export default function SpeechRecognition(options) {
                   text:
                     'Chosen "3" command from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: finalTranscript
+                  textForLog:
+                    "Option 3 selected is : " +
+                    this.state.suggestionList[
+                      finalTranscript.split(" ")[mappingNumber - 1]
+                    ][suggestionListNumber]
                 });
               }
               // else if (
@@ -791,7 +816,11 @@ export default function SpeechRecognition(options) {
                   text:
                     'Chosen "4" command from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: finalTranscript
+                  textForLog:
+                    "Option 4 selected is : " +
+                    this.state.suggestionList[
+                      finalTranscript.split(" ")[mappingNumber - 1]
+                    ][suggestionListNumber]
                 });
               }
               // else if (
@@ -832,7 +861,11 @@ export default function SpeechRecognition(options) {
                   text:
                     'Chosen "5" command from suggestion list at : ' +
                     Utils.getCurrentTime(),
-                  textForLog: finalTranscript
+                  textForLog:
+                    "Option 5 selected is : " +
+                    this.state.suggestionList[
+                      finalTranscript.split(" ")[mappingNumber - 1]
+                    ][suggestionListNumber]
                 });
               }
               // else if (

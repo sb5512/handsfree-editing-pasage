@@ -71,7 +71,8 @@ export default function SpeechRecognition(options) {
 
           induceError: true,
 
-          toCorrectInSpellModeWord: ""
+          toCorrectInSpellModeWord: "",
+          capitalOrNotStarting: true
         };
       }
 
@@ -438,6 +439,7 @@ export default function SpeechRecognition(options) {
         let logData = this.state.logData;
         let logDataPersist = this.state.logDataPersist;
         let induceError = this.state.induceError;
+        let capitalOrNotStarting = this.state.capitalOrNotStarting;
 
         /**
          * state hascommand true bhayo bhane hami command mode ma cham
@@ -943,7 +945,7 @@ export default function SpeechRecognition(options) {
                 logDataPersist = [...logDataPersist, ...logData];
                 logData = []; //make log data empty
                 finalTranscript = "";
-                var dt = new Date();
+                let dt = new Date();
                 while (new Date() - dt <= 1000) {
                   /* Do nothing */
                 }
@@ -974,7 +976,7 @@ export default function SpeechRecognition(options) {
                     Utils.getCurrentTime(),
                   textForLog: finalTranscript
                 });
-                var dt = new Date();
+                let dt = new Date();
                 while (new Date() - dt <= 1000) {
                   /* Do nothing */
                 }
@@ -1024,40 +1026,48 @@ export default function SpeechRecognition(options) {
                   case "freetextformationtask":
                     startingSentence =
                       "Image " + this.state.imageNumber + " is used";
+                    capitalOrNotStarting = true;
                     break;
                   case "freetextformationtaskcommand":
                     startingSentence =
                       "Image " + this.state.imageNumber + " is used";
+                    capitalOrNotStarting = true;
                     break;
                   case "freetextformationtaskdwell":
                     startingSentence =
                       "Image " + this.state.imageNumber + " is used";
+                    capitalOrNotStarting = true;
                     break;
                   case "replytask":
                     startingSentence = getReplyQuestions(
                       this.state.phraseQuestionImageCount
                     );
+                    capitalOrNotStarting = false;
                     break;
                   case "copytask":
                     startingSentence = getPhrases(
                       this.state.phraseQuestionImageCount
                     );
+                    capitalOrNotStarting = false;
                     break;
                   case "copytaskcommand":
                     startingSentence = getPhrases(
                       this.state.phraseQuestionImageCount
                     );
+                    capitalOrNotStarting = false;
                     break;
                   case "copytaskdwell":
                     startingSentence = getPhrases(
                       this.state.phraseQuestionImageCount
                     );
+
+                    capitalOrNotStarting = false;
                     break;
                   default:
                     startingSentence = getReplyQuestions(
                       this.state.phraseQuestionImageCount
                     );
-
+                    capitalOrNotStarting = true;
                     break;
                 }
                 console.log(
@@ -1096,6 +1106,13 @@ export default function SpeechRecognition(options) {
           }
         }
 
+        finalTranscript = finalTranscript.replace(" .", ".");
+        interimTranscript = interimTranscript.replace(" .", ".");
+        if (capitalOrNotStarting) {
+          finalTranscript = Utils.sentenceCase(finalTranscript);
+          interimTranscript = Utils.sentenceCase(interimTranscript);
+        }
+
         this.setState({
           finalTranscript,
           interimTranscript,
@@ -1114,7 +1131,8 @@ export default function SpeechRecognition(options) {
           suggestionListNumber,
           logData,
           logDataPersist,
-          induceError
+          induceError,
+          capitalOrNotStarting
         });
       }
 
@@ -1180,6 +1198,7 @@ export default function SpeechRecognition(options) {
         // Maybe upeercase already here?
 
         // transcript = transcript.charAt(0).toUpperCase() + transcript.slice(1);
+        // Remove space between fullstop and another word
 
         /** OBJECT CREATION FOR EACH WORD BEGINS */
         let transcriptObject = [];

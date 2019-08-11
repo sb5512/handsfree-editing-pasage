@@ -110,6 +110,21 @@ class Utils {
       value: suggestionListNumber
     }; // currentTranscription.endsWith("1") || currentTranscription.endsWith("one")|| currentTranscription.endsWith("one");
   }
+  static removeSpaceIfPresentBeforeFullStop(sentence) {
+    return sentence.replace(" .", ".");
+  }
+
+  static sentenceCase(input, lowercaseBefore) {
+    input = input === undefined || input === null ? "" : input;
+    if (lowercaseBefore) {
+      input = input.toLowerCase();
+    }
+    return input
+      .toString()
+      .replace(/(^|\. *)([a-z])/g, function(match, separator, char) {
+        return separator + char.toUpperCase();
+      });
+  }
 }
 
 // module.exports = Utils;

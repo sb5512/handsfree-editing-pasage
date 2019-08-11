@@ -276,6 +276,14 @@ export default function SpeechRecognition(options) {
         }
       };
 
+      resetImageNumber = () => {
+        this.setState({ imageNumber: 0 });
+      };
+
+      resetPhraseQuestionImageCount = () => {
+        this.setState({ phraseQuestionImageCount: 0 });
+      };
+
       setSuggestionList = (word, suggestions, shouldReplace) => {
         let newDict = this.state.suggestionList;
         // let logData = this.state.logData;
@@ -343,6 +351,22 @@ export default function SpeechRecognition(options) {
             body: JSON.stringify({
               channel: "test_ob_tooling",
               text: "#clickmouse"
+            })
+          }
+        );
+      };
+
+      pressf4f5ToStartStopGaze = () => {
+        fetch(
+          "https://hooks.slack.com/services/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",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+              channel: "test_ob_tooling",
+              text: "#f4f5press"
             })
           }
         );
@@ -1238,6 +1262,10 @@ export default function SpeechRecognition(options) {
             setSuggestionList={this.setSuggestionList}
             setInducedError={this.setInducedError}
             logTimeDataWhenHoveredAtWord={this.logTimeDataWhenHoveredAtWord}
+            pressf4ToStartStopGaze={this.pressf4ToStartStopGaze}
+            pressf4f5ToStartStopGaze={this.pressf4f5ToStartStopGaze}
+            resetImageNumber={this.resetImageNumber}
+            resetPhraseQuestionImageCount={this.resetPhraseQuestionImageCount}
             handleWordClickToGetToMappingWithNumberState={
               this.handleWordClickToGetToMappingWithNumberState
             }

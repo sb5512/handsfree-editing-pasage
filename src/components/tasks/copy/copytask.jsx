@@ -41,6 +41,14 @@ class CopyTask extends Component {
   myCallback = () => {
     this.setState({ readyToListen: true });
     this.props.startListening();
+    // When timer start we also have to start gaze and mouse gaze hide depending on conditions
+    if (this.props.commandTag || this.props.dwellTag) {
+      this.props.pressf4ToStartStopGaze();
+      console.log("Did I get called? This is commandTag or dwelltag");
+    } else {
+      console.log("Did I get called? This is normal");
+      this.props.pressf4f5ToStartStopGaze();
+    }
   };
 
   render() {

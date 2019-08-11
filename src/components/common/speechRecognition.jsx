@@ -932,7 +932,9 @@ export default function SpeechRecognition(options) {
                 hasNextCommand = true; // Used when we think some finalscript comes late .i.e race condition
 
                 let whichTask = window.location.pathname.split("/").pop();
-                whichTask === "freetextformationtask"
+                whichTask === "freetextformationtask" ||
+                whichTask === "freetextformationtaskcommand" ||
+                whichTask === "freetextformationtaskdwell"
                   ? (imageNumber = this.state.imageNumber + 1) // change number 4 using total lengths of images available
                   : (phraseQuestionImageCount =
                       this.state.phraseQuestionImageCount + 1);
@@ -1023,12 +1025,30 @@ export default function SpeechRecognition(options) {
                     startingSentence =
                       "Image " + this.state.imageNumber + " is used";
                     break;
+                  case "freetextformationtaskcommand":
+                    startingSentence =
+                      "Image " + this.state.imageNumber + " is used";
+                    break;
+                  case "freetextformationtaskdwell":
+                    startingSentence =
+                      "Image " + this.state.imageNumber + " is used";
+                    break;
                   case "replytask":
                     startingSentence = getReplyQuestions(
                       this.state.phraseQuestionImageCount
                     );
                     break;
                   case "copytask":
+                    startingSentence = getPhrases(
+                      this.state.phraseQuestionImageCount
+                    );
+                    break;
+                  case "copytaskcommand":
+                    startingSentence = getPhrases(
+                      this.state.phraseQuestionImageCount
+                    );
+                    break;
+                  case "copytaskdwell":
                     startingSentence = getPhrases(
                       this.state.phraseQuestionImageCount
                     );

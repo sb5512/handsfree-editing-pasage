@@ -9,20 +9,19 @@ class LogdataImageTask extends Component {
   };
 
   render() {
-    let filename =
-      "session" +
-      this.props.imageNumber / this.props.sessionCounter +
-      "logdata.csv";
-    console.log(
-      "WHAT IS MY LASSSSSSSSSSSSSSSSSSSSSS LOG DATA INFOOOOOOOOO",
-      this.props.logData
-    );
+    let filename = "session" + this.props.imageNumber + "-voiceonlyLogs.csv";
+    if (this.props.commandTag) {
+      filename = "session" + this.props.imageNumber + "-commandtagLogs.csv";
+    }
+    if (this.props.dwellTag) {
+      filename = "session" + this.props.imageNumber + "-dwelltagLogs.csv";
+    }
+
     let randomLogDataDownloadBtnFix =
       this.props.logData.length > 0
         ? this.props.logData[this.props.logData.length - 1].command !==
           "S_Finish"
         : true;
-    console.log("Will I have download?", randomLogDataDownloadBtnFix);
     return (
       <React.Fragment>
         {" "}

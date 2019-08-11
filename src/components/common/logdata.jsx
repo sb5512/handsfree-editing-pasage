@@ -9,22 +9,22 @@ class Logdata extends Component {
   };
 
   render() {
-    let filename =
-      "session" +
-      this.props.sessionCounter -
-      this.props.phraseQuestionImageCount +
-      "logdata.csv";
-    console.log(
-      "WHAT IS MY LASSSSSSSSSSSSSSSSSSSSSS LOG DATA INFOOOOOOOOO",
-      this.props.logData
-    );
+    let filename = "session" + this.props.sessionCounter / 5 + "-logdata.csv";
+    if (this.props.commandTag) {
+      filename =
+        "session" + this.props.sessionCounter / 5 + "-commandtagLogs.csv";
+    }
+    if (this.props.dwellTag) {
+      filename =
+        "session" + this.props.sessionCounter / 5 + "-dwelltagLogs.csv";
+    }
+
     let randomLogDataDownloadBtnFix =
       this.props.logData.length > 0
         ? this.props.logData[this.props.logData.length - 1].command !==
           "S_Finish"
         : true;
 
-    console.log("Will I have download?", randomLogDataDownloadBtnFix);
     return (
       <React.Fragment>
         {" "}

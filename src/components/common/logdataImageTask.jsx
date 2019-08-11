@@ -9,12 +9,14 @@ class LogdataImageTask extends Component {
   };
 
   render() {
-    let filename = "session" + this.props.imageNumber + "-voiceonlyLogs.csv";
+    let filename =
+      "session" + this.props.imageNumber + "-imagetask-voiceonly.csv";
     if (this.props.commandTag) {
-      filename = "session" + this.props.imageNumber + "-commandtagLogs.csv";
+      filename =
+        "session" + this.props.imageNumber + "-imagetask-commandtag.csv";
     }
     if (this.props.dwellTag) {
-      filename = "session" + this.props.imageNumber + "-dwelltagLogs.csv";
+      filename = "session" + this.props.imageNumber + "-imagetask-dwelltag.csv";
     }
 
     let randomLogDataDownloadBtnFix =

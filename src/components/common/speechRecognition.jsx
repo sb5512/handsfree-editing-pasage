@@ -211,24 +211,24 @@ export default function SpeechRecognition(options) {
       // Only when the "Next command is called we set the induceError = true"
       setInducedError = word => {
         if (this.state.induceError) {
-          console.log("We are going to replace the longest word now", word);
+          // console.log("We are going to replace the longest word now", word);
           let induceError = this.state.induceError;
           let logData = this.state.logData;
           let randomNumber = Math.floor(Math.random() * 5); // use this to replace a suggestion word in list
-          console.log(
-            "Our random Number whose word is going to be replaced is",
-            randomNumber
-          );
+          // console.log(
+          //   "Our random Number whose word is going to be replaced is",
+          //   randomNumber
+          // );
           let newDict = this.state.suggestionList;
 
           // while (word === this.state.suggestionList[word][randomNumber]) {
           //   randomNumber = Math.floor(Math.random() * 5);
           // }
 
-          console.log(
-            "Our random Number after checking word === sugesstion[list]",
-            randomNumber
-          );
+          // console.log(
+          //   "Our random Number after checking word === sugesstion[list]",
+          //   randomNumber
+          // );
           // Here we replace the finaltranscript with a unique word that was in suggestion
           finalTranscript = finalTranscript.replace(
             word,
@@ -237,15 +237,15 @@ export default function SpeechRecognition(options) {
 
           // Now the unique word from suggestion has to be added to the dictionary
           let newSuggestionForinduced = [...this.state.suggestionList[word]];
-          console.log(
-            "My to induced suggestion list is for word ",
-            word,
-            newSuggestionForinduced
-          );
+          // console.log(
+          //   "My to induced suggestion list is for word ",
+          //   word,
+          //   newSuggestionForinduced
+          // );
           if (!newSuggestionForinduced.includes(word)) {
-            console.log(
-              "I am confused if the newSuggestionForInduced has that word already"
-            );
+            // console.log(
+            //   "I am confused if the newSuggestionForInduced has that word already"
+            // );
             newSuggestionForinduced[randomNumber] = word;
           }
 
@@ -270,6 +270,11 @@ export default function SpeechRecognition(options) {
                 '" with ' +
                 this.state.suggestionList[word][randomNumber]
             });
+            console.log(
+              "I HAVE INDUCED ERROR ON ",
+              word,
+              " for " + this.state.suggestionList[word][randomNumber]
+            );
           }
           induceError = false;
 
@@ -498,7 +503,7 @@ export default function SpeechRecognition(options) {
                 currentTranscription.endsWith("Cancel")
               ) {
                 if (this.state.spellMode) {
-                  console.log("Cancel command when inside spell mode");
+                  // console.log("Cancel command when inside spell mode");
                   suggestionMode = false;
                   hasCommand = false;
                   // finalTranscript = this.removeLastWord(finalTranscript);
@@ -527,7 +532,7 @@ export default function SpeechRecognition(options) {
                 !this.state.spellMode
               ) {
                 // This is where we will check if selection mode is on and "spell word is in the transcript"
-                console.log("I AM IN SPELL MODE");
+                // console.log("I AM IN SPELL MODE");
                 hasCommand = false; // Still command mode
                 spellMode = true;
                 suggestionMode = false;
@@ -548,7 +553,7 @@ export default function SpeechRecognition(options) {
                 currentTranscription.endsWith("delete") &&
                 this.state.mappingNumber
               ) {
-                console.log("DELETE WORD AFTER SAYING MAP AND NUMBER");
+                // console.log("DELETE WORD AFTER SAYING MAP AND NUMBER");
                 suggestionMode = false;
                 finalTranscript = this.removeWordByIndex(
                   finalTranscript,
@@ -568,7 +573,7 @@ export default function SpeechRecognition(options) {
                   textForLog: finalTranscript
                 });
               } else if (currentTranscription.endsWith("delete")) {
-                console.log("DELETE LAST WORD OF SENTENCE");
+                // console.log("DELETE LAST WORD OF SENTENCE");
                 suggestionMode = false;
                 finalTranscript = this.removeLastWord(finalTranscript);
                 logData.push({
@@ -612,7 +617,7 @@ export default function SpeechRecognition(options) {
                   currentTranscription.endsWith("Lotus")) &&
                 this.state.mappingNumber //
               ) {
-                console.log("GOING TO MAKE THE SELECTED WORD TO LOWERCASE");
+                // console.log("GOING TO MAKE THE SELECTED WORD TO LOWERCASE");
                 suggestionMode = false;
                 finalTranscript = this.lowercaseWordByIndex(
                   finalTranscript,
@@ -630,7 +635,7 @@ export default function SpeechRecognition(options) {
                 this.checkSecondLastWord("insert", currentTranscription) &&
                 this.state.mappingNumber //
               ) {
-                console.log("TO INSERT TEXT INFRONT OF A SENTENCE");
+                // console.log("TO INSERT TEXT INFRONT OF A SENTENCE");
                 suggestionMode = false;
                 let wordToInsert = currentTranscription
                   .trim()
@@ -653,7 +658,7 @@ export default function SpeechRecognition(options) {
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 1 //
               ) {
-                console.log("SUGGESTION LIST FOR FIRST ELEMENT");
+                // console.log("SUGGESTION LIST FOR FIRST ELEMENT");
                 suggestionMode = true;
                 suggestionListNumber = 0;
                 mappingNumber = this.state.mappingNumber;
@@ -708,7 +713,7 @@ export default function SpeechRecognition(options) {
                   currentTranscription.endsWith("To") ||
                   currentTranscription.endsWith("to")) //
               ) {
-                console.log("SUGGESTION LIST FOR SECOND ELEMENT");
+                // console.log("SUGGESTION LIST FOR SECOND ELEMENT");
                 suggestionMode = true;
                 suggestionListNumber = 1;
                 mappingNumber = this.state.mappingNumber;
@@ -754,7 +759,7 @@ export default function SpeechRecognition(options) {
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 3 //
               ) {
-                console.log("SUGGESTION LIST FOR THIRD ELEMENT");
+                // console.log("SUGGESTION LIST FOR THIRD ELEMENT");
                 suggestionMode = true;
                 suggestionListNumber = 2;
                 mappingNumber = this.state.mappingNumber;
@@ -804,7 +809,7 @@ export default function SpeechRecognition(options) {
                 (objIsNumberAndVal.value === 4 ||
                   currentTranscription.endsWith("for")) //
               ) {
-                console.log("SUGGESTION LIST FOR FOURTH ELEMENT");
+                // console.log("SUGGESTION LIST FOR FOURTH ELEMENT");
                 suggestionMode = true;
                 suggestionListNumber = 3;
                 mappingNumber = this.state.mappingNumber;
@@ -849,7 +854,7 @@ export default function SpeechRecognition(options) {
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 5 //
               ) {
-                console.log("SUGGESTION LIST FOR FIFTH ELEMENT");
+                // console.log("SUGGESTION LIST FOR FIFTH ELEMENT");
                 suggestionMode = true;
                 suggestionListNumber = 4;
                 mappingNumber = this.state.mappingNumber;
@@ -1103,20 +1108,20 @@ export default function SpeechRecognition(options) {
                     capitalOrNotStarting = true;
                     break;
                 }
-                console.log(
-                  "Yo honita data ta persisted ",
-                  this.state.logDataPersist
-                );
+                // console.log(
+                //   "Yo honita data ta persisted ",
+                //   this.state.logDataPersist
+                // );
                 if (holdingFinalTranscript.length > 0) {
                   // Here we merge the last log data with textForlog with holdinFinalTranscript
                   logDataPersist[logDataPersist.length - 1].textForLog =
                     logDataPersist[logDataPersist.length - 1].textForLog +
                     " " +
                     holdingFinalTranscript;
-                  console.log(
-                    "WHATTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT MY LAST LOGGGGGGGGGG",
-                    logDataPersist
-                  );
+                  // console.log(
+                  //   "WHATTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT MY LAST LOGGGGGGGGGG",
+                  //   logDataPersist
+                  // );
                 }
 
                 logData.push({
@@ -1213,10 +1218,10 @@ export default function SpeechRecognition(options) {
       render() {
         // This is to make sure we do not have a race condition
         if (this.state.hasNextCommand) {
-          console.log(
-            "LAst maaaaaaaaaaaaaaaaaaaaaaaaaaaaa ta finalscript zero bhayo bhaneko ta",
-            finalTranscript
-          );
+          // console.log(
+          //   "LAst maaaaaaaaaaaaaaaaaaaaaaaaaaaaa ta finalscript zero bhayo bhaneko ta",
+          //   finalTranscript
+          // );
           if (finalTranscript) {
             holdingFinalTranscript = finalTranscript;
           }
@@ -1266,14 +1271,14 @@ export default function SpeechRecognition(options) {
           for (const [index, word] of transcript.split(" ").entries()) {
             // if we have index matching mapping number we replace that with suggestionlist[suggestionlistnumber]
             let updatedWord = word;
-            console.log(
-              "Why always the problem with suggestion list ",
-              this.state.suggestionList
-            );
-            console.log(
-              "Why always the problem with the sugesstion list and its word",
-              word
-            );
+            // console.log(
+            //   "Why always the problem with suggestion list ",
+            //   this.state.suggestionList
+            // );
+            // console.log(
+            //   "Why always the problem with the sugesstion list and its word",
+            //   word
+            // );
             if (
               index + 1 === this.state.mappingNumber &&
               this.state.suggestionList[word]
@@ -1287,14 +1292,14 @@ export default function SpeechRecognition(options) {
 
                 toReplaceWord = word;
                 replacingWord = updatedWord;
-                console.log(
-                  "WHATTTTTTTTTTT IS MY UPDATEDDDDDDD WORD",
-                  replacingWord
-                );
-                console.log(
-                  "WHATTTTTTTTTTT IS MY toReplace WORD",
-                  toReplaceWord
-                );
+                // console.log(
+                //   "WHATTTTTTTTTTT IS MY UPDATEDDDDDDD WORD",
+                //   replacingWord
+                // );
+                // console.log(
+                //   "WHATTTTTTTTTTT IS MY toReplace WORD",
+                //   toReplaceWord
+                // );
               }
             }
 

@@ -29,6 +29,13 @@ class Logdata extends Component {
     return (
       <React.Fragment>
         {" "}
+        {this.props.phraseQuestionImageCount < 10 ? (
+          <div className="text-justify d-block p-2 bg-success">
+            <b>Training in progress</b>
+          </div>
+        ) : (
+          <React.Fragment />
+        )}
         <div className="border border-white bg-secondary d-block p-2 bg-light">
           {this.props.sessionCounter - this.props.phraseQuestionImageCount ===
             0 &&
@@ -47,13 +54,19 @@ class Logdata extends Component {
           ) : (
             <React.Fragment />
           )}
-          <h5>Logs {this.props.phraseQuestionImageCount}</h5> <hr />
-          {this.props.logData
-            .slice(0)
-            .reverse()
-            .map((sentence, index) => {
-              return <div key={index}> {sentence.text} </div>;
-            })}
+          {this.props.showLogData ? (
+            <React.Fragment>
+              <h5>Logs {this.props.imageNumber}</h5>
+              {this.props.logData
+                .slice(0)
+                .reverse()
+                .map((sentence, index) => {
+                  return <div key={index}> {sentence.text} </div>;
+                })}
+            </React.Fragment>
+          ) : (
+            <div />
+          )}
         </div>
         <div>
           <CSVLink

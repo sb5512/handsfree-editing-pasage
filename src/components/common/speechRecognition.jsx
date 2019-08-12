@@ -72,7 +72,8 @@ export default function SpeechRecognition(options) {
           induceError: true,
 
           toCorrectInSpellModeWord: "",
-          capitalOrNotStarting: true
+          capitalOrNotStarting: true,
+          showLogData: false
         };
       }
 
@@ -348,6 +349,10 @@ export default function SpeechRecognition(options) {
         this.setState({
           suggestionList: newDict
         });
+      };
+
+      toggleShowLogData = () => {
+        this.setState({ showLogData: !this.state.showLogData });
       };
 
       clickMouse = () => {
@@ -1443,6 +1448,7 @@ export default function SpeechRecognition(options) {
             transcript={transcript}
             transcriptObject={transcriptObject}
             recognition={recognition}
+            toggleShowLogData={this.toggleShowLogData}
             browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
             {...this.state}
             {...this.props}

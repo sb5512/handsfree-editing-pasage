@@ -27,6 +27,13 @@ class LogdataImageTask extends Component {
     return (
       <React.Fragment>
         {" "}
+        {this.props.imageNumber < 2 ? (
+          <div className="text-justify d-block p-2 bg-success">
+            <b>Training in progress</b>
+          </div>
+        ) : (
+          <React.Fragment />
+        )}
         <div className="border border-white bg-secondary d-block p-2 bg-light">
           {this.props.sessionCounter - this.props.imageNumber === 0 &&
           !this.props.spellMode &&
@@ -44,13 +51,19 @@ class LogdataImageTask extends Component {
           ) : (
             <React.Fragment />
           )}
-          <h5>Logs {this.props.imageNumber}</h5> <hr />
-          {this.props.logData
-            .slice(0)
-            .reverse()
-            .map((sentence, index) => {
-              return <div key={index}> {sentence.text} </div>;
-            })}
+          {this.props.showLogData ? (
+            <React.Fragment>
+              <h5>Logs {this.props.imageNumber}</h5>
+              {this.props.logData
+                .slice(0)
+                .reverse()
+                .map((sentence, index) => {
+                  return <div key={index}> {sentence.text} </div>;
+                })}
+            </React.Fragment>
+          ) : (
+            <div />
+          )}
         </div>
         <div>
           <CSVLink

@@ -473,21 +473,36 @@ export default function SpeechRecognition(options) {
                 suggestionMode = false;
                 oldTranscript = "";
                 if (this.state.spellMode) {
-                  // only if spell mode on we revert transcript back to old transcript
-                  // TODO replace the transcript
-                  finalTranscript = this.replaceWordWithSpellWord(
-                    this.state.oldTranscript,
-                    this.state.toCorrectInSpellModeWord,
-                    finalTranscript
-                  );
-                  logData.push({
-                    command: "S_Finish",
-                    time: Utils.getCurrentTime(),
-                    text:
-                      '"Finish" command within spell mode given at : ' +
-                      Utils.getCurrentTime(),
-                    textForLog: finalTranscript
-                  });
+                  if (finalTranscript != this.state.oldTranscript) {
+                    finalTranscript = this.replaceWordWithSpellWord(
+                      this.state.oldTranscript,
+                      this.state.toCorrectInSpellModeWord,
+                      finalTranscript
+                    );
+                    // now replace "space" with actual space
+                    finalTranscript = this.replaceSpaceWithActualSpace(
+                      finalTranscript,
+                      logData
+                    );
+                    logData.push({
+                      command: "S_Finish",
+                      time: Utils.getCurrentTime(),
+                      text:
+                        '"Finish After Spell Mode Map" command within spell mode given at : ' +
+                        Utils.getCurrentTime(),
+                      textForLog: finalTranscript
+                    });
+                  } else {
+                    logData.push({
+                      command: "Quick_S_Finish_Error",
+                      time: Utils.getCurrentTime(),
+                      text:
+                        '"Finish" command within spell mode given too quickly. Unable to replace at ' +
+                        Utils.getCurrentTime(),
+                      textForLog:
+                        "Error!! Finish command within spell mode given too quickly. Unable to replace"
+                    });
+                  }
                 } else {
                   logData.push({
                     command: "Finish",
@@ -546,8 +561,12 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     '"spell" command activated spell mode at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog: finalTranscript
+                    Utils.getCurrentTime() +
+                    " for word : " +
+                    toCorrectInSpellModeWord,
+                  textForLog:
+                    "To correct in spell mode word is : " +
+                    toCorrectInSpellModeWord
                 });
               } else if (
                 currentTranscription.endsWith("delete") &&
@@ -1056,29 +1075,35 @@ export default function SpeechRecognition(options) {
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {
                 spellMode = false;
-                // This is where we will have to replace the spell mode text
-
-                finalTranscript = this.replaceWordWithSpellWord(
-                  this.state.oldTranscript,
-                  this.state.toCorrectInSpellModeWord,
-                  finalTranscript
-                );
-                // now replace "space" with actual space
-                finalTranscript = this.replaceSpaceWithActualSpace(
-                  finalTranscript,
-                  logData
-                );
-                logData.push({
-                  command: "S_Finish",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    '"Finish" command within spell mode given at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog: finalTranscript
-                });
-                let dt = new Date();
-                while (new Date() - dt <= 1000) {
-                  /* Do nothing */
+                if (finalTranscript != this.state.oldTranscript) {
+                  finalTranscript = this.replaceWordWithSpellWord(
+                    this.state.oldTranscript,
+                    this.state.toCorrectInSpellModeWord,
+                    finalTranscript
+                  );
+                  // now replace "space" with actual space
+                  finalTranscript = this.replaceSpaceWithActualSpace(
+                    finalTranscript,
+                    logData
+                  );
+                  logData.push({
+                    command: "S_Finish",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      '"Finish" command within spell mode given at : ' +
+                      Utils.getCurrentTime(),
+                    textForLog: finalTranscript
+                  });
+                } else {
+                  logData.push({
+                    command: "Quick_S_Finish_Error",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      '"Finish" command within spell mode given too quickly. Unable to replace at ' +
+                      Utils.getCurrentTime(),
+                    textForLog:
+                      "Error!! Finish command within spell mode given too quickly. Unable to replace"
+                  });
                 }
               } else if (ifContainsClear) {
                 if (this.state.spellMode) {
@@ -1208,6 +1233,10 @@ export default function SpeechRecognition(options) {
 
         finalTranscript = finalTranscript.replace(" .", ".");
         interimTranscript = interimTranscript.replace(" .", ".");
+        if (this.state.spellMode) {
+          finalTranscript = finalTranscript.replace("0", "o");
+          interimTranscript = interimTranscript.replace("0", "o");
+        }
         if (capitalOrNotStarting) {
           finalTranscript = Utils.sentenceCase(finalTranscript);
           interimTranscript = Utils.sentenceCase(interimTranscript);

@@ -679,6 +679,18 @@ export default function SpeechRecognition(options) {
                       finalTranscript.split(" ")[mappingNumber - 1]
                     ][suggestionListNumber]
                 });
+                let toReplaceWord = finalTranscript.split(" ")[
+                  mappingNumber - 1
+                ];
+
+                let replacingWord = this.state.suggestionList[
+                  finalTranscript.split(" ")[mappingNumber - 1]
+                ][suggestionListNumber];
+                finalTranscript = this.replaceWordWithSuggestionWord(
+                  toReplaceWord,
+                  replacingWord,
+                  finalTranscript
+                );
               }
               // else if (
               //   (currentTranscription.endsWith("a") ||
@@ -731,6 +743,18 @@ export default function SpeechRecognition(options) {
                       finalTranscript.split(" ")[mappingNumber - 1]
                     ][suggestionListNumber]
                 });
+                let toReplaceWord = finalTranscript.split(" ")[
+                  mappingNumber - 1
+                ];
+
+                let replacingWord = this.state.suggestionList[
+                  finalTranscript.split(" ")[mappingNumber - 1]
+                ][suggestionListNumber];
+                finalTranscript = this.replaceWordWithSuggestionWord(
+                  toReplaceWord,
+                  replacingWord,
+                  finalTranscript
+                );
               }
               // else if (
               //   (currentTranscription.endsWith("B") ||
@@ -777,6 +801,18 @@ export default function SpeechRecognition(options) {
                       finalTranscript.split(" ")[mappingNumber - 1]
                     ][suggestionListNumber]
                 });
+                let toReplaceWord = finalTranscript.split(" ")[
+                  mappingNumber - 1
+                ];
+
+                let replacingWord = this.state.suggestionList[
+                  finalTranscript.split(" ")[mappingNumber - 1]
+                ][suggestionListNumber];
+                finalTranscript = this.replaceWordWithSuggestionWord(
+                  toReplaceWord,
+                  replacingWord,
+                  finalTranscript
+                );
               }
               // else if (
               //   (currentTranscription.endsWith("c") ||
@@ -827,6 +863,19 @@ export default function SpeechRecognition(options) {
                       finalTranscript.split(" ")[mappingNumber - 1]
                     ][suggestionListNumber]
                 });
+
+                let toReplaceWord = finalTranscript.split(" ")[
+                  mappingNumber - 1
+                ];
+
+                let replacingWord = this.state.suggestionList[
+                  finalTranscript.split(" ")[mappingNumber - 1]
+                ][suggestionListNumber];
+                finalTranscript = this.replaceWordWithSuggestionWord(
+                  toReplaceWord,
+                  replacingWord,
+                  finalTranscript
+                );
               }
               // else if (
               //   (currentTranscription.endsWith("d") ||
@@ -872,6 +921,19 @@ export default function SpeechRecognition(options) {
                       finalTranscript.split(" ")[mappingNumber - 1]
                     ][suggestionListNumber]
                 });
+
+                let toReplaceWord = finalTranscript.split(" ")[
+                  mappingNumber - 1
+                ];
+
+                let replacingWord = this.state.suggestionList[
+                  finalTranscript.split(" ")[mappingNumber - 1]
+                ][suggestionListNumber];
+                finalTranscript = this.replaceWordWithSuggestionWord(
+                  toReplaceWord,
+                  replacingWord,
+                  finalTranscript
+                );
               }
               // else if (
               //   (currentTranscription.endsWith("e") ||
@@ -983,10 +1045,10 @@ export default function SpeechRecognition(options) {
                 logDataPersist = [...logDataPersist, ...logData];
                 logData = []; //make log data empty
                 finalTranscript = "";
-                let dt = new Date();
-                while (new Date() - dt <= 1000) {
-                  /* Do nothing */
-                }
+                // let dt = new Date();
+                // while (new Date() - dt <= 1000) {
+                //   /* Do nothing */
+                // }
                 // induceError = true;
                 // Now we start gaze again
                 // this.pressf4ToStartStopGaze();
@@ -1329,7 +1391,6 @@ export default function SpeechRecognition(options) {
           }
         }
         /** OBJECT CREATION FOR EACH WORD ENDS */
-
         return (
           <WrappedComponent
             resetTranscript={this.resetTranscript}

@@ -94,6 +94,11 @@ class Utils {
     ) {
       console.log("It actually came here for the map numbers");
       suggestionListNumber = 4;
+    } else if (
+      currentTranscription.endsWith("2") ||
+      currentTranscription.endsWith("to")
+    ) {
+      suggestionListNumber = 4;
     } else {
       suggestionListNumber =
         currentTranscription.lastIndexOf(" ") > 0

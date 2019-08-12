@@ -100,26 +100,28 @@ class CopyDictate extends Component {
     if (this.props.spellMode) {
       renderDiv = (
         <React.Fragment>
-          <SpellMode
-            handleWordClick={this.handleWordClick}
-            toggleHoverOn={this.toggleHoverOn}
-            toggleHoverOff={this.toggleHoverOff}
-            {...this.props}
-            sessionCounter={this.state.sessionCounter}
-            sessionCounterUp={this.sessionCounterUp}
-          />
-          <Logdata
-            logDataPersist={this.props.logDataPersist}
-            logData={this.props.logData}
-            phraseQuestionImageCount={this.props.phraseQuestionImageCount}
-            stopListening={this.props.stopListening}
-            startListening={this.props.startListening}
-            historyStates={this.props.state}
-            restartTimer={this.props.restartTimer}
-            {...this.props}
-            sessionCounter={this.state.sessionCounter}
-            sessionCounterUp={this.sessionCounterUp}
-          />
+          <div className="container">
+            <SpellMode
+              handleWordClick={this.handleWordClick}
+              toggleHoverOn={this.toggleHoverOn}
+              toggleHoverOff={this.toggleHoverOff}
+              {...this.props}
+              sessionCounter={this.state.sessionCounter}
+              sessionCounterUp={this.sessionCounterUp}
+            />
+            <Logdata
+              logDataPersist={this.props.logDataPersist}
+              logData={this.props.logData}
+              phraseQuestionImageCount={this.props.phraseQuestionImageCount}
+              stopListening={this.props.stopListening}
+              startListening={this.props.startListening}
+              historyStates={this.props.state}
+              restartTimer={this.props.restartTimer}
+              {...this.props}
+              sessionCounter={this.state.sessionCounter}
+              sessionCounterUp={this.sessionCounterUp}
+            />
+          </div>
         </React.Fragment>
       );
     } else {

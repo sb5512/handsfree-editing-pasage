@@ -18,31 +18,31 @@ class ImageLoader extends Component {
     // To get random images - Ends
     return (
       <React.Fragment>
-        <Container>
-          <Row>
-            <Col xs={6} md={12}>
-              <h4 className="text-center">
-                Pick{" "}
-                <b>
-                  <font color="red">two</font>
-                </b>{" "}
-                images. Describe the images and tell a story about the people in
-                the images.
-              </h4>
-            </Col>
-          </Row>
-          <Row>
-            <Col xs={6} md={4}>
-              <Image src={toLoadImage1} fluid />
-            </Col>
-            <Col xs={6} md={4}>
-              <Image src={toLoadImage2} fluid />
-            </Col>
-            <Col xs={6} md={4}>
-              <Image src={toLoadImage3} fluid />
-            </Col>
-          </Row>
-        </Container>
+        {/* <Container> */}
+        <Row>
+          <Col xs={6} md={12}>
+            <h4 className="text-center">
+              Pick{" "}
+              <b>
+                <font color="red">two</font>
+              </b>{" "}
+              images. Describe the images and tell a story about the people in
+              the images.
+            </h4>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={6} md={4}>
+            <Image src={toLoadImage1} fluid />
+          </Col>
+          <Col xs={6} md={4}>
+            <Image src={toLoadImage2} fluid />
+          </Col>
+          <Col xs={6} md={4}>
+            <Image src={toLoadImage3} fluid />
+          </Col>
+        </Row>
+        {/* </Container> */}
         {/* For Image */}
         {/* <div className="row justify-content-md-center">
           <div className="col col-lg-4">

@@ -104,7 +104,10 @@ class Transcription extends Component {
                     style={{
                       fontSize: 34,
                       cursor: "pointer",
-                      paddingLeft: 20
+                      paddingLeft: 20,
+                      paddingRight: 20,
+                      paddingTop: 5,
+                      paddingBottom: 5
                     }}
                     onClick={e => handleWordClick(e, wordObject.text, index)}
                     onMouseOver={toggleHoverOn}

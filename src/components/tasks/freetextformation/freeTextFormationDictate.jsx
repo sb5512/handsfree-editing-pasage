@@ -101,33 +101,36 @@ class FreeTextFormationDictate extends Component {
       renderDiv = (
         <React.Fragment>
           {/* <Transcription {...this.props} />; */}
-          <SpellMode
-            handleWordClick={this.handleWordClick}
-            toggleHoverOn={this.toggleHoverOn}
-            toggleHoverOff={this.toggleHoverOff}
-            {...this.props}
-            sessionCounter={this.state.sessionCounter}
-            sessionCounterUp={this.sessionCounterUp}
-          />
-          <LogdataImageTask
-            logDataPersist={this.props.logDataPersist}
-            logData={this.props.logData}
-            imageNumber={this.props.imageNumber}
-            stopListening={this.props.stopListening}
-            startListening={this.props.startListening}
-            historyStates={this.props.state}
-            restartTimer={this.props.restartTimer}
-            {...this.props}
-            sessionCounter={this.state.sessionCounter}
-            sessionCounterUp={this.sessionCounterUp}
-          />
+
+          <div className="container">
+            <SpellMode
+              handleWordClick={this.handleWordClick}
+              toggleHoverOn={this.toggleHoverOn}
+              toggleHoverOff={this.toggleHoverOff}
+              {...this.props}
+              sessionCounter={this.state.sessionCounter}
+              sessionCounterUp={this.sessionCounterUp}
+            />
+            <LogdataImageTask
+              logDataPersist={this.props.logDataPersist}
+              logData={this.props.logData}
+              imageNumber={this.props.imageNumber}
+              stopListening={this.props.stopListening}
+              startListening={this.props.startListening}
+              historyStates={this.props.state}
+              restartTimer={this.props.restartTimer}
+              {...this.props}
+              sessionCounter={this.state.sessionCounter}
+              sessionCounterUp={this.sessionCounterUp}
+            />
+          </div>
         </React.Fragment>
       );
     } else {
       renderDiv = (
         <React.Fragment>
-          <ImageLoader {...this.props} loadedImage={this.props.loadedImage} />{" "}
           <Container>
+            <ImageLoader {...this.props} loadedImage={this.props.loadedImage} />{" "}
             <Transcription
               handleWordClick={this.handleWordClick}
               toggleHoverOn={this.toggleHoverOn}
@@ -135,19 +138,19 @@ class FreeTextFormationDictate extends Component {
               clickedWord={this.state.clickedWord}
               {...this.props}
             />
+            <LogdataImageTask
+              logDataPersist={this.props.logDataPersist}
+              logData={this.props.logData}
+              imageNumber={this.props.imageNumber}
+              stopListening={this.props.stopListening}
+              startListening={this.props.startListening}
+              historyStates={this.props.state}
+              restartTimer={this.props.restartTimer}
+              {...this.props}
+              sessionCounter={this.state.sessionCounter}
+              sessionCounterUp={this.sessionCounterUp}
+            />
           </Container>
-          <LogdataImageTask
-            logDataPersist={this.props.logDataPersist}
-            logData={this.props.logData}
-            imageNumber={this.props.imageNumber}
-            stopListening={this.props.stopListening}
-            startListening={this.props.startListening}
-            historyStates={this.props.state}
-            restartTimer={this.props.restartTimer}
-            {...this.props}
-            sessionCounter={this.state.sessionCounter}
-            sessionCounterUp={this.sessionCounterUp}
-          />
         </React.Fragment>
       );
     }

@@ -647,7 +647,9 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     '"lowercase" command given at : ' + Utils.getCurrentTime(),
-                  textForLog: finalTranscript.split(" ")[mappingNumber - 1]
+                  textForLog: finalTranscript.split(" ")[
+                    this.state.mappingNumber - 1
+                  ]
                 });
               } else if (
                 // secondlast word is an insert

@@ -8,6 +8,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.container {
+  /* remember to set a width */
+
+  margin: 0 auto;
+  margin-top: 50px;
+}
 .bg {
   /* The image used */
   /* background-image: url("./back1.jpg"); */

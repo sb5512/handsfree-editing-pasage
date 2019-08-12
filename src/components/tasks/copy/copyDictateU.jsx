@@ -5,6 +5,7 @@ import Transcription from "../generic/transcription";
 import Logdata from "../../common/logdata";
 import SpellMode from "../generic/spellMode";
 import PhraseLoader from "./phraseLoader";
+import { Container } from "react-bootstrap";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -124,26 +125,31 @@ class CopyDictate extends Component {
     } else {
       renderDiv = (
         <React.Fragment>
-          <PhraseLoader {...this.props} loadedImage={this.props.loadedImage} />{" "}
-          <Transcription
-            handleWordClick={this.handleWordClick}
-            toggleHoverOn={this.toggleHoverOn}
-            toggleHoverOff={this.toggleHoverOff}
-            clickedWord={this.state.clickedWord}
-            {...this.props}
-          />
-          <Logdata
-            logDataPersist={this.props.logDataPersist}
-            logData={this.props.logData}
-            phraseQuestionImageCount={this.props.phraseQuestionImageCount}
-            stopListening={this.props.stopListening}
-            startListening={this.props.startListening}
-            historyStates={this.props.state}
-            restartTimer={this.props.restartTimer}
-            {...this.props}
-            sessionCounter={this.state.sessionCounter}
-            sessionCounterUp={this.sessionCounterUp}
-          />
+          <div className="container">
+            <PhraseLoader
+              {...this.props}
+              loadedImage={this.props.loadedImage}
+            />{" "}
+            <Transcription
+              handleWordClick={this.handleWordClick}
+              toggleHoverOn={this.toggleHoverOn}
+              toggleHoverOff={this.toggleHoverOff}
+              clickedWord={this.state.clickedWord}
+              {...this.props}
+            />
+            <Logdata
+              logDataPersist={this.props.logDataPersist}
+              logData={this.props.logData}
+              phraseQuestionImageCount={this.props.phraseQuestionImageCount}
+              stopListening={this.props.stopListening}
+              startListening={this.props.startListening}
+              historyStates={this.props.state}
+              restartTimer={this.props.restartTimer}
+              {...this.props}
+              sessionCounter={this.state.sessionCounter}
+              sessionCounterUp={this.sessionCounterUp}
+            />
+          </div>
         </React.Fragment>
       );
     }

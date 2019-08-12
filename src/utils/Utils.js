@@ -92,13 +92,14 @@ class Utils {
       currentTranscription.endsWith("4") ||
       currentTranscription.endsWith("for")
     ) {
-      console.log("It actually came here for the map numbers");
+      console.log("Detected number 4");
       suggestionListNumber = 4;
     } else if (
       currentTranscription.endsWith("2") ||
       currentTranscription.endsWith("to")
     ) {
-      suggestionListNumber = 4;
+      console.log("Detected number 2");
+      suggestionListNumber = 2;
     } else {
       suggestionListNumber =
         currentTranscription.lastIndexOf(" ") > 0

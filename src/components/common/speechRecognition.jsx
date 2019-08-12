@@ -1352,60 +1352,62 @@ export default function SpeechRecognition(options) {
               });
             }
           }
-        } else if (this.state.suggestionMode) {
-          // If we have suggestion list mode our transcript is going to replaced by the suggestionListnumber
-          // Get suggestion list number
-          // Get suggestionList
-          // replace transcript at mapping number position with suggestionlist[suggestionlistnumber]
-          let toReplaceWord = "";
-          let replacingWord = "";
-          for (const [index, word] of transcript.split(" ").entries()) {
-            // if we have index matching mapping number we replace that with suggestionlist[suggestionlistnumber]
-            let updatedWord = word;
-            // console.log(
-            //   "Why always the problem with suggestion list ",
-            //   this.state.suggestionList
-            // );
-            // console.log(
-            //   "Why always the problem with the sugesstion list and its word",
-            //   word
-            // );
-            if (
-              index + 1 === this.state.mappingNumber &&
-              this.state.suggestionList[word]
-            ) {
-              if (
-                this.state.suggestionList[word][this.state.suggestionListNumber]
-              ) {
-                updatedWord = this.state.suggestionList[word][
-                  this.state.suggestionListNumber
-                ];
+        }
+        // else if (this.state.suggestionMode) {
+        //   // If we have suggestion list mode our transcript is going to replaced by the suggestionListnumber
+        //   // Get suggestion list number
+        //   // Get suggestionList
+        //   // replace transcript at mapping number position with suggestionlist[suggestionlistnumber]
+        //   let toReplaceWord = "";
+        //   let replacingWord = "";
+        //   for (const [index, word] of transcript.split(" ").entries()) {
+        //     // if we have index matching mapping number we replace that with suggestionlist[suggestionlistnumber]
+        //     let updatedWord = word;
+        //     // console.log(
+        //     //   "Why always the problem with suggestion list ",
+        //     //   this.state.suggestionList
+        //     // );
+        //     // console.log(
+        //     //   "Why always the problem with the sugesstion list and its word",
+        //     //   word
+        //     // );
+        //     if (
+        //       index + 1 === this.state.mappingNumber &&
+        //       this.state.suggestionList[word]
+        //     ) {
+        //       if (
+        //         this.state.suggestionList[word][this.state.suggestionListNumber]
+        //       ) {
+        //         updatedWord = this.state.suggestionList[word][
+        //           this.state.suggestionListNumber
+        //         ];
 
-                toReplaceWord = word;
-                replacingWord = updatedWord;
-                // console.log(
-                //   "WHATTTTTTTTTTT IS MY UPDATEDDDDDDD WORD",
-                //   replacingWord
-                // );
-                // console.log(
-                //   "WHATTTTTTTTTTT IS MY toReplace WORD",
-                //   toReplaceWord
-                // );
-              }
-            }
+        //         toReplaceWord = word;
+        //         replacingWord = updatedWord;
+        //         // console.log(
+        //         //   "WHATTTTTTTTTTT IS MY UPDATEDDDDDDD WORD",
+        //         //   replacingWord
+        //         // );
+        //         // console.log(
+        //         //   "WHATTTTTTTTTTT IS MY toReplace WORD",
+        //         //   toReplaceWord
+        //         // );
+        //       }
+        //     }
 
-            transcriptObject.push({
-              text: updatedWord,
-              showSuggestion: false,
-              spellMode: this.state.spellMode
-            });
-          }
-          finalTranscript = this.replaceWordWithSuggestionWord(
-            toReplaceWord,
-            replacingWord,
-            finalTranscript
-          );
-        } else {
+        //     transcriptObject.push({
+        //       text: updatedWord,
+        //       showSuggestion: false,
+        //       spellMode: this.state.spellMode
+        //     });
+        //   }
+        //   finalTranscript = this.replaceWordWithSuggestionWord(
+        //     toReplaceWord,
+        //     replacingWord,
+        //     finalTranscript
+        //   );
+        // }
+        else {
           // This is normal tanscript
           for (const [index, word] of transcript.split(" ").entries()) {
             let showSuggestionBool =

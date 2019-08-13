@@ -414,6 +414,10 @@ export default function SpeechRecognition(options) {
         this.setState({ logData: logData });
       };
 
+      clearLogDataPersist = () => {
+        this.setState({ logDataPersist: [] });
+      };
+
       handleWordClickToGetToMappingWithNumberState = (index, word) => {
         let logData = [...this.state.logData];
         logData.push({
@@ -1450,6 +1454,7 @@ export default function SpeechRecognition(options) {
             recognition={recognition}
             toggleShowLogData={this.toggleShowLogData}
             browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
+            clearLogDataPersist={this.clearLogDataPersist}
             {...this.state}
             {...this.props}
           />

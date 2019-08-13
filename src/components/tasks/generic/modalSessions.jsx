@@ -19,6 +19,7 @@ class ModalSession extends Component {
     }
     this.props.sessionCounterUp();
     this.props.restartTimer();
+    this.props.clearLogDataPersist();
   };
 
   componentWillMount() {

@@ -36,7 +36,7 @@ const suggestionDict = {
   annoying: ["enjoying", "canoeing", "inching", "annealing", "alloying"],
   answer: ["anser", "ansar", "ensor", "oncer", "nsr"],
   any: ["eny", "eni", "n.y", "enni", "n e"],
-  appeles: ["apiece", "a plus", "appulse", "a piece", "a-plus"],
+  apples: ["appels", "appals", "appulse", "apls", "opals"],
   appetizers: ["appetisers", "appetizer", "appetiser", "appetize", "apatites"],
   appointed: ["upended", "appended", "unpointed", "appointee", "abounded"],
   appreciated: [
@@ -63,7 +63,7 @@ const suggestionDict = {
     "authorisation",
     "cauterization"
   ],
-  bagpipes: ["bagpipe", "bag pipe", "bagpiper", "bagpipers", "back pass"],
+  bagpipes: ["bagpipe", "bagpipe", "bagpiper", "bagpipers", "back pass"],
   ball: ["bawl", "baul", "baol", "baal", "bahl"],
   based: ["baste", "baist", "bast", "bdst", "baust"],
   bayou: ["biu", "bio", "baya", "baie", "baia"],

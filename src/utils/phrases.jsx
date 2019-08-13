@@ -48,7 +48,7 @@ they enjoy it when I audition
 employee layoffs coincided with the company reorganization
 rob sat at the pond and sketched the stray geese
 the hallway opens into a huge chamber
-the paper boy bought two appeles and three ices
+the paper boy bought two apples and three ices
 the doctor was in the ambulance with the patient
 reading in poor light gives you eyestrain
 the couried was a dwarf

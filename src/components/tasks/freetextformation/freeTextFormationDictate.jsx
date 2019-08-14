@@ -6,6 +6,7 @@ import Transcription from "../generic/transcription";
 import SpellMode from "../generic/spellMode";
 import LogdataImageTask from "../../common/logdataImageTask";
 import { Image, Container, Col, Row } from "react-bootstrap";
+import slackENUM from "./../generic/slackENUM";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -30,19 +31,16 @@ class FreeTextFormationDictate extends Component {
     e.target.style.backgroundColor = "#F44FFF";
     this.setState({ clickedWord: `${word} at index ${index + 1}` });
     this.props.handleWordClickToGetToMappingWithNumberState(index + 1, word);
-    fetch(
-      "https://hooks.slack.com/services/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",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: JSON.stringify({
-          channel: "test_ob_tooling",
-          text: "#clickmouse"
-        })
-      }
-    );
+    fetch(slackENUM.slackUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: JSON.stringify({
+        channel: "test_ob_tooling",
+        text: "#clickmouse"
+      })
+    });
   };
 
   toggleHoverOn = event => {
@@ -54,19 +52,16 @@ class FreeTextFormationDictate extends Component {
         let timeoutId = window.setTimeout(() => {
           this.setState({ timeoutId: null }); // EDIT: added this line
           console.log("YAYYYYYYYYYYYYY 1 seconds");
-          fetch(
-            "https://hooks.slack.com/services/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",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-              },
-              body: JSON.stringify({
-                channel: "test_ob_tooling",
-                text: "#clickmouse"
-              })
-            }
-          );
+          fetch(slackENUM.slackUrl, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: JSON.stringify({
+              channel: "test_ob_tooling",
+              text: "#clickmouse"
+            })
+          });
         }, 1000);
         this.setState({ timeoutId: timeoutId });
       }

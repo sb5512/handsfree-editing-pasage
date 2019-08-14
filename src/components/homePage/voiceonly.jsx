@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 import keydown from "react-keydown";
+import slackENUM from "../tasks/generic/slackENUM";
 
 class Voiceonly extends Component {
   componentWillReceiveProps({ keydown }) {
@@ -22,19 +23,16 @@ class Voiceonly extends Component {
 
   pressf4ToStartStopGaze = () => {
     console.log("Called");
-    fetch(
-      "https://hooks.slack.com/services/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",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: JSON.stringify({
-          channel: "test_ob_tooling",
-          text: "#f4press"
-        })
-      }
-    );
+    fetch(slackENUM.slackUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: JSON.stringify({
+        channel: "test_ob_tooling",
+        text: "#f4press"
+      })
+    });
   };
 
   render() {

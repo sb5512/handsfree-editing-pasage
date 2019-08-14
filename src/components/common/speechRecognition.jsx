@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Utils from "../../utils/Utils";
 import getReplyQuestions from "../../utils/replyQuestions";
 import { getPhrases } from "../../utils/phrases";
+import slackENUM from "../tasks/generic/slackENUM";
 
 export default function SpeechRecognition(options) {
   const SpeechRecognitionInner = function(WrappedComponent) {
@@ -356,51 +357,42 @@ export default function SpeechRecognition(options) {
       };
 
       clickMouse = () => {
-        fetch(
-          "https://hooks.slack.com/services/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",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: JSON.stringify({
-              channel: "test_ob_tooling",
-              text: "#clickmouse"
-            })
-          }
-        );
+        fetch(slackENUM.slackUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: JSON.stringify({
+            channel: "test_ob_tooling",
+            text: "#clickmouse"
+          })
+        });
       };
 
       pressf4f5ToStartStopGaze = () => {
-        fetch(
-          "https://hooks.slack.com/services/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",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: JSON.stringify({
-              channel: "test_ob_tooling",
-              text: "#f4f5press"
-            })
-          }
-        );
+        fetch(slackENUM.slackUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: JSON.stringify({
+            channel: "test_ob_tooling",
+            text: "#f4f5press"
+          })
+        });
       };
 
       pressf4ToStartStopGaze = () => {
-        fetch(
-          "https://hooks.slack.com/services/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",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: JSON.stringify({
-              channel: "test_ob_tooling",
-              text: "#f4press"
-            })
-          }
-        );
+        fetch(slackENUM.slackUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          body: JSON.stringify({
+            channel: "test_ob_tooling",
+            text: "#f4press"
+          })
+        });
       };
 
       logTimeDataWhenHoveredAtWord = word => {

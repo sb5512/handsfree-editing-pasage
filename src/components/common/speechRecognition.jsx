@@ -1204,10 +1204,11 @@ export default function SpeechRecognition(options) {
                 // );
                 if (holdingFinalTranscript.length > 0) {
                   // Here we merge the last log data with textForlog with holdinFinalTranscript
+                  if(logDataPersist.length>0){
                   logDataPersist[logDataPersist.length - 1].textForLog =
                     logDataPersist[logDataPersist.length - 1].textForLog +
                     " " +
-                    holdingFinalTranscript;
+                    holdingFinalTranscript;}
                   // console.log(
                   //   "WHATTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT MY LAST LOGGGGGGGGGG",
                   //   logDataPersist

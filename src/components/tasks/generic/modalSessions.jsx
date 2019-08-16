@@ -50,7 +50,7 @@ class ModalSession extends Component {
     }
     return (
       <div>
-        <Modal show={true} onHide={this.handleClose}>
+        <Modal show={true} backdrop="static">
           <Modal.Header>
             <Modal.Title>{toShowHeadingText}</Modal.Title>
           </Modal.Header>

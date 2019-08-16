@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import keydown from "react-keydown";
+import Row from "react-bootstrap/Row";
 
 class Multimodal extends Component {
   componentWillReceiveProps({ keydown }) {
@@ -36,50 +37,87 @@ class Multimodal extends Component {
           <i className="fa fa-chevron-up">(b)</i>
         </button> */}
 
-        <br />
-        <button className="btn btn-light btn-lg float-right text-center">
-          <i className="fa fa-microphone" />
-          <br />
-          <i className="fa fa-eye" />
-        </button>
-
-        <div className="row justify-content-between">
-          <div className="col-4">
-            <Link to="/copytask">
-              <button
-                type="button"
-                className="btn btn-success btn-lg btn-block"
-              >
-                <h2>Copy Task</h2>
-                <br />
-                <br />
-              </button>
-            </Link>
+        <Row>
+          <button className="btn btn-light btn-lg float-right text-center">
+            <i className="fa fa-microphone" />
+            <br />
+            <i className="fa fa-eye" />
+          </button>
+        </Row>
+        <Row>
+          <div className="col-6">
+            <Row>
+              <p className="text-center w-100">
+                <h2>Command TAG</h2>
+              </p>
+            </Row>
           </div>
-          <div className="col-4">
+          <div className="col-6">
+            <Row>
+              <p className="text-center w-100">
+                <h2>Dwell TAG</h2>
+              </p>
+            </Row>
+          </div>
+          <Row>
+            <div className="col-3">
+              <Link to="/copytaskcommand">
+                <button type="button" className="btn btn-success btn-block ">
+                  <br />
+                  <br />
+                  <h2>Copy Task</h2>
+                  <br />
+                  <br />
+                </button>
+              </Link>
+            </div>
+            <div className="col-3">
+              <Link to="/freetextformationtaskcommand">
+                <button type="button" className="btn btn-primary btn-block">
+                  <br />
+                  <br />
+                  <h2>Free Text formation</h2>
+                  <br />
+                </button>
+              </Link>
+            </div>
+
+            <div className="col-3">
+              <Link to="/copytaskdwell">
+                <button type="button" className="btn btn-success btn-block">
+                  <br />
+                  <br />
+                  <h2>Copy Task</h2>
+                  <br />
+                  <br />
+                </button>
+              </Link>
+            </div>
+
+            {/* <div className="col-3">
             <Link to="/replytask">
-              <button
-                type="button"
-                className="btn btn-success btn-lg btn-block"
-              >
+              <button type="button" className="btn btn-primary btn-block">
+                <br />
+                <br />
                 <h2>Reply Task </h2>
                 <br />
                 <br />
               </button>
             </Link>
-          </div>
-          <div className="col-4">
-            <Link to="/freetextformationtask">
-              <button
-                type="button"
-                className="btn btn-success btn-lg btn-block"
-              >
-                <h2>Free Text Formation </h2>
-                <br />
-              </button>
-            </Link>
-          </div>
-        </div>
+          </div> */}
+
+            <div className="col-3">
+              <Link to="/freetextformationtaskdwell">
+                <button type="button" className="btn btn-primary btn-block">
+                  <br />
+                  <br />
+                  <h2>Free Text Formation</h2>
+                  <br />
+                </button>
+              </Link>
+            </div>
+          </Row>
+        </Row>
       </div>
     );
   }

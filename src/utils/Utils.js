@@ -1,5 +1,6 @@
 import commandsENUM from "../components/tasks/freetextformation/commandENUM";
 import TextToNumbers from "./textToNumbers";
+import getSuggestionDictionary from "./suggestions";
 
 class Utils {
   static getRandomInt(max) {
@@ -61,20 +62,74 @@ class Utils {
   //   fastcsv.write(data, { headers: true }).pipe(ws);
   // }
 
+  static getSuggestionsDict() {
+    return getSuggestionDictionary();
+  }
+
+  static obtainSuggestionForAllCharacters() {
+    // call api and set the suggestion list using the word
+    // TODO
+    console.log("This function on getting all dictionary value is called");
+    let characters = "abcdefghijklmnopqrstuvwxyz";
+    let dictAllCharacters = {};
+    characters.split("").map(character => {
+      let result = [];
+      let charactersLength = characters.length;
+      for (var i = 0; i < 5; i++) {
+        result.push(
+          characters.charAt(Math.floor(Math.random() * charactersLength))
+        );
+      }
+      dictAllCharacters[character] = result;
+    });
+    console.log(dictAllCharacters);
+    return dictAllCharacters;
+  }
+
   static checkStringIsNumberWordOrNumber(currentTranscription) {
-    let suggestionListNumber =
-      currentTranscription.lastIndexOf(" ") > 0
-        ? TextToNumbers.text2num(
-            currentTranscription.substring(
-              currentTranscription.lastIndexOf(" "),
-              currentTranscription.length
+    let suggestionListNumber;
+    if (
+      currentTranscription.endsWith("4") ||
+      currentTranscription.endsWith("for")
+    ) {
+      console.log("Detected number 4");
+      suggestionListNumber = 4;
+    } else if (
+      currentTranscription.endsWith("2") ||
+      currentTranscription.endsWith("to")
+    ) {
+      console.log("Detected number 2");
+      suggestionListNumber = 2;
+    } else {
+      suggestionListNumber =
+        currentTranscription.lastIndexOf(" ") > 0
+          ? TextToNumbers.text2num(
+              currentTranscription.substring(
+                currentTranscription.lastIndexOf(" "),
+                currentTranscription.length
+              )
             )
-          )
-        : parseInt(currentTranscription);
+          : parseInt(currentTranscription);
+    }
     return {
       check: !isNaN(suggestionListNumber) && suggestionListNumber > 0,
       value: suggestionListNumber
     }; // currentTranscription.endsWith("1") || currentTranscription.endsWith("one")|| currentTranscription.endsWith("one");
+  }
+  static removeSpaceIfPresentBeforeFullStop(sentence) {
+    return sentence.replace(" .", ".");
+  }
+
+  static sentenceCase(input, lowercaseBefore) {
+    input = input === undefined || input === null ? "" : input;
+    if (lowercaseBefore) {
+      input = input.toLowerCase();
+    }
+    return input
+      .toString()
+      .replace(/(^|\. *)([a-z])/g, function(match, separator, char) {
+        return separator + char.toUpperCase();
+      });
   }
 }
 

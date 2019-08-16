@@ -18,8 +18,21 @@ class NavBar extends Component {
     }
   }
   render() {
+    let btnKoType = "btn";
+    let buttonText = "";
+    if (this.props.showLogData) {
+      btnKoType = "btn btn-success btn-lg float-right text-center";
+      buttonText = "Hide Logs";
+    } else {
+      btnKoType = "btn btn-danger btn-lg float-right text-center";
+      buttonText = "Show Logs";
+    }
+
     return (
       <div className="container">
+        <button className={btnKoType} onClick={this.props.toggleShowLogData}>
+          {buttonText}
+        </button>
         <div className="row justify-content-between">
           <div tabIndex="0" className="col-6">
             <Link to="/voiceonly">

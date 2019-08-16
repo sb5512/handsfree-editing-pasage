@@ -5,6 +5,8 @@ import ImageLoader from "./imageLoader";
 import Transcription from "../generic/transcription";
 import SpellMode from "../generic/spellMode";
 import LogdataImageTask from "../../common/logdataImageTask";
+import { Image, Container, Col, Row } from "react-bootstrap";
+import slackENUM from "./../generic/slackENUM";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -17,24 +19,40 @@ class FreeTextFormationDictate extends Component {
   state = {
     clickedWord: "",
     hover: false,
-    timeoutId: null
+    timeoutId: null,
+    sessionCounter: 1
+  };
+
+  sessionCounterUp = () => {
+    this.setState({ sessionCounter: this.state.sessionCounter + 1 });
   };
 
   handleWordClick = (e, word, index) => {
     e.target.style.backgroundColor = "#F44FFF";
     this.setState({ clickedWord: `${word} at index ${index + 1}` });
     this.props.handleWordClickToGetToMappingWithNumberState(index + 1, word);
+    fetch(slackENUM.slackUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: JSON.stringify({
+        channel: "test_ob_tooling",
+        text: "#clickmouse"
+      })
+    });
   };
 
   toggleHoverOn = event => {
-    event.target.style.backgroundColor = "#FFFF4F";
-    if (!this.state.timeoutId) {
-      let timeoutId = window.setTimeout(() => {
-        this.setState({ timeoutId: null }); // EDIT: added this line
-        console.log("YAYYYYYYYYYYYYY 1 seconds");
-        fetch(
-          "https://hooks.slack.com/services/TKU82KBUG/BLBJPBTHC/igh31aG7hFDwYWRSTGRxiX7",
-          {
+    if (this.props.commandTag && !this.props.dwellTag) {
+      event.target.style.backgroundColor = "#FFFF4F";
+    } else if (!this.props.commandTag && this.props.dwellTag) {
+      event.target.style.backgroundColor = "#FFFF4F";
+      if (!this.state.timeoutId) {
+        let timeoutId = window.setTimeout(() => {
+          this.setState({ timeoutId: null }); // EDIT: added this line
+          console.log("YAYYYYYYYYYYYYY 1 seconds");
+          fetch(slackENUM.slackUrl, {
             method: "POST",
             headers: {
               "Content-Type": "application/x-www-form-urlencoded"
@@ -43,11 +61,14 @@ class FreeTextFormationDictate extends Component {
               channel: "test_ob_tooling",
               text: "#clickmouse"
             })
-          }
-        );
-      }, 1000);
-      this.setState({ timeoutId: timeoutId });
+          });
+        }, 1000);
+        this.setState({ timeoutId: timeoutId });
+      }
+    } else {
+      // TODO maybe we can send a message where a mouse cursor gets hidden
     }
+
     this.props.logTimeDataWhenHoveredAtWord(event.target.innerHTML);
 
     this.setState({ hover: true });
@@ -75,40 +96,56 @@ class FreeTextFormationDictate extends Component {
       renderDiv = (
         <React.Fragment>
           {/* <Transcription {...this.props} />; */}
-          <SpellMode
-            handleWordClick={this.handleWordClick}
-            toggleHoverOn={this.toggleHoverOn}
-            toggleHoverOff={this.toggleHoverOff}
-            {...this.props}
-          />
-          <LogdataImageTask
-            logDataPersist={this.props.logDataPersist}
-            logData={this.props.logData}
-            imageNumber={this.props.imageNumber}
-            stopListening={this.props.stopListening}
-            startListening={this.props.startListening}
-          />
+
+          <div className="container">
+            <SpellMode
+              handleWordClick={this.handleWordClick}
+              toggleHoverOn={this.toggleHoverOn}
+              toggleHoverOff={this.toggleHoverOff}
+              {...this.props}
+              sessionCounter={this.state.sessionCounter}
+              sessionCounterUp={this.sessionCounterUp}
+            />
+            <LogdataImageTask
+              logDataPersist={this.props.logDataPersist}
+              logData={this.props.logData}
+              imageNumber={this.props.imageNumber}
+              stopListening={this.props.stopListening}
+              startListening={this.props.startListening}
+              historyStates={this.props.state}
+              restartTimer={this.props.restartTimer}
+              {...this.props}
+              sessionCounter={this.state.sessionCounter}
+              sessionCounterUp={this.sessionCounterUp}
+            />
+          </div>
         </React.Fragment>
       );
     } else {
       renderDiv = (
         <React.Fragment>
-          <ImageLoader {...this.props} loadedImage={this.props.loadedImage} />{" "}
-          <Transcription
-            handleWordClick={this.handleWordClick}
-            toggleHoverOn={this.toggleHoverOn}
-            toggleHoverOff={this.toggleHoverOff}
-            clickedWord={this.state.clickedWord}
-            {...this.props}
-          />
-          <LogdataImageTask
-            logDataPersist={this.props.logDataPersist}
-            logData={this.props.logData}
-            imageNumber={this.props.imageNumber}
-            stopListening={this.props.stopListening}
-            startListening={this.props.startListening}
-            historyStates={this.props.state}
-          />
+          <Container>
+            <ImageLoader {...this.props} loadedImage={this.props.loadedImage} />{" "}
+            <Transcription
+              handleWordClick={this.handleWordClick}
+              toggleHoverOn={this.toggleHoverOn}
+              toggleHoverOff={this.toggleHoverOff}
+              clickedWord={this.state.clickedWord}
+              {...this.props}
+            />
+            <LogdataImageTask
+              logDataPersist={this.props.logDataPersist}
+              logData={this.props.logData}
+              imageNumber={this.props.imageNumber}
+              stopListening={this.props.stopListening}
+              startListening={this.props.startListening}
+              historyStates={this.props.state}
+              restartTimer={this.props.restartTimer}
+              {...this.props}
+              sessionCounter={this.state.sessionCounter}
+              sessionCounterUp={this.sessionCounterUp}
+            />
+          </Container>
         </React.Fragment>
       );
     }

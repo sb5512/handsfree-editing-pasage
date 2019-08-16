@@ -3,9 +3,10 @@ import CopyDictate from "./copyDictateU";
 import keydown from "react-keydown";
 
 import ReactCountdownClock from "react-countdown-clock";
+import { Image, Container, Col, Row } from "react-bootstrap";
 
 class CopyTask extends Component {
-  state = { readyToListen: false };
+  state = { readyToListen: false, counterTimer: 3 };
 
   componentWillReceiveProps({ keydown }) {
     if (keydown.event) {
@@ -29,9 +30,25 @@ class CopyTask extends Component {
     }
   };
 
+  restartTimer = () => {
+    this.props.stopListening();
+    this.setState({
+      readyToListen: false,
+      counterTimer: this.state.counterTimer + 1
+    });
+  };
+
   myCallback = () => {
     this.setState({ readyToListen: true });
     this.props.startListening();
+    // When timer start we also have to start gaze and mouse gaze hide depending on conditions
+    if (this.props.commandTag || this.props.dwellTag) {
+      this.props.pressf4ToStartStopGaze();
+      console.log("Did I get called? This is commandTag or dwelltag");
+    } else {
+      console.log("Did I get called? This is normal");
+      this.props.pressf4f5ToStartStopGaze();
+    }
   };
 
   render() {
@@ -55,19 +72,30 @@ class CopyTask extends Component {
         ));
     return (
       <React.Fragment>
-        <div>
-          <ReactCountdownClock
-            seconds={3}
-            color="#000"
-            alpha={0.9}
-            size={100}
-            onComplete={this.myCallback}
-          />
-          {speechButton}
-        </div>
-        <div className="container-fluid">
-          <CopyDictate {...this.props} {...this.state} />
-        </div>
+        <Row>
+          <Col xs={6} md={10}>
+            <ReactCountdownClock
+              key={this.state.counterTimer}
+              seconds={3}
+              color="#000"
+              alpha={0.9}
+              size={100}
+              onComplete={this.myCallback}
+            />
+          </Col>
+          <Col xs={6} md={2}>
+            {speechButton}
+          </Col>
+        </Row>{" "}
+        <Row>
+          <div className="container-fluid">
+            <CopyDictate
+              {...this.props}
+              {...this.state}
+              restartTimer={this.restartTimer}
+            />
+          </div>
+        </Row>
       </React.Fragment>
     );
   }

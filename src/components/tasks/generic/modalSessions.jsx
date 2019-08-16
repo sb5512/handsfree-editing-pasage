@@ -2,31 +2,59 @@ import React, { Component } from "react";
 import { Modal } from "react-bootstrap";
 import { CSVLink } from "react-csv";
 
+// NOTE:
+// When you change the imageNumber = 7 and phraseQuestionImageCount = 60. Dont forget to change it in one more place at the bottom
 class ModalSession extends Component {
-  state = { show: true };
-
   handleClose = () => {
-    // this.props.startListening();
-    this.props.historyStates.history.goBack();
-    this.setState({ show: false });
+    this.props.startListening();
+    // We will end the session once the images gets past 7
+    if (this.props.imageNumber === 7) {
+      this.props.historyStates.history.goBack();
+      this.props.resetImageNumber();
+    }
+    // We will end the session once the copy task gets past 60
+    if (this.props.phraseQuestionImageCount === 60) {
+      this.props.historyStates.history.goBack();
+      this.props.resetPhraseQuestionImageCount();
+    }
+    this.props.sessionCounterUp();
+    this.props.restartTimer();
+    this.props.clearLogDataPersist();
   };
-  handleShow = () => this.setState({ show: true });
 
   componentWillMount() {
+    if (this.props.commandTag || this.props.dwellTag) {
+      this.props.pressf4ToStartStopGaze();
+      console.log("Did I get called? This is commandTag or dwelltag");
+    } else {
+      console.log("Did I get called? This is normal");
+      this.props.pressf4f5ToStartStopGaze();
+    }
     this.props.stopListening();
   }
 
   render() {
+    let toShowHeadingText = "End of Session";
+    let toShowBodyText = `You can now download the logdata, next session will begin after three seconds`;
+    // We will end the session once the images gets past 7
+    if (this.props.imageNumber === 7) {
+      toShowHeadingText = "End of the EXPERIMENT";
+      toShowBodyText =
+        "Thank you for completing the free text formation task experiment!!!. \n \n You will be redirected back to selection of next experiment.";
+    }
+    // We will end the session once the copytask text gets past 60
+    if (this.props.phraseQuestionImageCount === 60) {
+      toShowHeadingText = "End of the EXPERIMENT";
+      toShowBodyText =
+        "Thank you for completing the copy task experiment!!!. \n\n You will be redirected back to selection of next experiment.";
+    }
     return (
       <div>
-        <Modal show={this.state.show} onHide={this.handleClose}>
+        <Modal show={true} backdrop="static">
           <Modal.Header>
-            <Modal.Title>End of Session</Modal.Title>
+            <Modal.Title>{toShowHeadingText}</Modal.Title>
           </Modal.Header>
-          <Modal.Body>
-            You can now download the logdata, next session will begin
-            immediately
-          </Modal.Body>
+          <Modal.Body>{toShowBodyText}</Modal.Body>
           <Modal.Footer>
             {this.props.data.length > 1 ? (
               <CSVLink

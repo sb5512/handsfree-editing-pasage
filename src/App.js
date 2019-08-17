@@ -15,6 +15,7 @@ import CopyTask from "./components/tasks/copy/copytask";
 import ReplyTask from "./components/tasks/reply/replytask";
 import FreeTextFormationTask from "./components/tasks/freetextformation/freetextformationtask";
 import SpeechRecognition from "./components/common/speechRecognition";
+import PassageTask from "./components/tasks/passage/passagetask";
 
 const propTypes = {
   // Props injected by SpeechRecognition
@@ -68,6 +69,33 @@ class App extends Component {
             path="/replytask"
             render={props => <ReplyTask state={props} {...this.props} />}
           />
+
+          <Route
+            path="/passagecommand"
+            render={props => (
+              <PassageTask
+                state={props}
+                loadedImage={true}
+                commandTag={true}
+                dwellTag={false}
+                {...this.props}
+              />
+            )}
+          />
+
+          <Route
+            path="/passagedwell"
+            render={props => (
+              <PassageTask
+                state={props}
+                loadedImage={true}
+                commandTag={true}
+                dwellTag={false}
+                {...this.props}
+              />
+            )}
+          />
+
           <Route
             path="/freetextformationtask"
             render={props => (

@@ -59,64 +59,29 @@ class Multimodal extends Component {
               </p>
             </Row>
           </div>
-          <Row>
-            <div className="col-3">
-              <Link to="/copytaskcommand">
-                <button type="button" className="btn btn-success btn-block ">
-                  <br />
-                  <br />
-                  <h2>Copy Task</h2>
-                  <br />
-                  <br />
-                </button>
-              </Link>
-            </div>
-            <div className="col-3">
-              <Link to="/freetextformationtaskcommand">
-                <button type="button" className="btn btn-primary btn-block">
-                  <br />
-                  <br />
-                  <h2>Free Text formation</h2>
-                  <br />
-                </button>
-              </Link>
-            </div>
-
-            <div className="col-3">
-              <Link to="/copytaskdwell">
-                <button type="button" className="btn btn-success btn-block">
-                  <br />
-                  <br />
-                  <h2>Copy Task</h2>
-                  <br />
-                  <br />
-                </button>
-              </Link>
-            </div>
-
-            {/* <div className="col-3">
-            <Link to="/replytask">
-              <button type="button" className="btn btn-primary btn-block">
+        </Row>
+        <Row>
+          <div className="col-6">
+            <Link to="/passagecommand">
+              <button type="button" className="btn btn-success btn-block ">
                 <br />
                 <br />
-                <h2>Reply Task </h2>
+                <h2>Passage Task</h2>
                 <br />
                 <br />
               </button>
             </Link>
-          </div> */}
-
-            <div className="col-3">
-              <Link to="/freetextformationtaskdwell">
-                <button type="button" className="btn btn-primary btn-block">
-                  <br />
-                  <br />
-                  <h2>Free Text Formation</h2>
-                  <br />
-                </button>
-              </Link>
-            </div>
-          </Row>
+          </div>
+          <div className="col-6">
+            <Link to="/passagedwell">
+              <button type="button" className="btn btn-primary btn-block">
+                <br />
+                <br />
+                <h2>Passage Task</h2>
+                <br />
+              </button>
+            </Link>
+          </div>
         </Row>
       </div>
     );

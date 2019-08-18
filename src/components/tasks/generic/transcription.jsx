@@ -68,6 +68,10 @@ class Transcription extends Component {
     } = this.props;
 
     let toRenderDiv;
+    let yesoramailodeletegarne = false;
+    let curlyUnderline = yesoramailodeletegarne
+      ? "curlyUnderline curlyUnderlineInner"
+      : "";
 
     // Normal mode. This is where we show regular text and also autocomplete text
     // hasCommand = map
@@ -101,6 +105,7 @@ class Transcription extends Component {
               return (
                 <React.Fragment key={index}>
                   <span
+                    className={curlyUnderline}
                     style={{
                       fontSize: 34,
                       cursor: "pointer",

@@ -68,10 +68,7 @@ class Transcription extends Component {
     } = this.props;
 
     let toRenderDiv;
-    let yesoramailodeletegarne = false;
-    let curlyUnderline = yesoramailodeletegarne
-      ? "curlyUnderline curlyUnderlineInner"
-      : "";
+    let curlyUnderline = "curlyUnderline curlyUnderlineInner";
 
     // Normal mode. This is where we show regular text and also autocomplete text
     // hasCommand = map
@@ -88,6 +85,7 @@ class Transcription extends Component {
                     showSuggestion={wordObject.showSuggestion}
                     indexing={index}
                     {...this.props}
+                    showcurlyI={wordObject.showcurly}
                   />
                 </React.Fragment>
               );
@@ -105,14 +103,15 @@ class Transcription extends Component {
               return (
                 <React.Fragment key={index}>
                   <span
-                    className={curlyUnderline}
+                    className={wordObject.showcurly ? curlyUnderline : ""}
                     style={{
                       fontSize: 34,
                       cursor: "pointer",
-                      paddingLeft: 20,
-                      paddingRight: 20,
-                      paddingTop: 5,
-                      paddingBottom: 5
+                      paddingLeft: 18,
+                      paddingRight: 18,
+                      paddingTop: 4,
+                      paddingBottom: 0,
+                      marginBottom: "10px"
                     }}
                     onClick={e => handleWordClick(e, wordObject.text, index)}
                     onMouseOver={toggleHoverOn}

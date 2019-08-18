@@ -9,15 +9,12 @@ class Logdata extends Component {
   };
 
   render() {
-    let filename =
-      "session" + this.props.sessionCounter + "-copytask-voiceonly.csv";
+    let filename = "session" + this.props.sessionCounter + "-voiceonly.csv";
     if (this.props.commandTag) {
-      filename =
-        "session" + this.props.sessionCounter + "-copytask-commandtag.csv";
+      filename = "session" + this.props.sessionCounter + "-commandtag.csv";
     }
     if (this.props.dwellTag) {
-      filename =
-        "session" + this.props.sessionCounter + "-copytask-dwelltag.csv";
+      filename = "session" + this.props.sessionCounter + "-dwelltag.csv";
     }
 
     let randomLogDataDownloadBtnFix =

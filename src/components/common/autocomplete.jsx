@@ -162,8 +162,10 @@ class Autocomplete extends Component {
             >
               {this.state.indexing + 1}
             </span>
-          ) : (
+          ) : this.props.showcurlyI ? (
             this.state.indexing + 1
+          ) : (
+            ""
           )}
 
           <span

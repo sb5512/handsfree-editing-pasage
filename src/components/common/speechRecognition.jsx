@@ -30,8 +30,8 @@ export default function SpeechRecognition(options) {
     }
     let pauseAfterDisconnect = false;
     let interimTranscript = "";
-    let finalTranscript = "";
-    let holdingFinalTranscript = "";
+    let finalTranscript = getPassage(0).passage;
+    let holdingFinalTranscript = getPassage(0).passage;
     let commands = [];
 
     return class SpeechRecognitionContainer extends Component {
@@ -299,6 +299,7 @@ export default function SpeechRecognition(options) {
       };
 
       resetPhraseQuestionImageCount = () => {
+        finalTranscript = getPassage(0).passage;
         this.setState({ phraseQuestionImageCount: 0 });
       };
 
@@ -684,6 +685,7 @@ export default function SpeechRecognition(options) {
                 });
               } // Let us check if we can check for numbers if they exist
               else if (
+                !this.state.spellMode &&
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 1 //
@@ -718,6 +720,7 @@ export default function SpeechRecognition(options) {
                 ][suggestionListNumber];
                 finalTranscript = finalTranscriptArr.join(" ");
               } else if (
+                !this.state.spellMode &&
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
                 (objIsNumberAndVal.value === 2 ||
@@ -751,6 +754,7 @@ export default function SpeechRecognition(options) {
                 ][suggestionListNumber];
                 finalTranscript = finalTranscriptArr.join(" ");
               } else if (
+                !this.state.spellMode &&
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 3 //
@@ -782,6 +786,7 @@ export default function SpeechRecognition(options) {
                 ][suggestionListNumber];
                 finalTranscript = finalTranscriptArr.join(" ");
               } else if (
+                !this.state.spellMode &&
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
                 (objIsNumberAndVal.value === 4 ||
@@ -814,6 +819,7 @@ export default function SpeechRecognition(options) {
                 ][suggestionListNumber];
                 finalTranscript = finalTranscriptArr.join(" ");
               } else if (
+                !this.state.spellMode &&
                 objIsNumberAndVal.check &&
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 5 //

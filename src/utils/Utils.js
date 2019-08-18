@@ -83,7 +83,7 @@ class Utils {
       dictAllCharacters[character] = result;
     });
     console.log(dictAllCharacters);
-    return dictAllCharacters;
+    return []; //dictAllCharacters;
   }
 
   static checkStringIsNumberWordOrNumber(currentTranscription) {

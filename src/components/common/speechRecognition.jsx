@@ -1067,6 +1067,27 @@ export default function SpeechRecognition(options) {
 
                     capitalOrNotStarting = false;
                     break;
+                  case "passage":
+                    startingSentence = getPassage(
+                      this.state.phraseQuestionImageCount
+                    ).passage;
+
+                    capitalOrNotStarting = false;
+                    break;
+                  case "passagecommand":
+                    startingSentence = getPassage(
+                      this.state.phraseQuestionImageCount
+                    ).passage;
+
+                    capitalOrNotStarting = false;
+                    break;
+                  case "passagedwell":
+                    startingSentence = getPassage(
+                      this.state.phraseQuestionImageCount
+                    ).passage;
+
+                    capitalOrNotStarting = false;
+                    break;
                   default:
                     startingSentence = getReplyQuestions(
                       this.state.phraseQuestionImageCount
@@ -1248,7 +1269,9 @@ export default function SpeechRecognition(options) {
               text: word,
               showSuggestion: showSuggestionBool,
               spellMode: this.state.spellMode,
-              showcurly: true
+              showcurly: getPassage(
+                this.state.phraseQuestionImageCount
+              ).errorWords.includes(word)
             });
           }
         }

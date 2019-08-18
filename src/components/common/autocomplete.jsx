@@ -93,6 +93,7 @@ class Autocomplete extends Component {
 
   render() {
     const { onClick, onHoverSelectable } = this;
+    let curlyUnderline = "curlyUnderline curlyUnderlineInner";
 
     let suggestionsListComponent;
     if (this.state.showSuggestion) {
@@ -142,13 +143,25 @@ class Autocomplete extends Component {
             }}
           >
             {this.state.showSuggestion ? (
-              <span style={{ color: "blue" }}>{this.state.userInput}</span>
+              <span
+                className={this.props.showcurlyI ? curlyUnderline : ""}
+                style={{ color: "blue" }}
+              >
+                {this.state.userInput}
+              </span>
             ) : (
-              this.state.userInput
+              <span className={this.props.showcurlyI ? curlyUnderline : ""}>
+                {this.state.userInput}
+              </span>
             )}
           </span>
           {this.state.showSuggestion ? (
-            <span style={{ color: "blue" }}>{this.state.indexing + 1}</span>
+            <span
+              className={this.props.showcurlyI ? curlyUnderline : ""}
+              style={{ color: "blue" }}
+            >
+              {this.state.indexing + 1}
+            </span>
           ) : (
             this.state.indexing + 1
           )}

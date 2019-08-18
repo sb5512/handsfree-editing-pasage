@@ -573,7 +573,7 @@ var text = [
           "Maybe there is a hole in it," she went on, "and that's why it has been cast away. But it would do fine to put a flower in for my window; so I'll just take it home with me."
           
           And with that she lifted the lid and looked inside. "Mercy me!" she cried, fair amazed. "If it isn't full of gold pieces. Here's luck!"`,
-    errorWords: ["cherfull"]
+    errorWords: ["woman"]
   }
 ];
 

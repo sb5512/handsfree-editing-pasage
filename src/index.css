@@ -10,9 +10,8 @@ body {
 }
 .container {
   /* remember to set a width */
-
   margin: 0 auto;
-  margin-top: 50px;
+  margin-top: 0px;
 }
 .bg {
   /* The image used */
@@ -29,7 +28,7 @@ body {
 
 .curlyUnderline {
   border-bottom: 2px dotted #ff0000;
-  padding: 0.5px;
+  padding: 0px;
 }
 .curlyUnderlineInner {
   border-bottom: 2px dotted #ff0000;

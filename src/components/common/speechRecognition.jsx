@@ -3,6 +3,7 @@ import Utils from "../../utils/Utils";
 import getReplyQuestions from "../../utils/replyQuestions";
 import { getPhrases } from "../../utils/phrases";
 import slackENUM from "../tasks/generic/slackENUM";
+import { getPassage } from "../../utils/passage";
 
 export default function SpeechRecognition(options) {
   const SpeechRecognitionInner = function(WrappedComponent) {
@@ -207,6 +208,11 @@ export default function SpeechRecognition(options) {
       ) {
         return allTranscript.replace(toReplaceWord, replacingWord);
       }
+
+      // We set the finalTranscript to next passage when command "Next" is given.
+      getSetNewTranscript = () => {
+        finalTranscript = getPassage(0);
+      };
 
       // THIS IS WHERE WE INDUCE ERRORS
       // Need to have aboolean names induceError = true which has to be false once a word is replaced
@@ -921,9 +927,9 @@ export default function SpeechRecognition(options) {
                 hasNextCommand = true; // Used when we think some finalscript comes late .i.e race condition
 
                 let whichTask = window.location.pathname.split("/").pop();
-                whichTask === "freetextformationtask" ||
-                whichTask === "freetextformationtaskcommand" ||
-                whichTask === "freetextformationtaskdwell"
+                whichTask === "passagetask" ||
+                whichTask === "passagecommand" ||
+                whichTask === "passagedwell"
                   ? (imageNumber = this.state.imageNumber + 1) // change number 4 using total lengths of images available
                   : (phraseQuestionImageCount =
                       this.state.phraseQuestionImageCount + 1);
@@ -931,7 +937,9 @@ export default function SpeechRecognition(options) {
                 interimTranscript = "";
                 logDataPersist = [...logDataPersist, ...logData];
                 logData = []; //make log data empty
-                finalTranscript = "";
+                let passageObject = getPassage(imageNumber);
+                finalTranscript = passageObject.passage;
+                console.log("I AM HERE AFTER NEXT IS SPOKEN");
                 // let dt = new Date();
                 // while (new Date() - dt <= 1000) {
                 //   /* Do nothing */
@@ -1184,17 +1192,17 @@ export default function SpeechRecognition(options) {
 
       render() {
         // This is to make sure we do not have a race condition
-        if (this.state.hasNextCommand) {
-          // console.log(
-          //   "LAst maaaaaaaaaaaaaaaaaaaaaaaaaaaaa ta finalscript zero bhayo bhaneko ta",
-          //   finalTranscript
-          // );
-          if (finalTranscript) {
-            holdingFinalTranscript = finalTranscript;
-          }
-          // If finalscript not null then we need to update the logdata value
-          finalTranscript = "";
-        }
+        // if (this.state.hasNextCommand) {
+        //   // console.log(
+        //   //   "LAst maaaaaaaaaaaaaaaaaaaaaaaaaaaaa ta finalscript zero bhayo bhaneko ta",
+        //   //   finalTranscript
+        //   // );
+        //   if (finalTranscript) {
+        //     holdingFinalTranscript = finalTranscript;
+        //   }
+        //   // If finalscript not null then we need to update the logdata value
+        //   finalTranscript = "";
+        // }
         let transcript = this.concatTranscripts(
           finalTranscript,
           interimTranscript
@@ -1231,17 +1239,6 @@ export default function SpeechRecognition(options) {
         } else {
           // This is normal tanscript
           // finalTranscript = "What is happening with these words man";
-          finalTranscript = `There was once a woman who was very, very cherfull, though she had little to make her so; for she was old, and poor, and lonely. She lived in a little bit of a cottage and earned a scant living by running errands for her neighbors, getting a bite here, a sup there, as reward for her services. So she made shift to get on, and always looked as spry and cheery as if she had not a want in the world.
-
-          Now one summer evenning, as she was trotting, full of smiles as ever, along the high road to her hovel, what should she see but a big black pot lying in the ditch!
-          
-          "Gooddness me!" she cried, "that would be just the very thing for me if I only had somthing to put in it! But I haven't! Now who could have left it in the ditch?"
-          
-          And she looked about her expectin the owner would not be far off; but she could see nobody.
-          
-          "Maybe there is a hole in it," she went on, "and that's why it has been cast away. But it would do fine to put a flower in for my window; so I'll just take it home with me."
-          
-          And with that she lifted the lid and looked inside. "Mercy me!" she cried, fair amazed. "If it isn't full of gold pieces. Here's luck!"`;
           for (const [index, word] of finalTranscript.split(" ").entries()) {
             let showSuggestionBool =
               this.state.mappingNumber && index + 1 === this.state.mappingNumber
@@ -1250,7 +1247,8 @@ export default function SpeechRecognition(options) {
             transcriptObject.push({
               text: word,
               showSuggestion: showSuggestionBool,
-              spellMode: this.state.spellMode
+              spellMode: this.state.spellMode,
+              showcurly: true
             });
           }
         }

@@ -927,17 +927,17 @@ export default function SpeechRecognition(options) {
                 hasNextCommand = true; // Used when we think some finalscript comes late .i.e race condition
 
                 let whichTask = window.location.pathname.split("/").pop();
-                whichTask === "passagetask" ||
+                whichTask === "passage" ||
                 whichTask === "passagecommand" ||
                 whichTask === "passagedwell"
-                  ? (imageNumber = this.state.imageNumber + 1) // change number 4 using total lengths of images available
-                  : (phraseQuestionImageCount =
-                      this.state.phraseQuestionImageCount + 1);
+                  ? (phraseQuestionImageCount =
+                      this.state.phraseQuestionImageCount + 1)
+                  : (imageNumber = this.state.imageNumber + 1); // change number 4 using total lengths of images available
 
                 interimTranscript = "";
                 logDataPersist = [...logDataPersist, ...logData];
                 logData = []; //make log data empty
-                let passageObject = getPassage(imageNumber);
+                let passageObject = getPassage(phraseQuestionImageCount);
                 finalTranscript = passageObject.passage;
                 console.log("I AM HERE AFTER NEXT IS SPOKEN");
                 // let dt = new Date();

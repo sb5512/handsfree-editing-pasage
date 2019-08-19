@@ -4,7 +4,7 @@ import ClickedWord from "./clickedWord";
 
 class Transcription extends Component {
   componentWillReceiveProps(nextProps) {
-    if (this.props.finalTranscript !== nextProps.finalTranscript) {
+    if (this.props.transcriptObject !== nextProps.transcriptObject) {
       // Let us check if the wordObject has the longest word
       const filteredTranscribedObject = this.props.transcriptObject.filter(
         wordObject => {
@@ -14,27 +14,30 @@ class Transcription extends Component {
           );
         }
       );
-      let longestObj;
-      if (filteredTranscribedObject.length > 0) {
-        longestObj = filteredTranscribedObject.reduce(function(a, b) {
-          return a.text.length > b.text.length ? a : b;
-        });
+      // let longestObj;
+      // if (filteredTranscribedObject.length > 0) {
+      //   longestObj = filteredTranscribedObject.reduce(function(a, b) {
+      //     return a.text.length > b.text.length ? a : b;
+      //   });
 
-        console.log(
-          "THE LONGEST WORD IN THIS TRANSCRIPTION SECTION IS",
-          longestObj
-        );
-      }
+      //   console.log(
+      //     "THE LONGEST WORD IN THIS TRANSCRIPTION SECTION IS",
+      //     longestObj
+      //   );
+      // }
       this.props.transcriptObject.map((wordObject, index) => {
-        if (
-          this.props.suggestionList[wordObject.text] &&
-          longestObj &&
-          wordObject.text === longestObj.text
-        ) {
-          this.props.setInducedError(wordObject.text);
-        }
+        // if (
+        //   this.props.suggestionList[wordObject.text] &&
+        //   longestObj &&
+        //   wordObject.text === longestObj.text
+        // ) {
+        //   this.props.setInducedError(wordObject.text);
+        // }
 
-        if (!this.props.suggestionList[wordObject.text]) {
+        if (
+          !this.props.suggestionList[wordObject.text] &&
+          wordObject.showcurly
+        ) {
           console.log(
             "No Suggestion stored in dictionary for word: ",
             wordObject.text
@@ -84,6 +87,7 @@ class Transcription extends Component {
                     text={wordObject.text}
                     showSuggestion={wordObject.showSuggestion}
                     indexing={index}
+                    fakeIndexing={wordObject.fakeIndex}
                     {...this.props}
                     showcurlyI={wordObject.showcurly}
                   />

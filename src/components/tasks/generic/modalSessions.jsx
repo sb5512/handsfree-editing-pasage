@@ -13,7 +13,7 @@ class ModalSession extends Component {
       this.props.resetImageNumber();
     }
     // We will end the session once the copy task gets past 60
-    if (this.props.phraseQuestionImageCount === 60) {
+    if (this.props.phraseQuestionImageCount === 5) {
       this.props.historyStates.history.goBack();
       this.props.resetPhraseQuestionImageCount();
     }
@@ -43,7 +43,7 @@ class ModalSession extends Component {
         "Thank you for completing the free text formation task experiment!!!. \n \n You will be redirected back to selection of next experiment.";
     }
     // We will end the session once the copytask text gets past 60
-    if (this.props.phraseQuestionImageCount === 60) {
+    if (this.props.phraseQuestionImageCount === 5) {
       toShowHeadingText = "End of the EXPERIMENT";
       toShowBodyText =
         "Thank you for completing the copy task experiment!!!. \n\n You will be redirected back to selection of next experiment.";
@@ -56,7 +56,7 @@ class ModalSession extends Component {
           </Modal.Header>
           <Modal.Body>{toShowBodyText}</Modal.Body>
           <Modal.Footer>
-            {this.props.data.length > 1 ? (
+            {this.props.data.length > 0 ? (
               <CSVLink
                 filename={this.props.filename}
                 className="btn btn-primary float-right"

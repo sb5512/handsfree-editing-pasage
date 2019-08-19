@@ -9,15 +9,12 @@ class Logdata extends Component {
   };
 
   render() {
-    let filename =
-      "session" + this.props.sessionCounter / 5 + "-copytask-voiceonly.csv";
+    let filename = "session" + this.props.sessionCounter + "-voiceonly.csv";
     if (this.props.commandTag) {
-      filename =
-        "session" + this.props.sessionCounter / 5 + "-copytask-commandtag.csv";
+      filename = "session" + this.props.sessionCounter + "-commandtag.csv";
     }
     if (this.props.dwellTag) {
-      filename =
-        "session" + this.props.sessionCounter / 5 + "-copytask-dwelltag.csv";
+      filename = "session" + this.props.sessionCounter + "-dwelltag.csv";
     }
 
     let randomLogDataDownloadBtnFix =
@@ -29,7 +26,7 @@ class Logdata extends Component {
     return (
       <React.Fragment>
         {" "}
-        {this.props.phraseQuestionImageCount < 10 ? (
+        {this.props.phraseQuestionImageCount < 2 ? (
           <div className="text-justify d-block p-2 bg-success">
             <b>Training in progress</b>
           </div>

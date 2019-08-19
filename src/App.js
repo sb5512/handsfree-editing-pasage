@@ -71,6 +71,19 @@ class App extends Component {
           />
 
           <Route
+            path="/passage"
+            render={props => (
+              <PassageTask
+                state={props}
+                loadedImage={true}
+                commandTag={false}
+                dwellTag={false}
+                {...this.props}
+              />
+            )}
+          />
+
+          <Route
             path="/passagecommand"
             render={props => (
               <PassageTask
@@ -89,8 +102,8 @@ class App extends Component {
               <PassageTask
                 state={props}
                 loadedImage={true}
-                commandTag={true}
-                dwellTag={false}
+                commandTag={false}
+                dwellTag={true}
                 {...this.props}
               />
             )}

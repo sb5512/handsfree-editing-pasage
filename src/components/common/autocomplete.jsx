@@ -24,7 +24,8 @@ class Autocomplete extends Component {
       showSuggestion: this.props.showSuggestion,
       // What the user has entered
       userInput: this.props.text,
-      indexing: this.props.indexing,
+      // indexing: this.props.indexing,
+      indexing: this.props.fakeIndexing,
       currentHoverText: "",
       suggestions: []
     };
@@ -160,10 +161,12 @@ class Autocomplete extends Component {
               className={this.props.showcurlyI ? curlyUnderline : ""}
               style={{ color: "blue" }}
             >
-              {this.state.indexing + 1}
+              {this.props.showcurlyI ? this.state.indexing : ""}
             </span>
+          ) : this.props.showcurlyI ? (
+            this.state.indexing
           ) : (
-            this.state.indexing + 1
+            ""
           )}
 
           <span

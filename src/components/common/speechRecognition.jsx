@@ -75,7 +75,8 @@ export default function SpeechRecognition(options) {
 
           toCorrectInSpellModeWord: "",
           capitalOrNotStarting: true,
-          showLogData: false
+          showLogData: false,
+          passageObject: getPassage(0)
         };
       }
 
@@ -457,6 +458,7 @@ export default function SpeechRecognition(options) {
         let logDataPersist = this.state.logDataPersist;
         let induceError = this.state.induceError;
         let capitalOrNotStarting = this.state.capitalOrNotStarting;
+        let passageObject = this.state.passageObject;
 
         /**
          * state hascommand true bhayo bhane hami command mode ma cham
@@ -482,6 +484,10 @@ export default function SpeechRecognition(options) {
                 oldTranscript = "";
                 if (this.state.spellMode) {
                   if (finalTranscript != this.state.oldTranscript) {
+                    let replacingWord = finalTranscript
+                      .substring(this.state.oldTranscript.length)
+                      .replace(/ /g, "");
+                    console.log("Replacing word", replacingWord);
                     finalTranscript = this.replaceWordWithSpellWord(
                       this.state.oldTranscript,
                       this.state.toCorrectInSpellModeWord,
@@ -500,6 +506,37 @@ export default function SpeechRecognition(options) {
                         Utils.getCurrentTime(),
                       textForLog: finalTranscript
                     });
+                    console.log(
+                      "I will be replacing the word from spell mode which is ",
+                      this.state.toCorrectInSpellModeWord
+                    );
+                    // This is where I need to update passageObjects error objects
+                    passageObject.errorWords[
+                      passageObject.errorWords.indexOf(
+                        this.state.toCorrectInSpellModeWord
+                      )
+                    ] = replacingWord;
+
+                    // if right word is replaced we need to remove it from our passageObject.errorWords and passageObject.correctWords at that index
+                    if (
+                      passageObject.errorWords.includes(replacingWord) &&
+                      passageObject.correctWords[
+                        passageObject.errorWords.indexOf(replacingWord)
+                      ] === replacingWord
+                    ) {
+                      var index = passageObject.errorWords.indexOf(
+                        replacingWord
+                      );
+                      if (index > -1) {
+                        passageObject.errorWords.splice(index, 1);
+                        passageObject.correctWords.splice(index, 1);
+                      }
+                    }
+                    // Maybe obsolete this errorWordsObj
+
+                    passageObject.errorWordsObj[
+                      this.state.toCorrectInSpellModeWord
+                    ] = replacingWord;
                   } else {
                     logData.push({
                       command: "Quick_S_Finish_Error",
@@ -613,7 +650,6 @@ export default function SpeechRecognition(options) {
                 });
               } else if (
                 // Here we check if the transcript is a number
-                //&&
                 !this.state.mappingNumber &&
                 objIsNumberAndVal.check &&
                 finalTranscript.split(" ").length >= objIsNumberAndVal.value
@@ -621,7 +657,25 @@ export default function SpeechRecognition(options) {
                 hasCommand = true;
                 spellMode = this.state.spellMode;
                 suggestionMode = false;
-                mappingNumber = objIsNumberAndVal.value === 1 ? 5 : 1;
+                // Here is the logic to map to the correct number when 1 , 2 , 3 , 4 ,5 is spoken
+                // maybe phrasecountimage ko passage ko error word ko
+                console.log(
+                  "THIS IS A MESSSS ",
+                  this.state.passageObject.errorWordsObj[
+                    getPassage(phraseQuestionImageCount).errorWords[
+                      objIsNumberAndVal.value - 1
+                    ]
+                  ]
+                );
+                mappingNumber =
+                  finalTranscript
+                    .split(" ")
+                    .indexOf(
+                      this.state.passageObject.errorWords[
+                        objIsNumberAndVal.value - 1
+                      ]
+                    ) + 1;
+
                 let selectedMappedWord = finalTranscript.split(" ")[
                   mappingNumber - 1
                 ];
@@ -707,6 +761,42 @@ export default function SpeechRecognition(options) {
                   // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
 
                   // this.pressf4ToStartStopGaze();
+                  let splittedFinalTranscriptArr = finalTranscript.split(" ")[
+                    mappingNumber - 1
+                  ];
+                  let theReplaceWordFromSuggestion = this.state.suggestionList[
+                    splittedFinalTranscriptArr
+                  ][suggestionListNumber];
+                  passageObject.errorWords[
+                    passageObject.errorWords.indexOf(splittedFinalTranscriptArr)
+                  ] = theReplaceWordFromSuggestion;
+                  // if right word is replaced we need to remove it from our passageObject.errorWords and passageObject.correctWords at that index
+                  if (
+                    passageObject.errorWords.includes(
+                      theReplaceWordFromSuggestion
+                    ) &&
+                    passageObject.correctWords[
+                      passageObject.errorWords.indexOf(
+                        theReplaceWordFromSuggestion
+                      )
+                    ] === theReplaceWordFromSuggestion
+                  ) {
+                    var index = passageObject.errorWords.indexOf(
+                      theReplaceWordFromSuggestion
+                    );
+                    if (index > -1) {
+                      passageObject.errorWords.splice(index, 1);
+                      passageObject.correctWords.splice(index, 1);
+                    }
+                  }
+                  // Maybe obsolete this errorWordsObj
+
+                  passageObject.errorWordsObj[
+                    this.state.suggestionList[splittedFinalTranscriptArr]
+                  ] = this.state.suggestionList[splittedFinalTranscriptArr][
+                    suggestionListNumber
+                  ];
+
                   logData.push({
                     command: "Option '1'",
                     time: Utils.getCurrentTime(),
@@ -754,7 +844,44 @@ export default function SpeechRecognition(options) {
                   suggestionListNumber = 1;
                   mappingNumber = this.state.mappingNumber;
 
-                  // this.pressf4ToStartStopGaze(); // turning back on the gaze
+                  let splittedFinalTranscriptArr = finalTranscript.split(" ")[
+                    mappingNumber - 1
+                  ];
+                  let theReplaceWordFromSuggestion = this.state.suggestionList[
+                    splittedFinalTranscriptArr
+                  ][suggestionListNumber];
+                  passageObject.errorWords[
+                    passageObject.errorWords.indexOf(splittedFinalTranscriptArr)
+                  ] = theReplaceWordFromSuggestion;
+                  // if right word is replaced we need to remove it from our passageObject.errorWords and passageObject.correctWords at that index
+                  if (
+                    passageObject.errorWords.includes(
+                      theReplaceWordFromSuggestion
+                    ) &&
+                    passageObject.correctWords[
+                      passageObject.errorWords.indexOf(
+                        theReplaceWordFromSuggestion
+                      )
+                    ] === theReplaceWordFromSuggestion
+                  ) {
+                    var index = passageObject.errorWords.indexOf(
+                      theReplaceWordFromSuggestion
+                    );
+                    if (index > -1) {
+                      passageObject.errorWords.splice(index, 1);
+                      passageObject.correctWords.splice(index, 1);
+                    }
+                  }
+                  // Maybe obsolete this errorWordsObj
+
+                  passageObject.errorWordsObj[
+                    this.state.suggestionList[
+                      finalTranscript.split(" ")[mappingNumber - 1]
+                    ]
+                  ] = this.state.suggestionList[
+                    finalTranscript.split(" ")[mappingNumber - 1]
+                  ][suggestionListNumber];
+
                   logData.push({
                     command: "Option '2'",
                     time: Utils.getCurrentTime(),
@@ -801,6 +928,23 @@ export default function SpeechRecognition(options) {
                   mappingNumber = this.state.mappingNumber;
 
                   // this.pressf4ToStartStopGaze();
+                  let splittedFinalTranscriptArr = finalTranscript.split(" ")[
+                    mappingNumber - 1
+                  ];
+                  passageObject.errorWords[
+                    passageObject.errorWords.indexOf(splittedFinalTranscriptArr)
+                  ] = this.state.suggestionList[splittedFinalTranscriptArr][
+                    suggestionListNumber
+                  ];
+
+                  passageObject.errorWordsObj[
+                    this.state.suggestionList[
+                      finalTranscript.split(" ")[mappingNumber - 1]
+                    ]
+                  ] = this.state.suggestionList[
+                    finalTranscript.split(" ")[mappingNumber - 1]
+                  ][suggestionListNumber];
+
                   logData.push({
                     command: "Option '3'",
                     time: Utils.getCurrentTime(),
@@ -847,7 +991,44 @@ export default function SpeechRecognition(options) {
                   suggestionListNumber = 3;
                   mappingNumber = this.state.mappingNumber;
 
-                  // this.pressf4ToStartStopGaze();
+                  let splittedFinalTranscriptArr = finalTranscript.split(" ")[
+                    mappingNumber - 1
+                  ];
+                  let theReplaceWordFromSuggestion = this.state.suggestionList[
+                    splittedFinalTranscriptArr
+                  ][suggestionListNumber];
+                  passageObject.errorWords[
+                    passageObject.errorWords.indexOf(splittedFinalTranscriptArr)
+                  ] = theReplaceWordFromSuggestion;
+                  // if right word is replaced we need to remove it from our passageObject.errorWords and passageObject.correctWords at that index
+                  if (
+                    passageObject.errorWords.includes(
+                      theReplaceWordFromSuggestion
+                    ) &&
+                    passageObject.correctWords[
+                      passageObject.errorWords.indexOf(
+                        theReplaceWordFromSuggestion
+                      )
+                    ] === theReplaceWordFromSuggestion
+                  ) {
+                    var index = passageObject.errorWords.indexOf(
+                      theReplaceWordFromSuggestion
+                    );
+                    if (index > -1) {
+                      passageObject.errorWords.splice(index, 1);
+                      passageObject.correctWords.splice(index, 1);
+                    }
+                  }
+                  // Maybe obsolete this errorWordsObj
+
+                  passageObject.errorWordsObj[
+                    this.state.suggestionList[
+                      finalTranscript.split(" ")[mappingNumber - 1]
+                    ]
+                  ] = this.state.suggestionList[
+                    finalTranscript.split(" ")[mappingNumber - 1]
+                  ][suggestionListNumber];
+
                   logData.push({
                     command: "Option '4'",
                     time: Utils.getCurrentTime(),
@@ -893,7 +1074,44 @@ export default function SpeechRecognition(options) {
                   suggestionListNumber = 4;
                   mappingNumber = this.state.mappingNumber;
 
-                  // this.pressf4ToStartStopGaze();
+                  let splittedFinalTranscriptArr = finalTranscript.split(" ")[
+                    mappingNumber - 1
+                  ];
+                  let theReplaceWordFromSuggestion = this.state.suggestionList[
+                    splittedFinalTranscriptArr
+                  ][suggestionListNumber];
+                  passageObject.errorWords[
+                    passageObject.errorWords.indexOf(splittedFinalTranscriptArr)
+                  ] = theReplaceWordFromSuggestion;
+                  // if right word is replaced we need to remove it from our passageObject.errorWords and passageObject.correctWords at that index
+                  if (
+                    passageObject.errorWords.includes(
+                      theReplaceWordFromSuggestion
+                    ) &&
+                    passageObject.correctWords[
+                      passageObject.errorWords.indexOf(
+                        theReplaceWordFromSuggestion
+                      )
+                    ] === theReplaceWordFromSuggestion
+                  ) {
+                    var index = passageObject.errorWords.indexOf(
+                      theReplaceWordFromSuggestion
+                    );
+                    if (index > -1) {
+                      passageObject.errorWords.splice(index, 1);
+                      passageObject.correctWords.splice(index, 1);
+                    }
+                  }
+                  // Maybe obsolete this errorWordsObj
+
+                  passageObject.errorWordsObj[
+                    this.state.suggestionList[
+                      finalTranscript.split(" ")[mappingNumber - 1]
+                    ]
+                  ] = this.state.suggestionList[
+                    finalTranscript.split(" ")[mappingNumber - 1]
+                  ][suggestionListNumber];
+
                   logData.push({
                     command: "Option '5'",
                     time: Utils.getCurrentTime(),
@@ -1013,8 +1231,8 @@ export default function SpeechRecognition(options) {
                 interimTranscript = "";
                 logDataPersist = [...logDataPersist, ...logData];
                 logData = []; //make log data empty
-                let passageObject = getPassage(phraseQuestionImageCount);
-                finalTranscript = passageObject.passage;
+                let passageObjectTemp = getPassage(phraseQuestionImageCount);
+                finalTranscript = passageObjectTemp.passage;
                 console.log("I AM HERE AFTER NEXT IS SPOKEN");
                 // let dt = new Date();
                 // while (new Date() - dt <= 1000) {
@@ -1027,6 +1245,10 @@ export default function SpeechRecognition(options) {
               // If we say map and go to spell mode and now in that state we say "a" "b" "c" and say done then we come here
               if (this.state.spellMode && ifContainsFinish) {
                 spellMode = false;
+                let replacingWord = finalTranscript
+                  .substring(this.state.oldTranscript.length)
+                  .replace(/ /g, "");
+                console.log("Replacing word", replacingWord);
                 if (finalTranscript != this.state.oldTranscript) {
                   finalTranscript = this.replaceWordWithSpellWord(
                     this.state.oldTranscript,
@@ -1046,6 +1268,35 @@ export default function SpeechRecognition(options) {
                       Utils.getCurrentTime(),
                     textForLog: finalTranscript
                   });
+                  console.log(
+                    "I will be replacing the word from spell mode which is and I didnot go to map mode",
+                    this.state.toCorrectInSpellModeWord
+                  );
+                  // This is where I need to update passageObjects error objects
+                  passageObject.errorWords[
+                    passageObject.errorWords.indexOf(
+                      this.state.toCorrectInSpellModeWord
+                    )
+                  ] = replacingWord;
+
+                  // if right word is replaced we need to remove it from our passageObject.errorWords and passageObject.correctWords at that index
+                  if (
+                    passageObject.errorWords.includes(replacingWord) &&
+                    passageObject.correctWords[
+                      passageObject.errorWords.indexOf(replacingWord)
+                    ] === replacingWord
+                  ) {
+                    var index = passageObject.errorWords.indexOf(replacingWord);
+                    if (index > -1) {
+                      passageObject.errorWords.splice(index, 1);
+                      passageObject.correctWords.splice(index, 1);
+                    }
+                  }
+                  // Maybe obsolete this errorWordsObj
+
+                  passageObject.errorWordsObj[
+                    this.state.toCorrectInSpellModeWord
+                  ] = replacingWord;
                 } else {
                   logData.push({
                     command: "Quick_S_Finish_Error",
@@ -1242,7 +1493,8 @@ export default function SpeechRecognition(options) {
           logData,
           logDataPersist,
           induceError,
-          capitalOrNotStarting
+          capitalOrNotStarting,
+          passageObject
         });
       }
 
@@ -1342,9 +1594,18 @@ export default function SpeechRecognition(options) {
               this.state.mappingNumber && index + 1 === this.state.mappingNumber
                 ? true
                 : false;
-            let showCurly = getPassage(
-              this.state.phraseQuestionImageCount
-            ).errorWords.includes(word);
+            let showCurly =
+              this.state.passageObject.errorWords.includes(word) &&
+              this.state.passageObject.correctWords[
+                this.state.passageObject.errorWords.indexOf(word)
+              ] !== word;
+            // if (!showCurly) {
+            //   showCurly = Object.values(
+            //     this.state.passageObject.errorWordsObj
+            //   ).includes(word);
+            // }
+            // showCurly = this.state.currentlyCorrectingWord === this.state.passageObject.errorWordsObj[this.state.currentlyCorrectingWord]}
+
             transcriptObject.push({
               text: word,
               showSuggestion: showSuggestionBool,

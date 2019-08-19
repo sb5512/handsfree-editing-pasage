@@ -94,6 +94,7 @@ const suggestionDict = {
     "catastrophe",
     "catastrophy"
   ],
+  woman: ["women", "summoned", "summand", "seamount", "samina"],
   cement: ["ciment", "summoned", "summand", "seamount", "samina"],
   chamber: ["chambers", "chambered", "champer", "chamberer", "chambery"],
   citizenship: [

@@ -621,7 +621,7 @@ export default function SpeechRecognition(options) {
                 hasCommand = true;
                 spellMode = this.state.spellMode;
                 suggestionMode = false;
-                mappingNumber = objIsNumberAndVal.value;
+                mappingNumber = objIsNumberAndVal.value === 1 ? 5 : 1;
                 let selectedMappedWord = finalTranscript.split(" ")[
                   mappingNumber - 1
                 ];
@@ -690,35 +690,49 @@ export default function SpeechRecognition(options) {
                 this.state.mappingNumber &&
                 objIsNumberAndVal.value === 1 //
               ) {
-                // console.log("SUGGESTION LIST FOR FIRST ELEMENT");
-                suggestionMode = true;
-                suggestionListNumber = 0;
-                mappingNumber = this.state.mappingNumber;
-                // No spell mode but we have suggestion list number set, which means we want to select from suggestion list
-                // get suggestion list array
-                // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
+                if (
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ] &&
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ].length === 5
+                ) {
+                  // console.log("SUGGESTION LIST FOR FIRST ELEMENT");
+                  suggestionMode = true;
+                  suggestionListNumber = 0;
+                  mappingNumber = this.state.mappingNumber;
+                  // No spell mode but we have suggestion list number set, which means we want to select from suggestion list
+                  // get suggestion list array
+                  // depending on the transcript as alpha, beta, charlie ... we set which withinmappingNumber
 
-                // this.pressf4ToStartStopGaze();
-                logData.push({
-                  command: "Option '1'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "1" i.e. first element from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog:
-                    "Option 1 selected is : " +
-                    this.state.suggestionList[
-                      finalTranscript.split(" ")[mappingNumber - 1]
-                    ][suggestionListNumber]
-                });
+                  // this.pressf4ToStartStopGaze();
+                  logData.push({
+                    command: "Option '1'",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      'Chosen "1" i.e. first element from suggestion list at : ' +
+                      Utils.getCurrentTime(),
+                    textForLog:
+                      "Option 1 selected is : " +
+                      this.state.suggestionList[
+                        finalTranscript.split(" ")[mappingNumber - 1]
+                      ][suggestionListNumber]
+                  });
 
-                let finalTranscriptArr = finalTranscript.split(" ");
-                finalTranscriptArr[
-                  mappingNumber - 1
-                ] = this.state.suggestionList[
-                  finalTranscriptArr[mappingNumber - 1]
-                ][suggestionListNumber];
-                finalTranscript = finalTranscriptArr.join(" ");
+                  let finalTranscriptArr = finalTranscript.split(" ");
+                  finalTranscriptArr[
+                    mappingNumber - 1
+                  ] = this.state.suggestionList[
+                    finalTranscriptArr[mappingNumber - 1]
+                  ][suggestionListNumber];
+                  finalTranscript = finalTranscriptArr.join(" ");
+                } else {
+                  suggestionMode = true;
+                  mappingNumber = this.state.mappingNumber;
+                  hasCommand = true;
+                  spellMode = this.state.spellMode;
+                }
               } else if (
                 !this.state.spellMode &&
                 objIsNumberAndVal.check &&
@@ -728,31 +742,45 @@ export default function SpeechRecognition(options) {
                   currentTranscription.endsWith("to")) //
               ) {
                 // console.log("SUGGESTION LIST FOR SECOND ELEMENT");
-                suggestionMode = true;
-                suggestionListNumber = 1;
-                mappingNumber = this.state.mappingNumber;
+                if (
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ] &&
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ].length === 5
+                ) {
+                  suggestionMode = true;
+                  suggestionListNumber = 1;
+                  mappingNumber = this.state.mappingNumber;
 
-                // this.pressf4ToStartStopGaze(); // turning back on the gaze
-                logData.push({
-                  command: "Option '2'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "2" command from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog:
-                    "Option 2 selected is : " +
-                    this.state.suggestionList[
-                      finalTranscript.split(" ")[mappingNumber - 1]
-                    ][suggestionListNumber]
-                });
+                  // this.pressf4ToStartStopGaze(); // turning back on the gaze
+                  logData.push({
+                    command: "Option '2'",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      'Chosen "2" command from suggestion list at : ' +
+                      Utils.getCurrentTime(),
+                    textForLog:
+                      "Option 2 selected is : " +
+                      this.state.suggestionList[
+                        finalTranscript.split(" ")[mappingNumber - 1]
+                      ][suggestionListNumber]
+                  });
 
-                let finalTranscriptArr = finalTranscript.split(" ");
-                finalTranscriptArr[
-                  mappingNumber - 1
-                ] = this.state.suggestionList[
-                  finalTranscriptArr[mappingNumber - 1]
-                ][suggestionListNumber];
-                finalTranscript = finalTranscriptArr.join(" ");
+                  let finalTranscriptArr = finalTranscript.split(" ");
+                  finalTranscriptArr[
+                    mappingNumber - 1
+                  ] = this.state.suggestionList[
+                    finalTranscriptArr[mappingNumber - 1]
+                  ][suggestionListNumber];
+                  finalTranscript = finalTranscriptArr.join(" ");
+                } else {
+                  suggestionMode = true;
+                  mappingNumber = this.state.mappingNumber;
+                  hasCommand = true;
+                  spellMode = this.state.spellMode;
+                }
               } else if (
                 !this.state.spellMode &&
                 objIsNumberAndVal.check &&
@@ -760,31 +788,45 @@ export default function SpeechRecognition(options) {
                 objIsNumberAndVal.value === 3 //
               ) {
                 // console.log("SUGGESTION LIST FOR THIRD ELEMENT");
-                suggestionMode = true;
-                suggestionListNumber = 2;
-                mappingNumber = this.state.mappingNumber;
+                if (
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ] &&
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ].length === 5
+                ) {
+                  suggestionMode = true;
+                  suggestionListNumber = 2;
+                  mappingNumber = this.state.mappingNumber;
 
-                // this.pressf4ToStartStopGaze();
-                logData.push({
-                  command: "Option '3'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "3" command from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog:
-                    "Option 3 selected is : " +
-                    this.state.suggestionList[
-                      finalTranscript.split(" ")[mappingNumber - 1]
-                    ][suggestionListNumber]
-                });
+                  // this.pressf4ToStartStopGaze();
+                  logData.push({
+                    command: "Option '3'",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      'Chosen "3" command from suggestion list at : ' +
+                      Utils.getCurrentTime(),
+                    textForLog:
+                      "Option 3 selected is : " +
+                      this.state.suggestionList[
+                        finalTranscript.split(" ")[mappingNumber - 1]
+                      ][suggestionListNumber]
+                  });
 
-                let finalTranscriptArr = finalTranscript.split(" ");
-                finalTranscriptArr[
-                  mappingNumber - 1
-                ] = this.state.suggestionList[
-                  finalTranscriptArr[mappingNumber - 1]
-                ][suggestionListNumber];
-                finalTranscript = finalTranscriptArr.join(" ");
+                  let finalTranscriptArr = finalTranscript.split(" ");
+                  finalTranscriptArr[
+                    mappingNumber - 1
+                  ] = this.state.suggestionList[
+                    finalTranscriptArr[mappingNumber - 1]
+                  ][suggestionListNumber];
+                  finalTranscript = finalTranscriptArr.join(" ");
+                } else {
+                  suggestionMode = true;
+                  mappingNumber = this.state.mappingNumber;
+                  hasCommand = true;
+                  spellMode = this.state.spellMode;
+                }
               } else if (
                 !this.state.spellMode &&
                 objIsNumberAndVal.check &&
@@ -793,31 +835,45 @@ export default function SpeechRecognition(options) {
                   currentTranscription.endsWith("for")) //
               ) {
                 // console.log("SUGGESTION LIST FOR FOURTH ELEMENT");
-                suggestionMode = true;
-                suggestionListNumber = 3;
-                mappingNumber = this.state.mappingNumber;
+                if (
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ] &&
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ].length === 5
+                ) {
+                  suggestionMode = true;
+                  suggestionListNumber = 3;
+                  mappingNumber = this.state.mappingNumber;
 
-                // this.pressf4ToStartStopGaze();
-                logData.push({
-                  command: "Option '4'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "4" command from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog:
-                    "Option 4 selected is : " +
-                    this.state.suggestionList[
-                      finalTranscript.split(" ")[mappingNumber - 1]
-                    ][suggestionListNumber]
-                });
+                  // this.pressf4ToStartStopGaze();
+                  logData.push({
+                    command: "Option '4'",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      'Chosen "4" command from suggestion list at : ' +
+                      Utils.getCurrentTime(),
+                    textForLog:
+                      "Option 4 selected is : " +
+                      this.state.suggestionList[
+                        finalTranscript.split(" ")[mappingNumber - 1]
+                      ][suggestionListNumber]
+                  });
 
-                let finalTranscriptArr = finalTranscript.split(" ");
-                finalTranscriptArr[
-                  mappingNumber - 1
-                ] = this.state.suggestionList[
-                  finalTranscriptArr[mappingNumber - 1]
-                ][suggestionListNumber];
-                finalTranscript = finalTranscriptArr.join(" ");
+                  let finalTranscriptArr = finalTranscript.split(" ");
+                  finalTranscriptArr[
+                    mappingNumber - 1
+                  ] = this.state.suggestionList[
+                    finalTranscriptArr[mappingNumber - 1]
+                  ][suggestionListNumber];
+                  finalTranscript = finalTranscriptArr.join(" ");
+                } else {
+                  suggestionMode = true;
+                  mappingNumber = this.state.mappingNumber;
+                  hasCommand = true;
+                  spellMode = this.state.spellMode;
+                }
               } else if (
                 !this.state.spellMode &&
                 objIsNumberAndVal.check &&
@@ -825,35 +881,49 @@ export default function SpeechRecognition(options) {
                 objIsNumberAndVal.value === 5 //
               ) {
                 // console.log("SUGGESTION LIST FOR FIFTH ELEMENT");
-                suggestionMode = true;
-                suggestionListNumber = 4;
-                mappingNumber = this.state.mappingNumber;
+                if (
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ] &&
+                  this.state.suggestionList[
+                    finalTranscript.split(" ")[this.state.mappingNumber - 1]
+                  ].length === 5
+                ) {
+                  suggestionMode = true;
+                  suggestionListNumber = 4;
+                  mappingNumber = this.state.mappingNumber;
 
-                // this.pressf4ToStartStopGaze();
-                logData.push({
-                  command: "Option '5'",
-                  time: Utils.getCurrentTime(),
-                  text:
-                    'Chosen "5" command from suggestion list at : ' +
-                    Utils.getCurrentTime(),
-                  textForLog:
-                    "Option 5 selected is : " +
-                    this.state.suggestionList[
-                      finalTranscript.split(" ")[mappingNumber - 1]
-                    ][suggestionListNumber]
-                });
+                  // this.pressf4ToStartStopGaze();
+                  logData.push({
+                    command: "Option '5'",
+                    time: Utils.getCurrentTime(),
+                    text:
+                      'Chosen "5" command from suggestion list at : ' +
+                      Utils.getCurrentTime(),
+                    textForLog:
+                      "Option 5 selected is : " +
+                      this.state.suggestionList[
+                        finalTranscript.split(" ")[mappingNumber - 1]
+                      ][suggestionListNumber]
+                  });
 
-                let toReplaceWord = finalTranscript.split(" ")[
-                  mappingNumber - 1
-                ];
+                  let toReplaceWord = finalTranscript.split(" ")[
+                    mappingNumber - 1
+                  ];
 
-                let finalTranscriptArr = finalTranscript.split(" ");
-                finalTranscriptArr[
-                  mappingNumber - 1
-                ] = this.state.suggestionList[
-                  finalTranscriptArr[mappingNumber - 1]
-                ][suggestionListNumber];
-                finalTranscript = finalTranscriptArr.join(" ");
+                  let finalTranscriptArr = finalTranscript.split(" ");
+                  finalTranscriptArr[
+                    mappingNumber - 1
+                  ] = this.state.suggestionList[
+                    finalTranscriptArr[mappingNumber - 1]
+                  ][suggestionListNumber];
+                  finalTranscript = finalTranscriptArr.join(" ");
+                } else {
+                  suggestionMode = true;
+                  mappingNumber = this.state.mappingNumber;
+                  hasCommand = true;
+                  spellMode = this.state.spellMode;
+                }
               } else {
                 // Firstly we come here when we say "map " and after that If no "Done" , If no "spell" , if no "number"
                 // We do nothing
@@ -1266,19 +1336,26 @@ export default function SpeechRecognition(options) {
         } else {
           // This is normal tanscript
           // finalTranscript = "What is happening with these words man";
+          let counter = 1;
           for (const [index, word] of finalTranscript.split(" ").entries()) {
             let showSuggestionBool =
               this.state.mappingNumber && index + 1 === this.state.mappingNumber
                 ? true
                 : false;
+            let showCurly = getPassage(
+              this.state.phraseQuestionImageCount
+            ).errorWords.includes(word);
             transcriptObject.push({
               text: word,
               showSuggestion: showSuggestionBool,
               spellMode: this.state.spellMode,
-              showcurly: getPassage(
-                this.state.phraseQuestionImageCount
-              ).errorWords.includes(word)
+              showcurly: showCurly,
+              fakeIndex: showCurly ? counter : 0,
+              realIndex: index
             });
+            if (showCurly) {
+              counter = counter + 1;
+            }
           }
         }
         /** OBJECT CREATION FOR EACH WORD ENDS */

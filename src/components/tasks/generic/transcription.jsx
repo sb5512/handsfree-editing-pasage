@@ -84,6 +84,7 @@ class Transcription extends Component {
                     text={wordObject.text}
                     showSuggestion={wordObject.showSuggestion}
                     indexing={index}
+                    fakeIndexing={wordObject.fakeIndex}
                     {...this.props}
                     showcurlyI={wordObject.showcurly}
                   />

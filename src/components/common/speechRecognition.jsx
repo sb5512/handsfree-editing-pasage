@@ -168,6 +168,10 @@ export default function SpeechRecognition(options) {
         return newSentenceArr.join(" ");
       }
 
+      upperCaseFirstLetterWord(word) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
+
       uppercaseWordByIndex(sentence, index) {
         let newSentenceArr = sentence.split(" ");
         newSentenceArr[index - 1] =
@@ -719,8 +723,41 @@ export default function SpeechRecognition(options) {
                   currentTranscription.endsWith("Uppercase")) &&
                 this.state.mappingNumber //
               ) {
-                // console.log("GOING TO MAKE THE SELECTED WORD TO LOWERCASE");
+                // console.log("GOING TO MAKE THE SELECTED WORD TO UPPERCASE");
                 suggestionMode = false;
+                /**Passage object change STARTS */
+                let splittedFinalTranscriptWordForUpper = finalTranscript.split(
+                  " "
+                )[this.state.mappingNumber - 1];
+                let replaceWordAfterUppercase = this.upperCaseFirstLetterWord(
+                  splittedFinalTranscriptWordForUpper
+                );
+
+                passageObject.errorWords[
+                  passageObject.errorWords.indexOf(
+                    splittedFinalTranscriptWordForUpper
+                  )
+                ] = replaceWordAfterUppercase;
+                // if right word is replaced we need to remove it from our passageObject.errorWords and passageObject.correctWords at that index
+                if (
+                  passageObject.errorWords.includes(
+                    replaceWordAfterUppercase
+                  ) &&
+                  passageObject.correctWords[
+                    passageObject.errorWords.indexOf(replaceWordAfterUppercase)
+                  ] === replaceWordAfterUppercase
+                ) {
+                  var index = passageObject.errorWords.indexOf(
+                    replaceWordAfterUppercase
+                  );
+                  if (index > -1) {
+                    passageObject.errorWords.splice(index, 1);
+                    passageObject.correctWords.splice(index, 1);
+                  }
+                }
+                // if right word ends
+                /**Passage object change ENDS */
+
                 finalTranscript = this.uppercaseWordByIndex(
                   finalTranscript,
                   this.state.mappingNumber
@@ -743,6 +780,38 @@ export default function SpeechRecognition(options) {
               ) {
                 // console.log("GOING TO MAKE THE SELECTED WORD TO LOWERCASE");
                 suggestionMode = false;
+
+                /**Passage object change STARTS */
+                let splittedFinalTranscriptWordForLower = finalTranscript.split(
+                  " "
+                )[this.state.mappingNumber - 1];
+                let replaceWordAfterLowercase = splittedFinalTranscriptWordForLower.toLowerCase();
+
+                passageObject.errorWords[
+                  passageObject.errorWords.indexOf(
+                    splittedFinalTranscriptWordForLower
+                  )
+                ] = replaceWordAfterLowercase;
+                // if right word is replaced we need to remove it from our passageObject.errorWords and passageObject.correctWords at that index
+                if (
+                  passageObject.errorWords.includes(
+                    replaceWordAfterLowercase
+                  ) &&
+                  passageObject.correctWords[
+                    passageObject.errorWords.indexOf(replaceWordAfterLowercase)
+                  ] === replaceWordAfterLowercase
+                ) {
+                  var index = passageObject.errorWords.indexOf(
+                    replaceWordAfterLowercase
+                  );
+                  if (index > -1) {
+                    passageObject.errorWords.splice(index, 1);
+                    passageObject.correctWords.splice(index, 1);
+                  }
+                }
+                // if right word ends
+                /**Passage object change ENDS */
+
                 finalTranscript = this.lowercaseWordByIndex(
                   finalTranscript,
                   this.state.mappingNumber
@@ -974,6 +1043,7 @@ export default function SpeechRecognition(options) {
                   let theReplaceWordFromSuggestion = this.state.suggestionList[
                     splittedFinalTranscriptArr
                   ][suggestionListNumber];
+
                   passageObject.errorWords[
                     passageObject.errorWords.indexOf(splittedFinalTranscriptArr)
                   ] = theReplaceWordFromSuggestion;
@@ -1058,6 +1128,7 @@ export default function SpeechRecognition(options) {
                   let theReplaceWordFromSuggestion = this.state.suggestionList[
                     splittedFinalTranscriptArr
                   ][suggestionListNumber];
+
                   passageObject.errorWords[
                     passageObject.errorWords.indexOf(splittedFinalTranscriptArr)
                   ] = theReplaceWordFromSuggestion;
@@ -1141,6 +1212,7 @@ export default function SpeechRecognition(options) {
                   let theReplaceWordFromSuggestion = this.state.suggestionList[
                     splittedFinalTranscriptArr
                   ][suggestionListNumber];
+
                   passageObject.errorWords[
                     passageObject.errorWords.indexOf(splittedFinalTranscriptArr)
                   ] = theReplaceWordFromSuggestion;

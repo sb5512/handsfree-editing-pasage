@@ -49,22 +49,28 @@ class PassageDictate extends Component {
       this.props.setHoveredOnWord(event.target.innerHTML);
     } else if (!this.props.commandTag && this.props.dwellTag) {
       event.target.style.backgroundColor = "#FFFF4F";
-      if (!this.state.timeoutId) {
-        let timeoutId = window.setTimeout(() => {
-          this.setState({ timeoutId: null }); // EDIT: added this line
-          console.log("YAYYYYYYYYYYYYY 1 seconds");
-          fetch(slackENUM.slackUrl, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: JSON.stringify({
-              channel: "test_ob_tooling",
-              text: "#clickmouse"
-            })
-          });
-        }, 1000);
-        this.setState({ timeoutId: timeoutId });
+      if (
+        this.props.passageObject.errorWords.includes(event.target.innerHTML)
+      ) {
+        console.log("ONLY NOWWWWWWWWWWWWWW CLICKKK MAN");
+
+        if (!this.state.timeoutId) {
+          let timeoutId = window.setTimeout(() => {
+            this.setState({ timeoutId: null }); // EDIT: added this line
+            console.log("YAYYYYYYYYYYYYY 1 seconds");
+            fetch(slackENUM.slackUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: JSON.stringify({
+                channel: "test_ob_tooling",
+                text: "#clickmouse"
+              })
+            });
+          }, 1000);
+          this.setState({ timeoutId: timeoutId });
+        }
       }
     } else {
       // TODO maybe we can send a message where a mouse cursor gets hidden

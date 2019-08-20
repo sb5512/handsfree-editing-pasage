@@ -76,7 +76,8 @@ export default function SpeechRecognition(options) {
           toCorrectInSpellModeWord: "",
           capitalOrNotStarting: true,
           showLogData: false,
-          passageObject: getPassage(0)
+          passageObject: getPassage(0),
+          hoveredOnWord: ""
         };
       }
 
@@ -117,6 +118,12 @@ export default function SpeechRecognition(options) {
         toChangeScript = toChangeScript.substring(0, toChangeScript.length - 1);
         return toChangeScript;
       }
+
+      setHoveredOnWord = word => {
+        console.log("Hovered on word is ", word);
+        let hoveredOnWord = word;
+        this.setState({ hoveredOnWord: hoveredOnWord });
+      };
 
       containsMapCommands(interimWord) {
         return interimWord.endsWith("map") || interimWord.endsWith("Map");
@@ -365,16 +372,24 @@ export default function SpeechRecognition(options) {
       };
 
       clickMouse = () => {
-        fetch(slackENUM.slackUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded"
-          },
-          body: JSON.stringify({
-            channel: "test_ob_tooling",
-            text: "#clickmouse"
-          })
-        });
+        if (this.state.hoveredOnWord) {
+          if (
+            this.state.passageObject.errorWords.includes(
+              this.state.hoveredOnWord
+            )
+          ) {
+            fetch(slackENUM.slackUrl, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: JSON.stringify({
+                channel: "test_ob_tooling",
+                text: "#clickmouse"
+              })
+            });
+          }
+        }
       };
 
       pressf4f5ToStartStopGaze = () => {
@@ -1249,6 +1264,8 @@ export default function SpeechRecognition(options) {
                 logData = []; //make log data empty
                 let passageObjectTemp = getPassage(phraseQuestionImageCount);
                 finalTranscript = passageObjectTemp.passage;
+                // Need to also update the passageObject within new one
+                passageObject = getPassage(phraseQuestionImageCount);
                 console.log("I AM HERE AFTER NEXT IS SPOKEN");
                 // let dt = new Date();
                 // while (new Date() - dt <= 1000) {
@@ -1655,6 +1672,7 @@ export default function SpeechRecognition(options) {
             toggleShowLogData={this.toggleShowLogData}
             browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
             clearLogDataPersist={this.clearLogDataPersist}
+            setHoveredOnWord={this.setHoveredOnWord}
             {...this.state}
             {...this.props}
           />

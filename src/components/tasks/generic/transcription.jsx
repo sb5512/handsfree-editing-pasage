@@ -33,10 +33,6 @@ class Transcription extends Component {
         // ) {
         //   this.props.setInducedError(wordObject.text);
         // }
-        console.log(
-          "This is my huge suggestion list",
-          this.props.suggestionList
-        );
         if (
           !this.props.suggestionList[wordObject.text] &&
           wordObject.showcurly

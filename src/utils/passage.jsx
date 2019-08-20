@@ -581,6 +581,96 @@ var text = [
     errorWords: ["afrad", "woud", "mornings", "housee", "repaeting"],
     correctWords: ["afraid", "would", "morning", "house", "repeating"],
     errorWordsObj: [{ correct: "cheerful,", wrong: "cherfull," }]
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
+  },
+  {
+    passage: `There was once a woman who was very, very cherfull though she had little to make her so; for she was old, and por, and lonely. She lived in a little bit of a cottagge and earned a scant living by running errends for her neighbors, getting a bite here, a soup there, as reward for her services. So she mad shift to get on, and always looked as happy and cheery as if she had not a want in the world. `,
+    errorWords: ["cherfull", "por,", "cottagge", "errends", "mad"],
+    correctWords: ["cheerful", "poor,", "cottage", "errands", "made"],
+    errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
   }
 ];
 

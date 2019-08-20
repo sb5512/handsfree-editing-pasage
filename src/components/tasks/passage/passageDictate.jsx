@@ -46,6 +46,7 @@ class PassageDictate extends Component {
   toggleHoverOn = event => {
     if (this.props.commandTag && !this.props.dwellTag) {
       event.target.style.backgroundColor = "#FFFF4F";
+      this.props.setHoveredOnWord(event.target.innerHTML);
     } else if (!this.props.commandTag && this.props.dwellTag) {
       event.target.style.backgroundColor = "#FFFF4F";
       if (!this.state.timeoutId) {
@@ -76,6 +77,7 @@ class PassageDictate extends Component {
 
   toggleHoverOff = event => {
     event.target.style.backgroundColor = "#FFFFFF";
+    this.props.setHoveredOnWord("");
     if (this.state.timeoutId) {
       window.clearTimeout(this.state.timeoutId);
       this.setState({ timeoutId: null });

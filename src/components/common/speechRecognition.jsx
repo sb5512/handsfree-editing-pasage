@@ -433,6 +433,14 @@ export default function SpeechRecognition(options) {
 
       logTimeDataWhenHoveredAtWord = word => {
         let logData = [...this.state.logData];
+        if (logData.length < 1) {
+          logData.push({
+            command: "Start",
+            time: Utils.getCurrentTime(),
+            text: "Has begun the task at : " + Utils.getCurrentTime(),
+            textForLog: finalTranscript
+          });
+        }
         logData.push({
           command: "Look",
           time: Utils.getCurrentTime(),

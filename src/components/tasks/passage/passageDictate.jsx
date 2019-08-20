@@ -50,7 +50,8 @@ class PassageDictate extends Component {
     } else if (!this.props.commandTag && this.props.dwellTag) {
       event.target.style.backgroundColor = "#FFFF4F";
       if (
-        this.props.passageObject.errorWords.includes(event.target.innerHTML)
+        this.props.passageObject.errorWords.includes(event.target.innerHTML) ||
+        this.props.spellMode
       ) {
         console.log("ONLY NOWWWWWWWWWWWWWW CLICKKK MAN");
 

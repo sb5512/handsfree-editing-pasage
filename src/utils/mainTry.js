@@ -297,10 +297,14 @@ you
 young
 your`;
 
+var wordsPassageExperiment = `In the living room voice-clock sang, Tick-tock, seven o'clock, time to get up, o 'clock! as if it were afrad that nobody would. The mornings house lay empty. clock ticked on, repeating and repaeting its sounds into emptiness. Seven-nine, breakfast time, seven-nine! kitchen stove gave a hissing sigh ejected from warm interior eight pieces of perfectly browned toast, eggs sunny side sixteen slices bacon, two coffees, cool glasses milk.`;
+
+var onlyErrorWords = `cherfull por, cottagge errends mad`;
+
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var fs = require("fs");
 
-let toCreateSuggestionWord = arrWords.split("\n");
+let toCreateSuggestionWord = onlyErrorWords.split(" ");
 console.log(toCreateSuggestionWord);
 // toCreateSuggestionWord = toCreateSuggestionWord.slice(0, 10);
 

@@ -504,12 +504,8 @@ export default function SpeechRecognition(options) {
                       text:
                         '"Finish After Spell Mode Map" command within spell mode given at : ' +
                         Utils.getCurrentTime(),
-                      textForLog: finalTranscript
+                      textForLog: "Replaced  by word : " + replacingWord
                     });
-                    console.log(
-                      "I will be replacing the word from spell mode which is ",
-                      this.state.toCorrectInSpellModeWord
-                    );
                     // This is where I need to update passageObjects error objects
                     passageObject.errorWords[
                       passageObject.errorWords.indexOf(
@@ -657,24 +653,24 @@ export default function SpeechRecognition(options) {
                 hasCommand = true;
                 spellMode = this.state.spellMode;
                 suggestionMode = false;
+
+                // original and is used in spell mode
+                if (spellMode) {
+                  mappingNumber = objIsNumberAndVal.value;
+                }
+
                 // Here is the logic to map to the correct number when 1 , 2 , 3 , 4 ,5 is spoken
                 // maybe phrasecountimage ko passage ko error word ko
-                console.log(
-                  "THIS IS A MESSSS ",
-                  this.state.passageObject.errorWordsObj[
-                    getPassage(phraseQuestionImageCount).errorWords[
-                      objIsNumberAndVal.value - 1
-                    ]
-                  ]
-                );
-                mappingNumber =
-                  finalTranscript
-                    .split(" ")
-                    .indexOf(
-                      this.state.passageObject.errorWords[
-                        objIsNumberAndVal.value - 1
-                      ]
-                    ) + 1;
+                else {
+                  mappingNumber =
+                    finalTranscript
+                      .split(" ")
+                      .indexOf(
+                        this.state.passageObject.errorWords[
+                          objIsNumberAndVal.value - 1
+                        ]
+                      ) + 1;
+                }
 
                 let selectedMappedWord = finalTranscript.split(" ")[
                   mappingNumber - 1
@@ -684,7 +680,7 @@ export default function SpeechRecognition(options) {
                   time: Utils.getCurrentTime(),
                   text:
                     "Mapped Number " +
-                    mappingNumber +
+                    objIsNumberAndVal.value +
                     " given at : " +
                     Utils.getCurrentTime(),
                   textForLog:
@@ -927,15 +923,35 @@ export default function SpeechRecognition(options) {
                   suggestionListNumber = 2;
                   mappingNumber = this.state.mappingNumber;
 
-                  // this.pressf4ToStartStopGaze();
                   let splittedFinalTranscriptArr = finalTranscript.split(" ")[
                     mappingNumber - 1
                   ];
+                  let theReplaceWordFromSuggestion = this.state.suggestionList[
+                    splittedFinalTranscriptArr
+                  ][suggestionListNumber];
                   passageObject.errorWords[
                     passageObject.errorWords.indexOf(splittedFinalTranscriptArr)
-                  ] = this.state.suggestionList[splittedFinalTranscriptArr][
-                    suggestionListNumber
-                  ];
+                  ] = theReplaceWordFromSuggestion;
+                  // if right word is replaced we need to remove it from our passageObject.errorWords and passageObject.correctWords at that index
+                  if (
+                    passageObject.errorWords.includes(
+                      theReplaceWordFromSuggestion
+                    ) &&
+                    passageObject.correctWords[
+                      passageObject.errorWords.indexOf(
+                        theReplaceWordFromSuggestion
+                      )
+                    ] === theReplaceWordFromSuggestion
+                  ) {
+                    var index = passageObject.errorWords.indexOf(
+                      theReplaceWordFromSuggestion
+                    );
+                    if (index > -1) {
+                      passageObject.errorWords.splice(index, 1);
+                      passageObject.correctWords.splice(index, 1);
+                    }
+                  }
+                  // Maybe obsolete this errorWordsObj
 
                   passageObject.errorWordsObj[
                     this.state.suggestionList[
@@ -1266,12 +1282,9 @@ export default function SpeechRecognition(options) {
                     text:
                       '"Finish" command within spell mode given at : ' +
                       Utils.getCurrentTime(),
-                    textForLog: finalTranscript
+                    textForLog: "Replaced  by word : " + replacingWord
                   });
-                  console.log(
-                    "I will be replacing the word from spell mode which is and I didnot go to map mode",
-                    this.state.toCorrectInSpellModeWord
-                  );
+
                   // This is where I need to update passageObjects error objects
                   passageObject.errorWords[
                     passageObject.errorWords.indexOf(
@@ -1469,10 +1482,10 @@ export default function SpeechRecognition(options) {
           finalTranscript = finalTranscript.replace("0", "o");
           interimTranscript = interimTranscript.replace("0", "o");
         }
-        if (capitalOrNotStarting) {
-          finalTranscript = Utils.sentenceCase(finalTranscript);
-          interimTranscript = Utils.sentenceCase(interimTranscript);
-        }
+        // if (capitalOrNotStarting) {
+        //   finalTranscript = Utils.sentenceCase(finalTranscript);
+        //   interimTranscript = Utils.sentenceCase(interimTranscript);
+        // }
 
         this.setState({
           finalTranscript,

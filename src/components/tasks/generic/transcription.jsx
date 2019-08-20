@@ -33,7 +33,6 @@ class Transcription extends Component {
         // ) {
         //   this.props.setInducedError(wordObject.text);
         // }
-
         if (
           !this.props.suggestionList[wordObject.text] &&
           wordObject.showcurly

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Autocomplete from "../../common/autocomplete";
+import AutocompleteSpellMode from "./../../common/autocompleteSpellMode";
 
 class SpellMode extends Component {
   render() {
@@ -29,7 +29,7 @@ class SpellMode extends Component {
               {transcriptObject.map((wordObject, index) => {
                 return (
                   <React.Fragment key={index}>
-                    <Autocomplete
+                    <AutocompleteSpellMode
                       suggestions={wordObject.suggestions}
                       text={wordObject.text}
                       showSuggestion={wordObject.showSuggestion}

@@ -168,6 +168,14 @@ export default function SpeechRecognition(options) {
         return newSentenceArr.join(" ");
       }
 
+      uppercaseWordByIndex(sentence, index) {
+        let newSentenceArr = sentence.split(" ");
+        newSentenceArr[index - 1] =
+          newSentenceArr[index - 1].charAt(0).toUpperCase() +
+          newSentenceArr[index - 1].slice(1);
+        return newSentenceArr.join(" ");
+      }
+
       insertWordInFrontByIndex(sentence, toInsertWord, index) {
         return Utils.insert(sentence, toInsertWord, index);
       }
@@ -702,7 +710,29 @@ export default function SpeechRecognition(options) {
                     selectedMappedWord +
                     " with suggestions [" +
                     this.state.suggestionList[selectedMappedWord] +
-                    "]"
+                    "]" +
+                    " Mapped Number " +
+                    objIsNumberAndVal.value
+                });
+              } else if (
+                (currentTranscription.endsWith("uppercase") ||
+                  currentTranscription.endsWith("Uppercase")) &&
+                this.state.mappingNumber //
+              ) {
+                // console.log("GOING TO MAKE THE SELECTED WORD TO LOWERCASE");
+                suggestionMode = false;
+                finalTranscript = this.uppercaseWordByIndex(
+                  finalTranscript,
+                  this.state.mappingNumber
+                );
+                logData.push({
+                  command: "Uppercase first",
+                  time: Utils.getCurrentTime(),
+                  text:
+                    '"uppercase" command given at : ' + Utils.getCurrentTime(),
+                  textForLog: finalTranscript.split(" ")[
+                    this.state.mappingNumber - 1
+                  ]
                 });
               } else if (
                 (currentTranscription.endsWith("lowercase") ||

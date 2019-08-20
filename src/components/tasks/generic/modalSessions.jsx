@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import { CSVLink } from "react-csv";
 
 // NOTE:
-// When you change the imageNumber = 7 and phraseQuestionImageCount = 60. Dont forget to change it in one more place at the bottom
+// When you change the imageNumber = 7 and phraseQuestionImageCount = 18 for passage. Dont forget to change it in one more place at the bottom
 class ModalSession extends Component {
   handleClose = () => {
     this.props.startListening();
@@ -12,8 +12,8 @@ class ModalSession extends Component {
       this.props.historyStates.history.goBack();
       this.props.resetImageNumber();
     }
-    // We will end the session once the copy task gets past 60
-    if (this.props.phraseQuestionImageCount === 5) {
+    // We will end the session once the passage task gets past 18
+    if (this.props.phraseQuestionImageCount === 18) {
       this.props.historyStates.history.goBack();
       this.props.resetPhraseQuestionImageCount();
     }
@@ -42,8 +42,8 @@ class ModalSession extends Component {
       toShowBodyText =
         "Thank you for completing the free text formation task experiment!!!. \n \n You will be redirected back to selection of next experiment.";
     }
-    // We will end the session once the copytask text gets past 60
-    if (this.props.phraseQuestionImageCount === 5) {
+    // We will end the session once the passage text gets past 18
+    if (this.props.phraseQuestionImageCount === 18) {
       toShowHeadingText = "End of the EXPERIMENT";
       toShowBodyText =
         "Thank you for completing the copy task experiment!!!. \n\n You will be redirected back to selection of next experiment.";

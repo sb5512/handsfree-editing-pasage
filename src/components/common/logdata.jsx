@@ -26,7 +26,7 @@ class Logdata extends Component {
     return (
       <React.Fragment>
         {" "}
-        {this.props.phraseQuestionImageCount < 2 ? (
+        {this.props.phraseQuestionImageCount < 3 ? (
           <div className="text-justify d-block p-2 bg-success">
             <b>Training in progress</b>
           </div>

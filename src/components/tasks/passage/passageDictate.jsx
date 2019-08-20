@@ -20,11 +20,11 @@ class PassageDictate extends Component {
     clickedWord: "",
     hover: false,
     timeoutId: null,
-    sessionCounter: 1
+    sessionCounter: 3
   };
 
   sessionCounterUp = () => {
-    this.setState({ sessionCounter: this.state.sessionCounter + 1 });
+    this.setState({ sessionCounter: this.state.sessionCounter + 3 });
   };
 
   handleWordClick = (e, word, index) => {

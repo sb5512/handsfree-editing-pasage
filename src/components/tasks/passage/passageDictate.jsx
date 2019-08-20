@@ -28,19 +28,25 @@ class PassageDictate extends Component {
   };
 
   handleWordClick = (e, word, index) => {
-    e.target.style.backgroundColor = "#F44FFF";
-    this.setState({ clickedWord: `${word} at index ${index + 1}` });
-    this.props.handleWordClickToGetToMappingWithNumberState(index + 1, word);
-    fetch(slackENUM.slackUrl, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: JSON.stringify({
-        channel: "test_ob_tooling",
-        text: "#clickmouse"
-      })
-    });
+    // Have to make sure if not an error word then dont click.
+    if (
+      this.props.passageObject.errorWords.includes(word) ||
+      this.props.spellMode
+    ) {
+      e.target.style.backgroundColor = "#F44FFF";
+      this.setState({ clickedWord: `${word} at index ${index + 1}` });
+      this.props.handleWordClickToGetToMappingWithNumberState(index + 1, word);
+      fetch(slackENUM.slackUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: JSON.stringify({
+          channel: "test_ob_tooling",
+          text: "#clickmouse"
+        })
+      });
+    }
   };
 
   toggleHoverOn = event => {

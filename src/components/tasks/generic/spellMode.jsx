@@ -12,16 +12,28 @@ class SpellMode extends Component {
       toggleHoverOff,
       toCorrectInSpellModeWord
     } = this.props;
-
+    let correctWordIndex = this.props.passageObject.errorWords.indexOf(
+      toCorrectInSpellModeWord
+    );
+    let correctWord = "hello";
+    if (correctWordIndex > -1) {
+      correctWord = this.props.passageObject.correctWords[correctWordIndex];
+    }
     let toRenderDiv;
     // remember hasCommand is basically saying if "map" is spoken
     if (hasCommand && transcript) {
       toRenderDiv = (
         <React.Fragment>
           <div className="border border-white d-block p-2 bg-dark text-white">
-            Mistaken word:{" "}
+            Correct word:{" "}
             <span className="border border-primary">
-              {"  "} {toCorrectInSpellModeWord}
+              {"  "} {correctWord}
+            </span>
+            <span className="pull-right">
+              Mistaken word:{" "}
+              <span className="border border-primary">
+                {"  "} {toCorrectInSpellModeWord}
+              </span>
             </span>
           </div>
           <div className="card">
@@ -58,9 +70,15 @@ class SpellMode extends Component {
       toRenderDiv = (
         <React.Fragment>
           <div className="border border-white d-block p-2 bg-dark text-white">
-            Mistaken word:{" "}
+            Correct word:{" "}
             <span className="border border-primary">
-              {"  "} {toCorrectInSpellModeWord}
+              {"  "} {correctWord}
+            </span>
+            <span className="pull-right">
+              Mistaken word:{" "}
+              <span className="border border-primary">
+                {"  "} {toCorrectInSpellModeWord}
+              </span>
             </span>
           </div>
           <div className="card">

@@ -324,12 +324,12 @@ A long time ago and fsr, far away an old woman was sitting in her rockng chair t
 Most teribly cold it was; it snoed and was nearly quite dark, and evening-- the last evening of the year. In this cold and darkness there want along the street a poor little girl, bare headed, and with naked feet. When she left home she had slippers on, it is true; but what was the good of that? They were very large slippers, which hers mother had hitherto worn; so lerge were they; and the poor little thing lost them as she scuffled away across the street, because of two carriages that rolled by dreadfully fast.
 `;
 
-var onlyErrorWords = ``;
+var onlyErrorWords = `cherfull little cottage errends mad bortn vegetabbles hasmper tht thorough afrad nobdy mornings housee repeating bat blindes fires Fatther mistak opend wounds scandalizzed wat hallf grl creaturess slep bing falle yer announcemant fron wheele worldd crouding moth inexplecable Nobody stading sanny solder lenth upoon losely auntt youn u putt whch tht burried alweys realy stomac disase sens aam obsarve farst grate handd bathroomms neve raund writte coud posibly unemaginativ withaut peopl contry haed form regratting their mothr laezy hardr dancd fsr rockng womans bacause upp teribly snoed want hers lerge`;
 
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var fs = require("fs");
 
-let toCreateSuggestionWord = wordsPassageExperiment.split(" ");
+let toCreateSuggestionWord = onlyErrorWords.split(" ");
 console.log(toCreateSuggestionWord);
 // toCreateSuggestionWord = toCreateSuggestionWord.slice(0, 10);
 

@@ -388,7 +388,8 @@ export default function SpeechRecognition(options) {
           if (
             this.state.passageObject.errorWords.includes(
               this.state.hoveredOnWord
-            )
+            ) ||
+            this.state.spellMode
           ) {
             fetch(slackENUM.slackUrl, {
               method: "POST",

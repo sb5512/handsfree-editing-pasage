@@ -77,7 +77,8 @@ export default function SpeechRecognition(options) {
           capitalOrNotStarting: true,
           showLogData: false,
           passageObject: getPassage(0),
-          hoveredOnWord: ""
+          hoveredOnWord: "",
+          dwellTiming: 1000
         };
       }
 
@@ -381,6 +382,14 @@ export default function SpeechRecognition(options) {
 
       toggleShowLogData = () => {
         this.setState({ showLogData: !this.state.showLogData });
+      };
+
+      changeDwellTiming = () => {
+        if (this.state.dwellTiming === 1000) {
+          this.setState({ dwellTiming: 800 });
+        } else {
+          this.setState({ dwellTiming: 1000 });
+        }
       };
 
       clickMouse = () => {
@@ -1784,6 +1793,7 @@ export default function SpeechRecognition(options) {
             browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
             clearLogDataPersist={this.clearLogDataPersist}
             setHoveredOnWord={this.setHoveredOnWord}
+            changeDwellTiming={this.changeDwellTiming}
             {...this.state}
             {...this.props}
           />

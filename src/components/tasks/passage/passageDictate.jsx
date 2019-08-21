@@ -75,7 +75,7 @@ class PassageDictate extends Component {
                 text: "#clickmouse"
               })
             });
-          }, 1000);
+          }, this.props.dwellTiming);
           this.setState({ timeoutId: timeoutId });
         }
       }

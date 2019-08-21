@@ -124,7 +124,7 @@ const suggestionDict = {
   hardr: ["hoarder", "horder", "herder", "harter", "harder"],
   dancd: ["dunked", "danke", "danka", "dinked", "tanked"],
 
-  fsr: ["fpe", "fffc", "far", "fhc", "fkh"],
+  "fsr,": ["fpe", "fffc", "far", "fhc", "fkh"],
   rockng: ["raka", "rakhi", "raku", "rocc", "raak"],
   womans: ["womens", "women's", "woman", "womanize", "winans"],
   bacause: ["bakos", "bickies", "bikies", "baucus", "bacas"],

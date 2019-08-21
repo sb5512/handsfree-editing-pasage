@@ -673,7 +673,7 @@ var text = [
   },
 
   {
-    passage: `Once upon a time their was an old mothr pig who had three little pigs and not enough food to feed them. So when they were old enough, she sent them out into the world to seek their fortunes. The first little pig was very laezy. He didn't want to work at all and he built his house out of straw. The second little pig worked a little bit hardr but he was somewhat lazy too and he built his house out of sticks. Then, they sang and dancd and played together the rest of the day`,
+    passage: `Once upon a time their was an old mothr pig who had three little pigs and not enough food to feed them. So when they were old enough, she sent them out into the world to seek the fortunes. The first little pig was very laezy. He didn't want to work at all and he built his house out of straw. The second little pig worked a little bit hardr but he was somewhat lazy too and he built his house out of sticks. Then, they sang and dancd and played together the rest of the day`,
     errorWords: ["their", "mothr", "laezy", "hardr", "dancd"],
     correctWords: ["there", "mother", "lazy", "harder", "danced"],
     errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
@@ -681,7 +681,7 @@ var text = [
 
   {
     passage: `A long time ago and fsr, far away an old woman was sitting in her rockng chair thinking how happy she would be if she had a child. Then, she heard a knock at the door and opened it. A lady was standing there and she said, "If you let me in, I will grant you a wish." The old womans let the woman in firstly because she felt pity, secondly bacause she knew what she'd wish for...a child. After she washed the lady upp and fed her, she saw that she was really beautiful.`,
-    errorWords: ["fsr", "rockng", "womans", "bacause", "upp"],
+    errorWords: ["fsr,", "rockng", "womans", "bacause", "upp"],
     correctWords: ["far", "rocking", "woman", "because", "up"],
     errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
   },

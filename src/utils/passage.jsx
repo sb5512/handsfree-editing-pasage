@@ -674,7 +674,7 @@ var text = [
 
   {
     passage: `Once upon a time their was an old mothr pig who had three little pigs and not enough food to feed them. So when they were old enough, she sent them out into the world to seek the fortunes. The first little pig was very laezy. He didn't want to work at all and he built his house out of straw. The second little pig worked a little bit hardr but he was somewhat lazy too and he built his house out of sticks. Then, they sang and dancd and played together the rest of the day`,
-    errorWords: ["their", "mothr", "laezy", "hardr", "dancd"],
+    errorWords: ["their", "mothr", "laezy.", "hardr", "dancd"],
     correctWords: ["there", "mother", "lazy", "harder", "danced"],
     errorWordsObj: { woman: "woman", "cheerfull,": "cherfull," }
   },

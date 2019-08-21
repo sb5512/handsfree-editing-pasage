@@ -27,6 +27,15 @@ class Multimodal extends Component {
   };
 
   render() {
+    let btnKoType = "btn";
+    let buttonText = "";
+    if (this.props.dwellTiming === 800) {
+      btnKoType = "btn btn-secondary btn-lg float-right text-center";
+      buttonText = "Dwell 0.8 seconds";
+    } else {
+      btnKoType = "btn btn-secondary btn-lg float-right text-center";
+      buttonText = "Dwell 1.0 seconds";
+    }
     return (
       <div className="container">
         {/* <button
@@ -42,6 +51,9 @@ class Multimodal extends Component {
             <i className="fa fa-microphone" />
             <br />
             <i className="fa fa-eye" />
+          </button>
+          <button className={btnKoType} onClick={this.props.changeDwellTiming}>
+            {buttonText}
           </button>
         </Row>
         <Row>
